@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+<html lang="mr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>नवोदय परीक्षा सराव टेस्ट उतारे</title>
+    <style>
+        :root {
+            --primary-color: #1e3a8a;
+            --secondary-color: #b45309;
+            --bg-color: #f1f5f9;
+            --card-bg: #ffffff;
+            --text-color: #1e293b;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            margin: 0;
+            padding: 15px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 750px;
+            background: var(--card-bg);
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+            padding: 25px;
+            box-sizing: border-box;
+        }
+
+        h1 {
+            color: var(--primary-color);
+            text-align: center;
+            margin-bottom: 5px;
+            font-size: 22px;
+        }
+
+        h2 {
+            color: var(--secondary-color);
+            text-align: center;
+            margin-top: 0;
+            font-size: 18px;
+            margin-bottom: 25px;
+            border-bottom: 2px solid #cbd5e1;
+            padding-bottom: 10px;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 6px;
+            font-weight: bold;
+        }
+
+        input[type="text"], input[type="tel"] {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #cbd5e1;
+            border-radius: 6px;
+            font-size: 16px;
+            box-sizing: border-box;
+        }
+
+        input[type="text"]:focus, input[type="tel"]:focus {
+            border-color: var(--primary-color);
+            outline: none;
+        }
+
+        .btn {
+            display: block;
+            width: 100%;
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 14px;
+            font-size: 18px;
+            font-weight: bold;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: background 0.2s;
+            margin-top: 20px;
+        }
+
+        .btn:hover {
+            background-color: #0f172a;
+        }
+
+        .passage-box {
+            background-color: #f8fafc;
+            border-left: 6px solid var(--primary-color);
+            padding: 18px;
+            border-radius: 6px;
+            margin-bottom: 25px;
+            font-size: 16px;
+            line-height: 1.6;
+            text-align: justify;
+            max-height: 250px;
+            overflow-y: auto;
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.02);
+        }
+
+        .question-title {
+            font-size: 17px;
+            font-weight: bold;
+            margin-bottom: 15px;
+            color: #0f172a;
+            background: #f1f5f9;
+            padding: 10px;
+            border-radius: 4px;
+        }
+
+        .options-container {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .option-label {
+            display: flex;
+            align-items: center;
+            padding: 12px;
+            background: #ffffff;
+            border: 2px solid #e2e8f0;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 15px;
+            transition: all 0.2s;
+        }
+
+        .option-label:hover {
+            background: #f8fafc;
+            border-color: #cbd5e1;
+        }
+
+        .option-label input {
+            margin-right: 12px;
+            transform: scale(1.3);
+            cursor: pointer;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .progress-text {
+            text-align: right;
+            font-size: 14px;
+            color: #64748b;
+            margin-bottom: 10px;
+            font-weight: bold;
+        }
+
+        /* सर्टिफिकेट स्टाइल निकाल */
+        .certificate-card {
+            border: 8px double var(--primary-color);
+            padding: 25px;
+            background: #fffdf6;
+            text-align: center;
+            margin-top: 15px;
+            border-radius: 4px;
+        }
+
+        .certificate-card h3 {
+            color: var(--primary-color);
+            margin-bottom: 5px;
+            font-size: 20px;
+        }
+
+        .certificate-card h4 {
+            color: var(--secondary-color);
+            margin-top: 0;
+            font-size: 16px;
+            margin-bottom: 20px;
+        }
+
+        .cert-details {
+            text-align: left;
+            margin: 20px auto;
+            max-width: 450px;
+            font-size: 16px;
+            line-height: 2.2;
+            border-bottom: 1px dashed #cbd5e1;
+            padding-bottom: 15px;
+        }
+
+        .cert-details strong {
+            color: #0f172a;
+        }
+
+        .reward-box {
+            font-size: 22px;
+            font-weight: bold;
+            margin: 20px 0;
+            padding: 12px 20px;
+            background: #fef3c7;
+            border: 2px dashed #d97706;
+            border-radius: 6px;
+            color: #92400e;
+            display: inline-block;
+        }
+
+        .footer-contacts {
+            margin-top: 20px;
+            font-size: 14px;
+            display: flex;
+            justify-content: space-between;
+            text-align: left;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .contact-block {
+            background: #f8fafc;
+            padding: 8px 12px;
+            border-radius: 4px;
+            border: 1px solid #e2e8f0;
+            flex: 1;
+            min-width: 200px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>🏆 स्पर्धा परीक्षा मार्गदर्शन केंद्र, जेऊर</h1>
+    <h2>नवोदय परीक्षा सराव टेस्ट उतारे</h2>
+
+    <!-- लॉगिन / नाव स्क्रीन -->
+    <div id="login-screen">
+        <div class="form-group">
+            <label for="student-name">विद्यार्थ्याचे नाव :</label>
+            <input type="text" id="student-name" placeholder="तुमचे संपूर्ण नाव टाका" required>
+        </div>
+        <div class="form-group">
+            <label for="student-phone">मोबाईल नंबर :</label>
+            <input type="tel" id="student-phone" placeholder="१० अंकी मोबाईल नंबर" required>
+        </div>
+        <button class="btn" onclick="startExam()">Start Exam</button>
+    </div>
+
+    <!-- परीक्षा चालू स्क्रीन -->
+    <div id="exam-screen" class="hidden">
+        <div class="progress-text" id="progress-display"></div>
+        <div id="passage-container" class="passage-box"></div>
+        <div id="question-container"></div>
+        <button id="next-btn" class="btn" onclick="nextQuestion()">Next Question</button>
+        <button id="submit-btn" class="btn hidden" onclick="submitExam()">Submit Exam</button>
+    </div>
+
+    <!-- निकाल / सर्टिफिकेट स्क्रीन -->
+    <div id="result-screen" class="hidden">
+        <div class="certificate-card">
+            <h3>🏆 स्पर्धा परीक्षा मार्गदर्शन केंद्र, जेऊर</h3>
+            <h4>कामगिरी प्रमाणपत्र</h4>
+            
+            <div class="cert-details">
+                <b>परीक्षेचे नाव :</b> नवोदय परीक्षा सराव टेस्ट (भाषा परीक्षा)<br>
+                <b>विद्यार्थ्याचे नाव :</b> <strong><span id="res-name"></span></strong><br>
+                <b>मोबाईल नंबर :</b> <strong><span id="res-phone"></span></strong><br>
+                <b>मिळालेले गुण :</b> <strong><span id="res-score"></span></strong><br>
+                <b>टक्केवारी :</b> <strong><span id="res-percentage"></span>%</strong>
+            </div>
+
+            <div id="reward-display" class="reward-box"></div>
+
+            <div class="footer-contacts">
+                <div class="contact-block">
+                    <strong>मार्गदर्शक शिक्षक :</strong> सचिन शिंदे<br>
+                    <strong>संपर्क :</strong> 8329684470
+                </div>
+                <div class="contact-block">
+                    <strong>मार्गदर्शक शिक्षक :</strong> सतीश चिंदे<br>
+                    <strong>संपर्क :</strong> 8208167846
+                </div>
+            </div>
+        </div>
+        <button class="btn" onclick="location.reload()">पुन्हा परीक्षा द्या</button>
+    </div>
+</div>
+
+<script>
+    // प्रतिमेमधील ४ उतारे व त्यांचे प्रत्येकी ५ प्रश्न
+    const examData = [
+        {
+            passage: "<b>परिच्छेद - १ (भीमकाय पांडा)</b><br>भीमकाय पांडा आज फक्त मध्य चीनच्या बांबूच्या जंगलात आणि काही प्रमाणात तिबेटमध्ये आढळतात. बांबूचे जंगल त्यांना खाद्य, विसावा आणि संरक्षण देतात. भीमकाय पांडा अधिकांश वेळ बांबूच्या जंगलात फिरण्यात आणि बांबूची कोवळी पाने खाण्यात घालवितात. ते मोठ्या प्रमाणात फक्त बांबूची कोवळी पानेच खातात, त्यामुळे त्यांना सदोदित पोटभर खाद्य मिळत नाही. मोठ्या प्रमाणात करण्यात येत असलेली शिकार आणि त्यांचे नैसर्गिक अधिवास नष्ट होत असल्याने हा सुंदर प्राणी विलुप्त होण्याच्या मार्गावर आहे. ते आता फक्त प्राणिसंग्रहालयातच दिसतात. मात्र प्राणिसंग्रहालयात त्यांचे सांगोपन अवघड असते, कारण त्यांच्यासाठी पुरेसा आहार उपलब्ध करून देणे कठीण आहे.",
+            questions: [
+                { q: "६१. प्राणिसंग्रहालयात भीमकाय पांडाचे सांगोपन अवघड का ठरते?", options: ["तिथे खूप वर्दळ असते.", "तिथे त्यांच्या पिल्लांना सांभाळणे शक्य नाही.", "त्यांच्यासाठी पुरेसा आहार मिळविणे कठीण आहे.", "ते शिकाऱ्यांना घाबरतात."], correct: 2 },
+                { q: "६२. भीमकाय पांडाचा मुख्य आहार कोणता आहे?", options: ["बांबूचे झाड", "बांबूची कोवळी पाने", "बांबूच्या मुळ्या", "हिरवी पाने आणि गवत"], correct: 1 },
+                { q: "६३. हा सुंदर प्राणी विलुप्त होण्याच्या मार्गावर आहे, कारण :", options: ["त्यांना मनोरंजनासाठी प्राणिसंग्रहालयात ठेवण्यात येते.", "मोठ्या प्रमाणात करण्यात येणारी शिकार आणि नैसर्गिक अधिवास नष्ट होत आहेत.", "चीनमध्ये बांबूचे जंगल पुरेसे नाहीत.", "ते साधारणपणे जन्म झाल्यावर मरण पावतात."], correct: 1 },
+                { q: "६४. 'भीमकाय' शब्दाचा विरुद्धार्थी शब्द शोधा :", options: ["मोठा", "विस्तृत", "लहान", "लांबलचक"], correct: 2 },
+                { q: "६५. प्राणिसंग्रहालयात ______________", options: ["पक्षी पिंजऱ्यात ठेवले जातात", "पशू घरात व विश्रांती घेतात", "मुलं पशूंचे मनोरंजन करण्यास येतात", "पशुपक्ष्यांना कुंपणात व पिंजऱ्यात ठेवले जाते"], correct: 3 }
+            ]
+        },
+        {
+            passage: "<b>परिच्छेद - २ (नर्तकीची धातूमूर्ती)</b><br>राष्ट्रीय संग्रहालय, दिल्ली येथे जाड काचेच्या मागे मांडून ठेवलेल्या जागतिक कीर्तीच्या नर्तकीला कसे विसरता येईल? मोहनजो-दडो येथील नृत्य करत असलेली ही नर्तकी पितळी धातूची दुर्लभ कलाकृती आहे. शालेय पुस्तकातूनही आपणास 5000 वर्षांपूर्वीच्या इतक्या प्राचीन वारशाबद्दल माहिती मिळते. तिच्या डाव्या हाताच्या कोपऱ्यापासून बोटांपर्यंत शिंपले, हस्तीदंत किंवा पातळ धातूच्या अनेक बांगड्या आहेत. आधुनिक कलेचा नमुना म्हणून एकत्र तीन पेंडंटचा हार आणि उजव्या हातात कोपऱ्याच्यावर आणि मनगटावर काही बांगड्या आहेत. ती म्हणजे निडर मानवीकृतीचे प्रतीक आहे. तिला पाहून आपणास समजते की एखाद्या कलाकृतीचा परिणाम आपल्या इंद्रियांवर कसा होतो.",
+            questions: [
+                { q: "६६. नृत्य करणाऱ्या नर्तकीला जाड काचेच्या मागे का ठेवण्यात आले आहे? कारण ______", options: ["ती एक दुर्लभ कलाकृती आहे", "ती एक जागतिक कीर्तीची नर्तकी आहे", "तिला मौल्यवान रत्नांनी सजविले आहे", "ती निडर आहे"], correct: 0 },
+                { q: "६७. 'पेंडंट' यापैकी कशाचा घटक आहे?", options: ["बांगड्या", "हार", "मनगट", "पाटल्या"], correct: 1 },
+                { q: "६८. विधान (i) आणि (ii) यांचा योग्य पर्याय निवडा : \n (i) तिच्या बांगड्या शिंपले किंवा पातळ धातूपासून तयार केलेल्या आहेत. \n (ii) तिने हस्तीदंताचा हार घातला आहे.", options: ["(i) सत्य (ii) असत्य", "(ii) सत्य (i) असत्य", "(i) आणि (ii) दोन्ही सत्य", "(i) आणि (ii) दोन्ही असत्य"], correct: 0 },
+                { q: "६९. 'निडर' शब्दाचा समानार्थी नसलेला शब्द :", options: ["मित्रा", "शूर", "धाडसी", "पराक्रमी"], correct: 0 },
+                { q: "७०. उताऱ्यातील 'कलाकृती' या शब्दाचा अर्थ :", options: ["कलेचे तपशील", "माणसाने तयार केलेले कलात्मक नमुने", "खणून काढलेली वस्तू", "तांब्याच्या मूर्ती"], correct: 1 }
+            ]
+        },
+        {
+            passage: "<b>परिच्छेद - ३ (सोनमची सायकल)</b><br>सोनम दुकानात मांडून ठेवलेल्या नव्या सायकलीकडे लक्ष देऊन पाहत होती. नवी कोरी चकचकीत लाल सायकल पाहून ती चकित झाली होती. तिच्या वडिलांनी तिला सायकलीकडे लक्ष लावताना पाहिले आणि म्हणाले, 'चल, जाऊया.' सोनमने सायकलीकडे शेवटचे पाहिले आणि वडिलांच्या मागोमाग निघाली. रात्री झोपतानाही ती चटकदार लाल सायकलचाच विचार करीत होती. दुसऱ्या दिवशी शाळेची ती सवंगड्यांसोबत या विषयावर गप्पा मारत होती. शाळेतून परतल्यावर तिने घरापुढे नवी कोरी सायकल बघितली. तिला खूप आनंद झाला नि तिने आईला हाक मारली. तिथे तिचे बाबा हसत हसत बाहेर आले आणि म्हणाले - 'तुझ्या वाढदिवसाची भेट.' सायकल बघून सोनम खूश झाली आणि आई-बाबांना बिलगली.",
+            questions: [
+                { q: "७१. सोनम ____________ सोबत दुकानात गेली होती.", options: ["काका", "वडील", "भाऊ", "मित्र"], correct: 1 },
+                { q: "७२. सोनमने दुकानात चकचकीत ___________ सायकल पहिली आणि आकर्षित झाली.", options: ["लाल", "हिरवी", "पिवळी", "काळी"], correct: 0 },
+                { q: "७३. सोनमच्या आई-बाबांनी या कारणास्तव तिला नवीन सायकल दिली.", options: ["वाढदिवसाची भेट म्हणून", "परीक्षेत यश मिळाल्याबद्दल", "तिला आवडली म्हणून", "तिच्याकडे सायकल नव्हती म्हणून"], correct: 0 },
+                { q: "७४. सोनमने कशाप्रकारे आनंद व्यक्त केला?", options: ["आई-बाबांना बिलगून", "आई-बाबांना आभार मानून", "सायकलच्या गिरक्या घेऊन", "उड्या मारून"], correct: 0 },
+                { q: "७५. 'चकित होणे' म्हणजे :", options: ["आठवणे", "स्तिमित होणे", "धक्का लागणे", "घाबरणे"], correct: 1 }
+            ]
+        },
+        {
+            passage: "<b>परिच्छेद - ४ (फुलांचे महत्त्व व उपयोग)</b><br>फूल अनेक दृष्टींनी आपल्यासाठी उपयोगी आहेत. फुलांचे अनेकविध रंग आणि सुगंध असतात. फूल सौंदर्याचे प्रतीक आहेत. फुलांचा वापर धार्मिक पूजेत केला जातो. प्रेम आणि कृतज्ञता व्यक्त करण्यासाठी पुष्पगुच्छ दिले जातात. फुलांचे हार तयार करून देवतांना वाहण्यासाठी आणि महान लोकांच्या सन्मानार्थ वापरत आणले जातात. स्वतःच्या सभोवतालच्या वातावरणाची शोभा वाढविण्यासाठी फुलांना कुलदाणीत सजवून ठेवण्यात येते.<br>फुलांचे व्यावहारिक उपयोग देखील आहेत. यांचा वापर अत्तर, चहा आणि सौंदर्य प्रसाधने तयार करण्यासाठी केला जातो. काही फुलांचा वापर औषधे तयार करण्यासाठीही केला जातो. थोडक्यात फूल महत्त्वाची आहेत, कारण त्यांचा शरीर-मनावर सकारात्मक परिणाम होतो.",
+            questions: [
+                { q: "७६. फूल अनेक दृष्टींनी __________ आहेत.", options: ["दिल्ली जात", "उपयोगी", "विकली जात", "हानिकारक"], correct: 1 },
+                { q: "७७. फुलं ____________ आढळतात.", options: ["अनेकविध आकृत्यात", "अनेकविध रंगात", "अनेकविध रंग आणि आकृत्यात", "समान आकारात"], correct: 2 },
+                { q: "७८. फुलांचा व्यावहारिक उपयोग म्हणजे :", options: ["चहा, अत्तर आणि सौंदर्य प्रसाधने तयार करणे.", "फुलदाणीत सजविणे.", "गाळ गुंफणे.", "प्रार्थना आणि पूजा करणे."], correct: 0 },
+                { q: "७९. ______________ फुलांचा वापर औषधे तयार करण्यातही केला जातो.", options: ["सर्व", "काही", "रंगीत", "लहान"], correct: 1 },
+                { q: "८०. उताऱ्यात 'परिणाम' शब्दाचा अर्थ म्हणजे :", options: ["जोर", "प्रभाव", "काम करणे", "इजा करणे"], correct: 1 }
+            ]
+        }
+    ];
+
+    let currentPassageIndex = 0;
+    let currentQuestionIndex = 0;
+    let score = 0;
+    let totalQuestionsCount = 0;
+
+    examData.forEach(p => totalQuestionsCount += p.questions.length);
+
+    function startExam() {
+        const name = document.getElementById('student-name').value.trim();
+        const phone = document.getElementById('student-phone').value.trim();
+
+        if (name === "" || phone === "") {
+            alert("कृपया तुमचे नाव आणि मोबाईल नंबर अचूक टाका!");
+            return;
+        }
+
+        document.getElementById('login-screen').classList.add('hidden');
+        document.getElementById('exam-screen').classList.remove('hidden');
+        
+        loadQuestion();
+    }
+
+    function loadQuestion() {
+        const passageData = examData[currentPassageIndex];
+        const questionData = passageData.questions[currentQuestionIndex];
+
+        // सध्या कितवा प्रश्न चालू आहे ते मोजणे
+        let currentProgress = 0;
+        for(let i=0; i<currentPassageIndex; i++) {
+            currentProgress += examData[i].questions.length;
+        }
+        currentProgress += (currentQuestionIndex + 1);
+
+        document.getElementById('progress-display').innerText = `प्रश्न: ${currentProgress} / ${totalQuestionsCount}`;
+        document.getElementById('passage-container').innerHTML = passageData.passage;
+
+        let html = `<div class="question-title">${questionData.q}</div>`;
+        html += `<div class="options-container">`;
+        
+        const optionPrefix = ['A', 'B', 'C', 'D'];
+        questionData.options.forEach((option, index) => {
+            html += `
+                <label class="option-label">
+                    <input type="radio" name="quiz-option" value="${index}">
+                    (${optionPrefix[index]}) ${option}
+                </label>
+            `;
+        });
+        html += `</div>`;
+        
+        document.getElementById('question-container').innerHTML = html;
+
+        // शेवटचा प्रश्न असेल तर सबमिट बटण दाखवणे
+        const isLastPassage = currentPassageIndex === examData.length - 1;
+        const isLastQuestion = currentQuestionIndex === passageData.questions.length - 1;
+
+        if (isLastPassage && isLastQuestion) {
+            document.getElementById('next-btn').classList.add('hidden');
+            document.getElementById('submit-btn').classList.remove('hidden');
+        } else {
+            document.getElementById('next-btn').classList.remove('hidden');
+            document.getElementById('submit-btn').classList.add('hidden');
+        }
+    }
+
+    function nextQuestion() {
+        const selectedOption = document.querySelector('input[name="quiz-option"]:checked');
+        if (!selectedOption) {
+            alert("कृपया उत्तर देण्यासाठी एक पर्याय निवडा!");
+            return;
+        }
+
+        checkAnswer(parseInt(selectedOption.value));
+
+        const passageData = examData[currentPassageIndex];
+        if (currentQuestionIndex < passageData.questions.length - 1) {
+            currentQuestionIndex++;
+        } else {
+            currentPassageIndex++;
+            currentQuestionIndex = 0;
+        }
+
+        loadQuestion();
+    }
+
+    function checkAnswer(answerIndex) {
+        const correctAnswer = examData[currentPassageIndex].questions[currentQuestionIndex].correct;
+        if (answerIndex === correctAnswer) {
+            score++;
+        }
+    }
+
+    function submitExam() {
+        const selectedOption = document.querySelector('input[name="quiz-option"]:checked');
+        if (!selectedOption) {
+            alert("कृपया उत्तर देण्यासाठी एक पर्याय निवडा!");
+            return;
+        }
+        
+        checkAnswer(parseInt(selectedOption.value));
+
+        document.getElementById('exam-screen').classList.add('hidden');
+        document.getElementById('result-screen').classList.remove('hidden');
+
+        const percentage = Math.round((score / totalQuestionsCount) * 100);
+        
+        document.getElementById('res-name').innerText = document.getElementById('student-name').value;
+        document.getElementById('res-phone').innerText = document.getElementById('student-phone').value;
+        document.getElementById('res-score').innerText = `${score} / ${totalQuestionsCount}`;
+        document.getElementById('res-percentage').innerText = percentage;
+
+        // कामगिरीनुसार सन्मान निश्चित करणे
+        let rewardText = "";
+        if (percentage >= 80) {
+            rewardText = "🥇 Gold Medal + Trophy";
+        } else if (percentage >= 60) {
+            rewardText = "🥈 Silver Medal + Trophy";
+        } else if (percentage >= 50) {
+            rewardText = "🥉 Bronze Medal + Trophy";
+        } else {
+            rewardText = "💐 अभिनंदन! फुलांचा गुच्छ व 'पुढील परीक्षेसाठी शुभेच्छा'";
+        }
+
+        document.getElementById('reward-display').innerText = rewardText;
+    }
+</script>
+
+</body>
+  </html>
