@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="mr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>स्पर्धा परीक्षा मार्गदर्शन केंद्र, जेऊर</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            font-family: 'Arial', sans-serif;
+        }
+        body {
+            background-color: #f0f4f8;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+        .container {
+            background-color: #ffffff;
+            width: 100%;
+            max-width: 650px;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+            border: 2px solid #0056b3;
+        }
+        h1, h2, h3 {
+            text-align: center;
+            color: #0056b3;
+            margin-top: 5px;
+            margin-bottom: 10px;
+        }
+        .subtitle {
+            text-align: center;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 20px;
+        }
+        .input-group {
+            margin: 20px 0;
+        }
+        label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 8px;
+        }
+        input[type="text"] {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #ccc;
+            border-radius: 6px;
+            font-size: 16px;
+        }
+        .btn {
+            background-color: #0056b3;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            font-size: 16px;
+            font-weight: bold;
+            border-radius: 6px;
+            cursor: pointer;
+            width: 100%;
+            margin-top: 15px;
+            transition: 0.3s;
+        }
+        .btn:hover {
+            background-color: #003d80;
+        }
+        .options-container {
+            margin-top: 15px;
+        }
+        .option-label {
+            display: block;
+            background: #f8f9fa;
+            border: 2px solid #ddd;
+            padding: 12px;
+            border-radius: 6px;
+            margin-bottom: 10px;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+        .option-label:hover {
+            background: #e9ecef;
+            border-color: #0056b3;
+        }
+        .option-label input {
+            margin-right: 10px;
+        }
+        
+        /* Certificate Style Box */
+        .certificate-box {
+            border: 8px double #d4af37;
+            padding: 25px;
+            background: #fffdf5;
+            text-align: center;
+            border-radius: 10px;
+            margin-top: 10px;
+        }
+        .certificate-box h2 {
+            color: #b8860b;
+        }
+        .cert-info {
+            font-size: 18px;
+            margin: 12px 0;
+            color: #222;
+        }
+        .guide-section {
+            border-top: 2px dashed #b8860b;
+            margin-top: 20px;
+            padding-top: 15px;
+            text-align: left;
+            font-size: 15px;
+        }
+        .badge-box {
+            background-color: #fff8dc;
+            border: 1px solid #ebd07b;
+            padding: 10px;
+            border-radius: 6px;
+            margin-top: 15px;
+            font-size: 18px;
+            font-weight: bold;
+        }
+        .hidden {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+
+    <!-- १. परीक्षा सुरू करण्यापूर्वीची माहिती (Start Screen) -->
+    <div id="start-screen">
+        <h1>🏆 स्पर्धा परीक्षा मार्गदर्शन केंद्र, जेऊर</h1>
+        <div class="subtitle">पूर्व माध्यमिक शिष्यवृत्ती परीक्षा (इयत्ता ७ वी)<br>घटक: मसावी व लसावि</div>
+        <hr>
+        <div class="input-group">
+            <label for="student-name">विद्यार्थ्याचे नाव प्रविष्ट करा:</label>
+            <input type="text" id="student-name" placeholder="तुमचे पूर्ण नाव लिहा..." required>
+        </div>
+        <button class="btn" onclick="startExam()">Start Exam</button>
+    </div>
+
+    <!-- २. प्रश्न दाखवण्याचा स्क्रीन (Exam Screen) -->
+    <div id="exam-screen" class="hidden">
+        <h3 id="question-number">प्रश्न १</h3>
+        <p id="question-text" style="font-size: 18px; font-weight: bold;"></p>
+        <div class="options-container" id="options-box"></div>
+        
+        <button class="btn" id="next-btn" onclick="nextQuestion()">पुढील प्रश्न ➔</button>
+        <button class="btn" id="submit-btn" style="background-color: #28a745;" onclick="submitExam()" class="hidden">Submit Exam ➔</button>
+    </div>
+
+    <!-- ३. निकाल व प्रमाणपत्र (Certificate Screen) -->
+    <div id="result-screen" class="hidden">
+        <div class="certificate-box">
+            <h2>🏆 स्पर्धा परीक्षा मार्गदर्शन केंद्र, जेऊर</h2>
+            <hr>
+            <p style="font-weight: bold; color: #555;">परीक्षेचे नाव : पूर्व माध्यमिक शिष्यवृत्ती परीक्षा (इयत्ता ७ वी)</p>
+            
+            <div class="cert-info"><b>विद्यार्थ्याचे नाव :</b> <span id="res-name" style="color: #0056b3;"></span></div>
+            <div class="cert-info"><b>मिळालेले गुण :</b> <span id="res-score"></span> / ३०</div>
+            <div class="cert-info"><b>टक्केवारी :</b> <span id="res-percentage"></span>%</div>
+            
+            <div id="badge-display" class="badge-box"></div>
+
+            <div class="guide-section">
+                <p><b>मार्गदर्शक शिक्षक :</b> सचिन शिंदे (संपर्क : 8329684470)</p>
+                <p><b>मार्गदर्शक शिक्षक :</b> सतीश चिंदे (संपर्क : 8208167846)</p>
+            </div>
+        </div>
+        <button class="btn" onclick="location.reload()">पुन्हा परीक्षा द्या</button>
+    </div>
+
+</div>
+
+<script>
+    // ३० सराव प्रश्न (मसावी - लसावि)
+    const questions = [
+        { q: "१२ आणि १८ यांचा मसावि (HCF) किती?", options: ["६", "१२", "३६", "२४"], ans: 0 },
+        { q: "१५ आणि २० यांचा लसावि (LCM) किती?", options: ["५", "३०", "६०", "९०"], ans: 2 },
+        { q: "८, १२ आणि १६ यांचा लसावि किती?", options: ["२४", "४८", "३२", "९६"], ans: 1 },
+        { q: "१४, २१ आणि ३५ यांचा मसावि किती?", options: ["७", "१४", "१", "२१"], ans: 0 },
+        { q: "कोणत्याही दोन क्रमवार (सलग) सम संख्यांचा मसावि नेहमी किती असतो?", options: ["१", "२", "४", "०"], ans: 1 },
+        { q: "कोणत्याही दोन क्रमवार विषम संख्यांचा किंवा मूळ संख्यांचा मसावि किती असतो?", options: ["२", "३", "१", "०"], ans: 2 },
+        { q: "दोन संख्यांचा गुणाकार २४० आहे आणि त्यांचा मसावि ६ आहे, तर त्यांचा लसावि किती?", options: ["४०", "२४", "६०", "१२०"], ans: 0 },
+        { q: "दोन संख्यांचा मसावि ५ आणि लसावि ६० आहे. त्यातील एक संख्या १५ असेल, तर दुसरी संख्या कोणती?", options: ["१०", "२०", "२५", "३०"], ans: 1 },
+        { q: "दोन संख्यांचा मसावि ८ व लसावि ९६ आहे. त्यातील एक संख्या २४ असल्यास दुसरी संख्या कोणती?", options: ["३२", "४८", "१६", "६४"], ans: 0 },
+        { q: "दोन संख्या ३ : ४ या प्रमाणात असून त्यांचा मसावि ५ आहे, तर त्या संख्या कोणत्या?", options: ["६ व ८", "१२ व १६", "१५ व २०", "९ व १२"], ans: 2 },
+        { q: "दोन संख्यांचा लसावि ६० असून त्या संख्या २ : ३ या प्रमाणात आहेत, तर त्यांचा मसावि किती?", options: ["१०", "५", "१५", "१२"], ans: 0 },
+        { q: "दोन क्रमवार सम संख्यांचा लसावि १८० आहे, तर त्या संख्या कोणत्या?", options: ["१८ व २०", "१६ व १८", "२० व २२", "१४ व १६"], ans: 0 },
+        { q: "६ मीटर आणि ९ मीटर लांबीच्या दोन दोऱ्यांचे समान लांबीचे जास्तीत जास्त मोठे तुकडे करायचे असल्यास प्रत्येक तुकड्याची लांबी किती असावी?", options: ["२ मी", "३ मी", "१ मी", "४.५ मी"], ans: 1 },
+        { q: "तीन धावपटू एका वर्तुळाकार मैदानावर अनुक्रमे ४, ६ आणि ८ मिनिटांत एक फेरी पूर्ण करतात. त्यांनी एकाच वेळी सुरुवात केल्यास ते पुन्हा किती मिनिटांनी एकत्र भेटतील?", options: ["१२ मिनिटांनी", "२४ मिनिटांनी", "४८ मिनिटांनी", "१६ मिनिटांनी"], ans: 1 },
+        { q: "एका वर्गातील मुलांचे ६, ८ किंवा १२ चे गट केल्यास एकही मुलगा उरत नाही, तर वर्गात कमीत कमी किती मुले असतील?", options: ["२४", "४८", "३६", "१२"], ans: 0 },
+        { q: "तीन वेगवेगळे सिग्नल अनुक्रमे १५, २० आणि ३० सेकंदांनी बदलतात. सकाळी ८ वाजता एकत्र बदलल्यास, पुन्हा किती सेकंदांनी ते एकत्र बदलतील?", options: ["३० सेकंद", "६० सेकंद", "९० सेकंद", "४५ सेकंद"], ans: 1 },
+        { q: "सीमाजवळ काही फुले आहेत. तिने १२ किंवा १५ फुलांचे हार केले तर प्रत्येक वेळी ५ फुले उरतात, तर सीमाजवळ कमीत कमी किती फुले असतील?", options: ["६०", "६५", "५५", "७०"], ans: 1 },
+        { q: "२४ किलो बासमती आणि ३६ किलो आंबेमोहर तांदूळ न मिसळता समान वजनाच्या पिशव्यात भरायचा आहे, तर एका पिशवीत जास्तीत जास्त किती किलो तांदूळ मावेल?", options: ["६ किग्रॅ", "१२ किग्रॅ", "४ किग्रॅ", "८ किग्रॅ"], ans: 1 },
+        { q: "अशी लहानत लहान संख्या कोणती, ज्या संख्येला ९, १२ आणि १५ ने भागल्यास प्रत्येक वेळी ३ बाकी उरते?", options: ["१८०", "१८३", "१७७", "१८६"], ans: 1 },
+        { q: "अशी लहानत लहान संख्या कोणती, ज्या संख्येला १०, १५ आणि २० ने पूर्ण भाग जातो?", options: ["३०", "६०", "९०", "१२०"], ans: 1 },
+        { q: "४८/७२ या अपूर्णांकास संक्षिप्त रूप दिल्यास काय उत्तर येईल?", options: ["२/३", "३/४", "४/६", "१/२"], ans: 0 },
+        { q: "१४४ या संख्येचे मूळ अवयव कोणते?", options: ["२ × २ × ३ × ३", "२ × २ × २ × २ × ३ × ३", "४ × ४ × ९", "२ × ३ × २४"], ans: 1 },
+        { q: "दोन संख्या ४x आणि ५x असून त्यांचा मसावि ७ आहे, तर x ची किंमत किती?", options: ["४", "५", "७", "३५"], ans: 2 },
+        { q: "दोन संख्या ३x व ४x असून त्यांचा मसावि ५ व लसावि ६० आहे, तर ती संख्या x कोणती?", options: ["५", "४", "३", "१५"], ans: 0 },
+        { q: "९, १५ आणि २५ यांचा लसावि किती?", options: ["२२५", "४५०", "७५", "१५०"], ans: 0 },
+        { q: "१६ आणि ४८ यांचा मसावि किती?", options: ["८", "१६", "३२", "४८"], ans: 1 },
+        { q: "दोन संख्यांचा मसावि १ आहे, तर त्या संख्या कोणत्या प्रकारच्या असू शकतात?", options: ["सम संख्या", "सहमूळ / जोडमूळ संख्या", "संयुक्त संख्या", "यांपैकी नाही"], ans: 1 },
+        { q: "१० आणि २५ यांचा लसावि हा त्यांच्या मसाविच्या किती पट आहे?", options: ["५ पट", "१० पट", "१५ पट", "२० पट"], ans: 1 },
+        { q: "पेटीतील वस्तू ८, १० किंवा १२ च्या संचात बांधल्यास दरवेळी २ वस्तू शिल्लक राहतात, तर पेटीत कमीत कमी किती वस्तू असतील?", options: ["१२२", "१२०", "११८", "२४२"], ans: 0 },
+        { q: "दोन संख्यांचा गुणाकार ५०० असून त्यांचा लसावि १०० आहे, तर त्यांचा मसावि किती असेल?", options: ["१०", "५", "२५", "५०"], ans: 1 }
+    ];
+
+    let currentQ = 0;
+    let score = 0;
+    let studentName = "";
+    let userAnswers = new Array(questions.length).fill(null);
+
+    function startExam() {
+        const nameInput = document.getElementById("student-name").value.trim();
+        if (nameInput === "") {
+            alert("कृपया तुमचे नाव प्रविष्ट करा!");
+            return;
+        }
+        studentName = nameInput;
+        document.getElementById("start-screen").classList.add("hidden");
+        document.getElementById("exam-screen").classList.remove("hidden");
+        showQuestion();
+    }
+
+    function showQuestion() {
+        const qData = questions[currentQ];
+        document.getElementById("question-number").innerText = `प्रश्न ${currentQ + 1} / ${questions.length}`;
+        document.getElementById("question-text").innerText = qData.q;
+        
+        const optionsBox = document.getElementById("options-box");
+        optionsBox.innerHTML = "";
+
+        qData.options.forEach((opt, index) => {
+            const isChecked = userAnswers[currentQ] === index ? "checked" : "";
+            optionsBox.innerHTML += `
+                <label class="option-label">
+                    <input type="radio" name="option" value="${index}" ${isChecked} onclick="saveAnswer(${index})">
+                    ${opt}
+                </label>
+            `;
+        });
+
+        // बटन नियंत्रणे
+        if (currentQ === questions.length - 1) {
+            document.getElementById("next-btn").classList.add("hidden");
+            document.getElementById("submit-btn").classList.remove("hidden");
+        } else {
+            document.getElementById("next-btn").classList.remove("hidden");
+            document.getElementById("submit-btn").classList.add("hidden");
+        }
+    }
+
+    function saveAnswer(index) {
+        userAnswers[currentQ] = index;
+    }
+
+    function nextQuestion() {
+        if (userAnswers[currentQ] === null) {
+            alert("कृपया उत्तराचा पर्याय निवडा!");
+            return;
+        }
+        currentQ++;
+        showQuestion();
+    }
+
+    function submitExam() {
+        if (userAnswers[currentQ] === null) {
+            alert("कृपया उत्तराचा पर्याय निवडा!");
+            return;
+        }
+
+        // गुणांची गणना
+        score = 0;
+        userAnswers.forEach((ans, idx) => {
+            if (ans === questions[idx].ans) {
+                score++;
+            }
+        });
+
+        const percentage = ((score / questions.length) * 100).toFixed(1);
+
+        document.getElementById("exam-screen").classList.add("hidden");
+        document.getElementById("result-screen").classList.remove("hidden");
+
+        // निकालाची माहिती भरणे
+        document.getElementById("res-name").innerText = studentName;
+        document.getElementById("res-score").innerText = score;
+        document.getElementById("res-percentage").innerText = percentage;
+
+        // कामगिरीनुसार मेडल/सन्मान देणे
+        const badgeDisplay = document.getElementById("badge-display");
+        if (percentage >= 80) {
+            badgeDisplay.innerHTML = "🥇 Gold Medal + Trophy <br><span style='font-size:14px; color:#28a745;'>उत्कृष्ट कामगिरी! खूप खूप अभिनंदन!</span>";
+        } else if (percentage >= 60) {
+            badgeDisplay.innerHTML = "🥈 Silver Medal + Trophy <br><span style='font-size:14px; color:#0056b3;'>छान कामगिरी! अभिनंदन!</span>";
+        } else if (percentage >= 50) {
+            badgeDisplay.innerHTML = "🥉 Bronze Medal + Trophy <br><span style='font-size:14px; color:#d9534f;'>चांगला प्रयत्न! अभिनंदन!</span>";
+        } else {
+            badgeDisplay.innerHTML = "💐 अभिनंदन! फुलांचा गुच्छ व पुढील परीक्षेसाठी शुभेच्छा!";
+        }
+    }
+</script>
+
+</body>
+</html>
