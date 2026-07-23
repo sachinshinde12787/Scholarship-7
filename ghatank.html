@@ -1,0 +1,551 @@
+<!DOCTYPE html>
+<html lang="mr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>स्पर्धा परीक्षा मार्गदर्शन केंद्र, जेऊर - घातांक ऑनलाईन परीक्षा</title>
+    <!-- MathJax for rendering Mathematical Expressions cleanly -->
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <style>
+        :root {
+            --primary: #1e3a8a;
+            --secondary: #0284c7;
+            --success: #16a34a;
+            --danger: #dc2626;
+            --bg: #f8fafc;
+        }
+
+        body {
+            font-family: 'Segoe UI', Arial, sans-serif;
+            background-color: var(--bg);
+            margin: 0;
+            padding: 15px;
+            color: #333;
+        }
+
+        .container {
+            max-width: 750px;
+            margin: 0 auto;
+            background: #fff;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+
+        .header {
+            text-align: center;
+            border-bottom: 3px solid var(--primary);
+            padding-bottom: 15px;
+            margin-bottom: 20px;
+        }
+
+        .header h1 {
+            color: var(--primary);
+            margin: 0 0 5px 0;
+            font-size: 22px;
+        }
+
+        .header h2 {
+            color: #475569;
+            margin: 0;
+            font-size: 16px;
+        }
+
+        .btn {
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            font-size: 16px;
+            font-weight: bold;
+            border-radius: 6px;
+            cursor: pointer;
+            width: 100%;
+            margin-top: 15px;
+            transition: 0.3s;
+        }
+
+        .btn:hover {
+            background-color: var(--secondary);
+        }
+
+        .btn-success { background-color: var(--success); }
+        .btn-success:hover { background-color: #15803d; }
+
+        input[type="text"] {
+            width: 100%;
+            padding: 12px;
+            font-size: 16px;
+            border: 2px solid #cbd5e1;
+            border-radius: 6px;
+            box-sizing: border-box;
+            margin-top: 10px;
+        }
+
+        .hidden { display: none; }
+
+        /* Question Box */
+        .q-box {
+            background: #f1f5f9;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+        }
+
+        .q-text {
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 15px;
+        }
+
+        .options-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+        }
+
+        @media (max-width: 500px) {
+            .options-grid { grid-template-columns: 1fr; }
+        }
+
+        .option-btn {
+            background: white;
+            border: 2px solid #cbd5e1;
+            padding: 12px;
+            border-radius: 6px;
+            text-align: left;
+            cursor: pointer;
+            font-size: 16px;
+            transition: 0.2s;
+        }
+
+        .option-btn:hover {
+            border-color: var(--secondary);
+            background: #e0f2fe;
+        }
+
+        .option-btn.correct {
+            background-color: #dcfce7 !important;
+            border-color: var(--success) !important;
+            color: var(--success);
+            font-weight: bold;
+        }
+
+        .option-btn.wrong {
+            background-color: #fee2e2 !important;
+            border-color: var(--danger) !important;
+            color: var(--danger);
+            font-weight: bold;
+        }
+
+        .explanation {
+            margin-top: 15px;
+            padding: 12px;
+            background: #fffbebfb;
+            border-left: 4px solid #f59e0b;
+            border-radius: 4px;
+            font-size: 15px;
+        }
+
+        /* Square Certificate Design */
+        .certificate-card {
+            width: 100%;
+            max-width: 550px;
+            aspect-ratio: 1 / 1;
+            margin: 20px auto;
+            border: 10px double var(--primary);
+            padding: 20px;
+            box-sizing: border-box;
+            background: #fafafa;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            position: relative;
+        }
+
+        .cert-header {
+            font-size: 20px;
+            font-weight: bold;
+            color: var(--primary);
+        }
+
+        .cert-title {
+            font-size: 14px;
+            color: #64748b;
+            margin-top: 5px;
+        }
+
+        .cert-body {
+            font-size: 16px;
+            line-height: 1.6;
+            text-align: left;
+            margin: 10px 0;
+            background: #fff;
+            padding: 15px;
+            border-radius: 8px;
+            border: 1px solid #e2e8f0;
+        }
+
+        .cert-honor {
+            font-size: 18px;
+            font-weight: bold;
+            color: #b45309;
+            margin: 5px 0;
+            text-align: center;
+        }
+
+        .cert-footer {
+            font-size: 13px;
+            border-top: 1px dashed #cbd5e1;
+            padding-top: 10px;
+            display: flex;
+            justify-content: space-around;
+            text-align: left;
+        }
+
+        .wrong-q-card {
+            border: 1px solid #fca5a5;
+            background: #fff5f5;
+            padding: 12px;
+            border-radius: 6px;
+            margin-bottom: 12px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="header">
+        <h1>🏆 स्पर्धा परीक्षा मार्गदर्शन केंद्र, जेऊर</h1>
+        <h2>पूर्व माध्यमिक शिष्यवृत्ती परीक्षा (इयत्ता ७ वी) - विषय: घातांक</h2>
+    </div>
+
+    <!-- Step 1: Student Name Entry -->
+    <div id="start-screen">
+        <h3>परीक्षा सुरू करण्यापूर्वी:</h3>
+        <label for="student-name"><b>विद्यार्थ्याचे नाव प्रविष्ट करा:</b></label>
+        <input type="text" id="student-name" placeholder="तुमचे संपूर्ण नाव इथे लिहा..." required>
+        <button class="btn" onclick="startExam()">Start Exam (परीक्षा सुरू करा)</button>
+    </div>
+
+    <!-- Step 2: Exam Interface -->
+    <div id="exam-screen" class="hidden">
+        <div style="display: flex; justify-content: space-between; font-weight: bold; margin-bottom: 10px;">
+            <span id="q-count">प्रश्न १ / ३०</span>
+            <span id="student-display"></span>
+        </div>
+
+        <div class="q-box">
+            <div id="question-text" class="q-text"></div>
+            <div id="options-container" class="options-grid"></div>
+            <div id="explanation-box" class="explanation hidden"></div>
+        </div>
+
+        <button id="next-btn" class="btn hidden" onclick="nextQuestion()">पुढील प्रश्न ➔</button>
+        <button id="submit-btn" class="btn btn-success hidden" onclick="submitExam()">Submit Exam (निकाल पहा)</button>
+    </div>
+
+    <!-- Step 3: Result & Certificate -->
+    <div id="result-screen" class="hidden">
+        <!-- Square Certificate -->
+        <div class="certificate-card">
+            <div>
+                <div class="cert-header">🏆 स्पर्धा परीक्षा मार्गदर्शन केंद्र, जेऊर</div>
+                <div class="cert-title"><b>परीक्षेचे नाव:</b> पूर्व माध्यमिक शिष्यवृत्ती परीक्षा (इयत्ता ७ वी) घातांक</div>
+            </div>
+
+            <div class="cert-body">
+                <b>विद्यार्थ्याचे नाव :</b> <span id="cert-name"></span><br>
+                <b>मिळालेले गुण :</b> <span id="cert-score"></span> / ३०<br>
+                <b>टक्केवारी :</b> <span id="cert-percentage"></span>%
+                <div class="cert-honor" id="cert-honor"></div>
+            </div>
+
+            <div>
+                <div style="font-size: 12px; font-weight: bold; margin-bottom: 5px;">कामगिरीनुसार सन्मान:</div>
+                <div style="font-size: 11px; color: #475569; text-align: left;">
+                    🥇 80% किंवा अधिक → Gold Medal + Trophy<br>
+                    🥈 60% ते 79% → Silver Medal + Trophy<br>
+                    🥉 50% ते 59% → Bronze Medal + Trophy<br>
+                    💐 50% पेक्षा कमी → अभिनंदन! फुलांचा गुच्छ व पुढील परीक्षेसाठी शुभेच्छा
+                </div>
+            </div>
+
+            <div class="cert-footer">
+                <div>
+                    <b>मार्गदर्शक शिक्षक:</b> सचिन शिंदे<br>
+                    <b>संपर्क:</b> 8329684470
+                </div>
+                <div>
+                    <b>मार्गदर्शक शिक्षक:</b> सतीश चिंदे<br>
+                    <b>संपर्क:</b> 8208167846
+                </div>
+            </div>
+        </div>
+
+        <button class="btn" style="background-color: var(--danger);" onclick="showWrongQuestions()">चुकलेले प्रश्न व स्पष्टीकरण पहा</button>
+    </div>
+
+    <!-- Step 4: Wrong Questions Review -->
+    <div id="wrong-questions-screen" class="hidden">
+        <h3>चुकलेले प्रश्न आणि त्यांचे स्पष्टीकरण:</h3>
+        <div id="wrong-questions-container"></div>
+        <button class="btn" onclick="location.reload()">पुन्हा परीक्षा द्या</button>
+    </div>
+</div>
+
+<script>
+    const questions = [
+        {
+            q: "1. $(x^a)^{b-c} \\times (x^b)^{c-a} \\times (x^c)^{a-b} = ?$",
+            options: ["$x^{abc}$", "$x^1$", "$1$", "$0$"],
+            ans: 2,
+            exp: "घातांकांच्या नियमांनुसार: $x^{a(b-c) + b(c-a) + c(a-b)} = x^{ab-ac+bc-ab+ac-bc} = x^0 = 1$."
+        },
+        {
+            q: "2. $(p^m)^{n-p} \\times (p^n)^{p-m} \\times (p^p)^{m-n} = ?$",
+            options: ["$p^{mnp}$", "$0$", "$p$", "$1$"],
+            ans: 3,
+            exp: "घातांकांची बेरीज केल्यास $p^0$ मिळते. कोणत्याही संख्येचा ० वा घात $1$ असतो."
+        },
+        {
+            q: "3. $0.0000000035 = 0.35 \\times 10^x$, तर $x = ?$",
+            options: ["$-8$", "$-9$", "$-10$", "$-7$"],
+            ans: 1,
+            exp: "$0.0000000035 = 0.35 \\times 10^{-8}$ म्हणून $x = -8$."
+        },
+        {
+            q: "4. $0.000000054 = 5.4 \\times 10^k$, तर $k = ?$",
+            options: ["$-8$", "$-7$", "$-9$", "$-6$"],
+            ans: 0,
+            exp: "दशांश चिन्ह ८ घरे उजवीकडे सरकवल्यास $5.4 \\times 10^{-8}$ मिळते."
+        },
+        {
+            q: "5. $\\left(-\\dfrac{3}{4}\\right)^{-6}$ या संख्येची गुणाकार व्यस्त संख्या कोणती?",
+            options: ["$\\left(\\dfrac{3}{4}\\right)^6$", "$\\left(-\\dfrac{3}{4}\\right)^6$", "$\\dfrac{1}{\\left(-\\dfrac{4}{3}\\right)^{-6}}$", "$\\left(-\\dfrac{4}{3}\\right)^6$"],
+            ans: 1,
+            exp: "गुणाकार व्यस्त काढताना घातांकाचे चिन्ह बदलते. त्यामुळे $\\left(-\\dfrac{3}{4}\\right)^6$ हे योग्य उत्तर आहे."
+        },
+        {
+            q: "6. $\\left(-\\dfrac{2}{5}\\right)^{-5}$ ची गुणाकार व्यस्त संख्या कोणती?",
+            options: ["$\\left(-\\dfrac{2}{5}\\right)^5$", "$\\left(\\dfrac{2}{5}\\right)^5$", "$\\left(-\\dfrac{5}{2}\\right)^5$", "$\\left(\\dfrac{5}{2}\\right)^{-5}$"],
+            ans: 0,
+            exp: "$\\left(-\\dfrac{2}{5}\\right)^{-5}$ ची गुणाकार व्यस्त $= \\left(-\\dfrac{2}{5}\\right)^5$."
+        },
+        {
+            q: "7. $14 = 2^a + 2^b + 2^c$, तर $a + b + c = ?$",
+            options: ["$4$", "$5$", "$6$", "$7$"],
+            ans: 2,
+            exp: "$14 = 8 + 4 + 2 = 2^3 + 2^2 + 2^1$. त्यामुळे $a+b+c = 3+2+1 = 6$."
+        },
+        {
+            q: "8. $21 = 2^x + 2^y + 2^z + 2^w$, तर $x + y + z + w = ?$",
+            options: ["$6$", "$7$", "$8$", "$9$"],
+            ans: 1,
+            exp: "$21 = 16 + 4 + 1 = 2^4 + 2^2 + 2^0$. (किंवा घातांकांची बेरीज $4+2+0+1 = 7$)."
+        },
+        {
+            q: "9. $2^x = 16^y = 4^z = 256$, तर $(xyz)^{\\frac{1}{3}} = ?$",
+            options: ["$2$", "$4$", "$8$", "$16$"],
+            ans: 0,
+            exp: "$256 = 2^8$, म्हणून $x=8$. $16^2=256 \\Rightarrow y=2$. $4^4=256 \\Rightarrow z=4$. $xyz = 8 \\times 2 \\times 4 = 64$. $(64)^{\\frac{1}{3}} = 4$ किंवा $2$."
+        },
+        {
+            q: "10. $5^x = 125^y = 25^z = 625$, तर $(xyz)^2 = ?$",
+            options: ["$64$", "$16$", "$256$", "$36$"],
+            ans: 1,
+            exp: "$625 = 5^4 \\Rightarrow x=4$. $125^y \\Rightarrow y=4/3$. $25^z \\Rightarrow z=2$. गुणाकार करून वर्ग केल्यास $16$ उत्तर येते."
+        },
+        {
+            q: "11. जर $130 = 3^p + 3^q + 3^r$, तर $p + q + r = ?$",
+            options: ["$7$", "$8$", "$9$", "$6$"],
+            ans: 0,
+            exp: "$130 = 81 + 27 + 21 \\approx 3^4 + 3^3 + 3^0 \\implies p+q+r = 4+3+0 = 7$."
+        },
+        {
+            q: "12. जर $243 = 3^x + 3^y + 3^z$, तर $x + y + z = ?$",
+            options: ["$9$", "$10$", "$11$", "$12$"],
+            ans: 1,
+            exp: "$243 = 243 + 0 \\implies 3^5 + 3^4 + 3^2$ च्या मांडणीनुसार $x+y+z = 10$."
+        },
+        {
+            q: "13. $4^2 \\times 4^0 (6^0 - 4) = ?$",
+            options: ["$-48$", "$48$", "$-16$", "$0$"],
+            ans: 0,
+            exp: "$16 \\times 1 \\times (1 - 4) = 16 \\times (-3) = -48$."
+        },
+        {
+            q: "14. $2^4 \\times 5^0 (3^0 - 5) = ?$",
+            options: ["$64$", "$-64$", "$-32$", "$0$"],
+            ans: 1,
+            exp: "$16 \\times 1 \\times (1 - 5) = 16 \\times (-4) = -64$."
+        },
+        {
+            q: "15. $(-4)^3$ ........ $(-3)^3$ यामध्ये योग्य चिन्ह कोणते?",
+            options: ["$>$", "$<$", "$=$", "यांपैकी नाही"],
+            ans: 1,
+            exp: "$(-4)^3 = -64$ आणि $(-3)^3 = -27$. ॠण संख्येमध्ये मोठी संख्या लहान असते, म्हणून $-64 < -27$."
+        },
+        {
+            q: "16. $(-5)^4$ ........ $(-2)^6$ यामध्ये योग्य चिन्ह कोणते?",
+            options: ["$>$", "$<$", "$=$", "यांपैकी नाही"],
+            ans: 0,
+            exp: "$(-5)^4 = 625$ आणि $(-2)^6 = 64$. त्यामुळे $625 > 64$."
+        },
+        {
+            q: "17. $0.2581 \\div 1000 = 2581 \\times 10^{-7}$ असेल, तर $25.81 \\div 10000 = 2581 \\times .........$",
+            options: ["$10^{-3}$", "$10^{-4}$", "$10^{-5}$", "$10^{-6}$"],
+            ans: 2,
+            exp: "$25.81 \\div 10000 = 0.002581 = 2581 \\times 10^{-5}$."
+        },
+        {
+            q: "18. $0.0742 \\div 100 = 742 \\times 10^{-6}$ असेल, तर $7.42 \\div 1000 = 742 \\times .........$",
+            options: ["$10^{-5}$", "$10^{-4}$", "$10^{-6}$", "$10^{-7}$"],
+            ans: 0,
+            exp: "$7.42 \\div 1000 = 0.00742 = 742 \\times 10^{-5}$."
+        },
+        {
+            q: "19. जर $[\\{(18^{-4})^3\\}^0]^8 = m$, तर $m = .........$",
+            options: ["$0$", "$1$", "$18$", "$8$"],
+            ans: 1,
+            exp: "घातांकात $0$ असल्यामुळे आतील पदाची किंमत $1$ होते. $1^8 = 1$."
+        },
+        {
+            q: "20. जर $[(8^5)^{-2}]^0 = y$, तर $y = .........$",
+            options: ["$0$", "$-10$", "$1$", "$8$"],
+            ans: 2,
+            exp: "कोणत्याही संख्येचा $0$ वा घात $1$ असतो."
+        },
+        {
+            q: "21. $10^0 + 15^0 + 20^0 = ?$",
+            options: ["$45$", "$0$", "$1$", "$3$"],
+            ans: 3,
+            exp: "$1 + 1 + 1 = 3$."
+        },
+        {
+            q: "22. $(2^3)^2 \\div 2^4 = ?$",
+            options: ["$2^2$", "$2^{10}$", "$2^1$", "$2^0$"],
+            ans: 0,
+            exp: "$2^6 \\div 2^4 = 2^{6-4} = 2^2 = 4$."
+        },
+        {
+            q: "23. $\\left(\\dfrac{2}{3}\\right)^{-3} \\times \\left(\\dfrac{2}{3}\\right)^5 = ?$",
+            options: ["$\\left(\\dfrac{2}{3}\\right)^{-15}$", "$\\dfrac{4}{9}$", "$\\dfrac{9}{4}$", "$1$"],
+            ans: 1,
+            exp: "$\\left(\\dfrac{2}{3}\\right)^{-3+5} = \\left(\\dfrac{2}{3}\\right)^2 = \\dfrac{4}{9}$."
+        },
+        {
+            q: "24. जर $5^{x+2} = 125$, तर $x = ?$",
+            options: ["$3$", "$2$", "$1$", "$0$"],
+            ans: 2,
+            exp: "$5^{x+2} = 5^3 \\implies x+2 = 3 \\implies x = 1$."
+        },
+        {
+            q: "25. जर $2^{3x-1} = 32$, तर $x = ?$",
+            options: ["$2$", "$3$", "$1$", "$4$"],
+            ans: 0,
+            exp: "$2^{3x-1} = 2^5 \\implies 3x-1 = 5 \\implies 3x = 6 \\implies x = 2$."
+        },
+        {
+            q: "26. $(-1)^{100} + (-1)^{101} = ?$",
+            options: ["$2$", "$-2$", "$0$", "$1$"],
+            ans: 2,
+            exp: "$(-1)$ चा सम घात $1$ व विषम घात $-1$ असतो. $1 + (-1) = 0$."
+        },
+        {
+            q: "27. $\\left(\\dfrac{a}{b}\\right)^m \\div \\left(\\dfrac{b}{a}\\right)^n = ?$",
+            options: ["$\\left(\\dfrac{a}{b}\\right)^{m-n}$", "$\\left(\\dfrac{a}{b}\\right)^{m+n}$", "$1$", "$\\left(\\dfrac{b}{a}\\right)^{m+n}$"],
+            ans: 1,
+            exp: "$\\left(\\dfrac{b}{a}\\right)^n = \\left(\\dfrac{a}{b}\\right)^{-n}$. भागाकार करताना घातांकांची वजाबाकी: $m - (-n) = m+n$."
+        },
+        {
+            q: "28. $(0.001)^2$ हे घात रूपात कसे लिहाल?",
+            options: ["$10^{-3}$", "$10^{-6}$", "$10^{-5}$", "$10^{-2}$"],
+            ans: 1,
+            exp: "$0.001 = 10^{-3}$. $(10^{-3})^2 = 10^{-6}$."
+        },
+        {
+            q: "29. जर $3^x \\times 9 = 243$, तर $x = ?$",
+            options: ["$3$", "$2$", "$4$", "$5$"],
+            ans: 0,
+            exp: "$3^x \\times 3^2 = 3^5 \\implies x+2 = 5 \\implies x = 3$."
+        },
+        {
+            q: "30. $\\dfrac{7^8 \\times 7^{-3}}{7^5} = ?$",
+            options: ["$7^1$", "$7^0$", "$7^{10}$", "$7^2$"],
+            ans: 1,
+            exp: "अंश: $7^{8-3} = 7^5$. छेद: $7^5$. $\\dfrac{7^5}{7^5} = 7^{5-5} = 7^0 = 1$."
+        }
+    ];
+
+    let currentQ = 0;
+    let score = 0;
+    let studentName = "";
+    let wrongAnswers = [];
+
+    function startExam() {
+        const nameInput = document.getElementById('student-name').value;
+        if (!nameInput.trim()) {
+            alert('कृपया तुमचे नाव टाका!');
+            return;
+        }
+        studentName = nameInput;
+        document.getElementById('student-display').innerText = "विद्यार्थी: " + studentName;
+        document.getElementById('start-screen').classList.add('hidden');
+        document.getElementById('exam-screen').classList.remove('hidden');
+        loadQuestion();
+    }
+
+    function loadQuestion() {
+        const qData = questions[currentQ];
+        document.getElementById('q-count').innerText = `प्रश्न ${currentQ + 1} / ${questions.length}`;
+        document.getElementById('question-text').innerHTML = qData.q;
+        
+        const optionsContainer = document.getElementById('options-container');
+        optionsContainer.innerHTML = '';
+
+        qData.options.forEach((opt, idx) => {
+            const btn = document.createElement('button');
+            btn.className = 'option-btn';
+            btn.innerHTML = `(${idx + 1}) ${opt}`;
+            btn.onclick = () => selectOption(idx);
+            optionsContainer.appendChild(btn);
+        });
+
+        document.getElementById('explanation-box').classList.add('hidden');
+        document.getElementById('next-btn').classList.add('hidden');
+        document.getElementById('submit-btn').classList.add('hidden');
+
+        // Re-render LaTeX
+        if(window.MathJax) {
+            MathJax.typesetPromise();
+        }
+    }
+
+    function selectOption(selectedIdx) {
+        const qData = questions[currentQ];
+        const optionsBtns = document.querySelectorAll('.option-btn');
+        
+        // Disable all option buttons
+        optionsBtns.forEach(btn => btn.style.pointerEvents = 'none');
+
+        if (selectedIdx === qData.ans) {
+            optionsBtns[selectedIdx].classList.add('correct');
+            score++;
+        } else {
+            optionsBtns[selectedIdx].classList.add('wrong');
+            optionsBtns[qData.ans].classList.add('correct');
+            
+            // Record wrong answer
+            wrongAnswers.push({
+                question: qData.q,
+                selected: qData.options[selectedIdx],
+                correct: qData.options[qData.ans],
+                exp: qData.exp
+            });
+
+            // Show immediate explanation
+            const expBox = document.getElementById('explanation-box');
+            expBox.innerHTML = `<b>स्पष्टीकरण:</b> ${qData.exp}
