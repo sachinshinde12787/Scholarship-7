@@ -1,0 +1,627 @@
+<!DOCTYPE html>
+<html lang="mr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>पूर्व माध्यमिक शिष्यवृत्ती परीक्षा (इयत्ता ७ वी)</title>
+    <style>
+        :root {
+            --primary: #1a5f7a;
+            --secondary: #008891;
+            --accent: #f8b500;
+            --bg: #f4f7f6;
+            --text: #2d3748;
+        }
+
+        body {
+            font-family: 'Segoe UI', Arial, sans-serif;
+            background-color: var(--bg);
+            color: var(--text);
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .container {
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            max-width: 650px;
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        .header {
+            text-align: center;
+            border-bottom: 3px solid var(--primary);
+            padding-bottom: 15px;
+            margin-bottom: 25px;
+        }
+
+        .header h1 {
+            color: var(--primary);
+            font-size: 22px;
+            margin: 0 0 8px 0;
+        }
+
+        .header h2 {
+            color: var(--secondary);
+            font-size: 16px;
+            margin: 0;
+        }
+
+        .input-group {
+            margin-bottom: 20px;
+        }
+
+        .input-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+        }
+
+        .input-group input {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #ccc;
+            border-radius: 6px;
+            font-size: 16px;
+            box-sizing: border-box;
+        }
+
+        .btn {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            font-size: 16px;
+            border-radius: 6px;
+            cursor: pointer;
+            width: 100%;
+            font-weight: bold;
+            transition: background 0.3s;
+        }
+
+        .btn:hover {
+            background: #13465a;
+        }
+
+        .btn:disabled {
+            background: #a0aec0;
+            cursor: not-allowed;
+        }
+
+        .question-card {
+            display: none;
+        }
+
+        .question-number {
+            font-weight: bold;
+            color: var(--secondary);
+            margin-bottom: 10px;
+        }
+
+        .question-text {
+            font-size: 18px;
+            margin-bottom: 20px;
+            line-height: 1.5;
+        }
+
+        .options {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+
+        .option-btn {
+            padding: 12px;
+            border: 2px solid #e2e8f0;
+            border-radius: 6px;
+            background: white;
+            text-align: left;
+            font-size: 16px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .option-btn:hover:not([disabled]) {
+            border-color: var(--secondary);
+            background: #e6f7f8;
+        }
+
+        .option-btn.correct {
+            background-color: #c6f6d5;
+            border-color: #38a169;
+            color: #22543d;
+            font-weight: bold;
+        }
+
+        .option-btn.wrong {
+            background-color: #fed7d7;
+            border-color: #e53e3e;
+            color: #742a2a;
+        }
+
+        .explanation {
+            margin-top: 15px;
+            padding: 12px;
+            background-color: #ebf8ff;
+            border-left: 4px solid #3182ce;
+            border-radius: 4px;
+            font-size: 14px;
+            display: none;
+        }
+
+        /* चौरस सर्टिफिकेट स्टाईल */
+        .certificate-box {
+            border: 8px double var(--primary);
+            padding: 25px;
+            text-align: center;
+            background: #fffdf5;
+            border-radius: 8px;
+            aspect-ratio: 1 / 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            box-sizing: border-box;
+            margin-bottom: 20px;
+        }
+
+        .cert-title {
+            font-size: 20px;
+            color: var(--primary);
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .cert-subtitle {
+            font-size: 14px;
+            color: #555;
+            margin-bottom: 15px;
+        }
+
+        .cert-details {
+            font-size: 16px;
+            line-height: 1.8;
+            margin: 10px 0;
+            text-align: left;
+            background: white;
+            padding: 12px;
+            border-radius: 6px;
+            border: 1px solid #e2e8f0;
+        }
+
+        .cert-award {
+            font-size: 18px;
+            font-weight: bold;
+            color: #d69e2e;
+            margin: 10px 0;
+            padding: 10px;
+            background: #fefcbf;
+            border-radius: 6px;
+        }
+
+        .cert-footer {
+            font-size: 12px;
+            border-top: 1px dashed #ccc;
+            padding-top: 10px;
+            display: flex;
+            justify-content: space-between;
+            text-align: left;
+        }
+
+        .wrong-questions-section {
+            display: none;
+            margin-top: 25px;
+            text-align: left;
+        }
+
+        .wrong-item {
+            background: #fff;
+            border: 1px solid #e2e8f0;
+            border-left: 4px solid #e53e3e;
+            padding: 15px;
+            margin-bottom: 15px;
+            border-radius: 4px;
+        }
+
+        .wrong-q-text {
+            font-weight: bold;
+            margin-bottom: 8px;
+        }
+
+        .ans-info {
+            font-size: 14px;
+            margin: 4px 0;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <!-- १. नोंदणी / स्टार्ट स्क्रीन -->
+    <div id="start-screen">
+        <div class="header">
+            <h1>🏆 स्पर्धा परीक्षा मार्गदर्शन केंद्र, जेऊर</h1>
+            <h2>पूर्व माध्यमिक शिष्यवृत्ती परीक्षा (इयत्ता ७ वी)</h2>
+            <p><strong>घटक:</strong> दशांश पूर्णांक व व्यवहारी अपूर्णांक</p>
+        </div>
+        <div class="input-group">
+            <label for="student-name">विद्यार्थ्याचे नाव प्रविष्ट करा:</label>
+            <input type="text" id="student-name" placeholder="पूर्ण नाव लिहा..." required>
+        </div>
+        <button class="btn" onclick="startExam()">Start Exam (परीक्षा सुरू करा)</button>
+    </div>
+
+    <!-- २. प्रश्न दाखवणारी स्क्रीन -->
+    <div id="exam-screen" class="question-card">
+        <div class="header">
+            <div id="q-progress" class="question-number">प्रश्न १ / ३०</div>
+        </div>
+        <div id="q-text" class="question-text"></div>
+        <div id="options-container" class="options"></div>
+        <div id="explanation-box" class="explanation"></div>
+        <br>
+        <button id="next-btn" class="btn" onclick="nextQuestion()" disabled>पुढील प्रश्न ➔</button>
+    </div>
+
+    <!-- ३. निकाल / सर्टिफिकेट स्क्रीन -->
+    <div id="result-screen" style="display: none;">
+        <!-- चौरस आकृती Certificate -->
+        <div class="certificate-box">
+            <div>
+                <div class="cert-title">🏆 स्पर्धा परीक्षा मार्गदर्शन केंद्र, जेऊर</div>
+                <div class="cert-subtitle">पूर्व माध्यमिक शिष्यवृत्ती परीक्षा (इयत्ता ७ वी)</div>
+                <hr style="border: 0; border-top: 1px solid #cbd5e0;">
+            </div>
+
+            <div class="cert-details">
+                <strong>विद्यार्थ्याचे नाव :</strong> <span id="res-name"></span><br>
+                <strong>मिळालेले गुण :</strong> <span id="res-score"></span> / ३०<br>
+                <strong>टक्केवारी :</strong> <span id="res-percentage"></span>%
+            </div>
+
+            <div id="res-award" class="cert-award"></div>
+
+            <div class="cert-footer">
+                <div>
+                    <strong>मार्गदर्शक शिक्षक:</strong> सचिन शिंदे<br>
+                    <strong>संपर्क:</strong> 8329684470
+                </div>
+                <div>
+                    <strong>मार्गदर्शक शिक्षक:</strong> सतीश चिंदे<br>
+                    <strong>संपर्क:</strong> 8208167846
+                </div>
+            </div>
+        </div>
+
+        <button class="btn" style="background: #e53e3e;" onclick="showWrongQuestions()">चुकलेले प्रश्न व स्पष्टीकरण पहा</button>
+
+        <div id="wrong-section" class="wrong-questions-section">
+            <h3 style="color: #c53030; border-bottom: 2px solid #c53030; padding-bottom: 5px;">चुकलेले प्रश्न आणि स्पष्टीकरण:</h3>
+            <div id="wrong-list"></div>
+        </div>
+    </div>
+</div>
+
+<script>
+    // ३० प्रश्नांचा संच (प्रश्नांची उत्तरे आणि स्पष्टीकरणासह)
+    const questions = [
+        {
+            q: "3/7 + 3/7 × 3/7 ÷ 3/7 = किती?",
+            options: ["1", "6/7", "9/49", "3/7"],
+            correct: 1,
+            exp: "पदावलीच्या नियमानुसार प्रथम भागाकार, नंतर गुणाकार व शेवटी बेरीज केली जाते. (3/7 ÷ 3/7 = 1), मग (3/7 × 1 = 3/7), शेवटी (3/7 + 3/7 = 6/7)."
+        },
+        {
+            q: "3/5 च्या 5/6 मध्ये किती मिळवल्यास 2 ही संख्या मिळेल?",
+            options: ["1/2", "3/2", "1", "5/2"],
+            correct: 1,
+            exp: "(3/5 × 5/6) = 1/2. आता 2 - 1/2 = 3/2 (म्हणजेच 1.5) मिळवावे लागतील."
+        },
+        {
+            q: "5 पूर्णांक 3/4 या व्यवहारी अपूर्णांकाची किंमत दशांश रूपात किती होईल?",
+            options: ["5.34", "5.75", "5.25", "5.50"],
+            correct: 1,
+            exp: "3/4 = 0.75, म्हणून 5 + 0.75 = 5.75."
+        },
+        {
+            q: "3 पूर्णांक 1/2 + 2/5 ÷ 4 × 20 = किती?",
+            options: ["5.5", "4.5", "6.5", "3.5"],
+            correct: 0,
+            exp: "3 पूर्णांक 1/2 = 3.5. पुढे (2/5 ÷ 4) × 20 = (2/20) × 20 = 2. शेवटी 3.5 + 2 = 5.5."
+        },
+        {
+            q: "3/8 पेक्षा मोठा, परंतु 3/4 पेक्षा लहान असलेला अपूर्णांक कोणता?",
+            options: ["1/4", "5/8", "7/8", "1/8"],
+            correct: 1,
+            exp: "समछेद केल्यास: 3/8 = 0.375, 3/4 = 6/8 = 0.750. यांच्या दरम्यान 5/8 (0.625) हा अपूर्णांक येतो."
+        },
+        {
+            q: "3/7 मध्ये 3/7 किती वेळा मिळवावेत म्हणजे बेरीज 3 येईल?",
+            options: ["5", "6", "7", "4"],
+            correct: 1,
+            exp: "3/7 × (X + 1) = 3 ⇒ X + 1 = 7 ⇒ X = 6 वेळा."
+        },
+        {
+            q: "जर a/4 = b/6 = c/8 तर खालीलपैकी कोणते विधान सत्य आहे?",
+            options: ["a/2 = b/3", "a हा सर्वात मोठा आहे", "c हा सर्वात लहान आहे", "b/2 = c/3"],
+            correct: 0,
+            exp: "a/4 = b/6 मधील दोन्ही बाजूंस 2 ने गुणल्यास a/2 = b/3 हे गुणोत्तर मिळते."
+        },
+        {
+            q: "(15/4 × 8/45) ÷ (1/3) = x, तर x = किती?",
+            options: ["2", "1", "2/3", "3"],
+            correct: 0,
+            exp: "(15/4 × 8/45) = 2/3. मग (2/3) ÷ (1/3) = (2/3) × 3 = 2."
+        },
+        {
+            q: "1 / (2 + 1 / (2 + 1/2)) = ?",
+            options: ["5/12", "2/5", "5/2", "12/5"],
+            correct: 0,
+            exp: "खालून सुरुवात करू: 2 + 1/2 = 5/2. नंतर 1 / (5/2) = 2/5. मग 2 + 2/5 = 12/5. शेवटी 1 / (12/5) = 5/12."
+        },
+        {
+            q: "(0.36 × 0.004 × 50) ÷ (0.012 × 120) = किती?",
+            options: ["0.05", "0.5", "5", "0.005"],
+            correct: 0,
+            exp: "अंश = 0.072, छेद = 1.44. भाग दिल्यास 0.072 / 1.44 = 0.05."
+        },
+        {
+            q: "64.125 मधून कोणती संख्या वजा केली असता 38.405 उरेल?",
+            options: ["25.720", "25.620", "26.720", "24.720"],
+            correct: 0,
+            exp: "64.125 - 38.405 = 25.720."
+        },
+        {
+            q: "जर 124 × 105 = 13020 असेल, तर 1.24 × 10.5 ÷ 0.105 = किती?",
+            options: ["124", "12.4", "1.24", "1240"],
+            correct: 0,
+            exp: "1.24 × (10.5 / 0.105) = 1.24 × 100 = 124."
+        },
+        {
+            q: "4.08 × 0.05 = किती?",
+            options: ["0.204", "2.04", "0.0204", "20.4"],
+            correct: 0,
+            exp: "408 × 5 = 2040. दशांश स्थळे 2 + 2 = 4 सोडून दिल्यास 0.2040 म्हणजेच 0.204."
+        },
+        {
+            q: "(4.5 + 1.5 + 0.75) ÷ (12 × 0.5 × 0.1) = किती?",
+            options: ["11.25", "10.25", "11.5", "9.25"],
+            correct: 0,
+            exp: "अंश = 6.75, छेद = 0.6. भाग दिल्यास 6.75 / 0.6 = 11.25."
+        },
+        {
+            q: "2.25 ÷ 0.15 = किती?",
+            options: ["1.5", "15", "0.15", "150"],
+            correct: 1,
+            exp: "225 / 15 = 15. दोन्हीकडील दशांश स्थळे समान असल्याने उत्तर 15 येईल."
+        },
+        {
+            q: "0.096 × (1.5 / 0.4) × (1 / 6) = किती?",
+            options: ["0.06", "0.6", "0.006", "0.016"],
+            correct: 0,
+            exp: "1.5 / 0.4 = 3.75. मग 0.096 × 3.75 × (1/6) = 0.36 / 6 = 0.06."
+        },
+        {
+            q: "0.65 हे शतमानात (टक्केवारीमध्ये) कसे लिहाल?",
+            options: ["6.5%", "65%", "0.65%", "650%"],
+            correct: 1,
+            exp: "दशांश अपूर्णांकाचे टक्केवारीत रूपांतर करताना 100 ने गुणावे: 0.65 × 100 = 65%."
+        },
+        {
+            q: "जर 0.6 × (24.5 - 9.5) = 3K असेल, तर K = किती?",
+            options: ["3", "4.5", "9", "1.5"],
+            correct: 0,
+            exp: "0.6 × (15) = 9. आता 3K = 9, म्हणून K = 3."
+        },
+        {
+            q: "5 × 0.5 × 0.05 × 0.005 = किती?",
+            options: ["0.000625", "0.00625", "0.0625", "0.0000625"],
+            correct: 0,
+            exp: "5 × 5 × 5 × 5 = 625. एकूण दशांश स्थळे = 0+1+2+3 = 6. म्हणून 0.000625."
+        },
+        {
+            q: "जर 8 × 0.9 ÷ 0.018 = N असेल, तर N = किती?",
+            options: ["40", "400", "4000", "0.4"],
+            correct: 1,
+            exp: "7.2 / 0.018 = 7200 / 18 = 400."
+        },
+        {
+            q: "0.05 चा गुणाकार व्यस्त (Multiplicative Inverse) खालीलपैकी कोणता?",
+            options: ["20", "2", "0.2", "200"],
+            correct: 0,
+            exp: "0.05 = 5/100 = 1/20. याचा गुणाकार व्यस्त 20/1 म्हणजेच 20 होईल."
+        },
+        {
+            q: "जर 0.003 × 0.03 × 0.3 × y = 0.0027 असेल, तर y ची किंमत किती?",
+            options: ["100", "1000", "10", "10000"],
+            correct: 0,
+            exp: "डावी बाजू = 0.000027 × y = 0.0027. म्हणून y = 0.0027 / 0.000027 = 100."
+        },
+        {
+            q: "एका वर्गात 80 विद्यार्थी असून त्यांपैकी 5/8 मुली आहेत. त्यांतील 1/5 मुलींची निबंध स्पर्धेसाठी निवड झाली, तर एकूण किती मुली निवडल्या गेल्या?",
+            options: ["10", "12", "15", "20"],
+            correct: 0,
+            exp: "एकूण मुली = 80 × (5/8) = 50. निबंध स्पर्धेसाठी मुली = 50 × (1/5) = 10."
+        },
+        {
+            q: "1/(6×10) + 1/(10×14) - 1/(6×14) = किती?",
+            options: ["0", "1/84", "1", "1/42"],
+            correct: 0,
+            exp: "छेद समान करून सोडवल्यास: (14 + 6 - 20) / 840 = 0 / 840 = 0."
+        },
+        {
+            q: "एका पेटीतील 2/9 भाग आंबे नासलेले आहेत. जर चांगले आंबे 56 असतील, तर पेटीत एकूण किती आंबे होते?",
+            options: ["63", "72", "81", "90"],
+            correct: 1,
+            exp: "चांगले आंबे = 1 - 2/9 = 7/9 भाग. 7/9 भाग म्हणजे 56 आंबे, म्हणून एकूण = 56 × (9/7) = 72."
+        },
+        {
+            q: "एका प्रवासाचा 3/7 भाग पूर्ण झाल्यावर अजून 120 किमीचा प्रवास शिल्लक राहिला, तर एकूण प्रवास किती किमीचा होता?",
+            options: ["210 किमी", "280 किमी", "350 किमी", "180 किमी"],
+            correct: 0,
+            exp: "शिल्लक प्रवास = 1 - 3/7 = 4/7 भाग. 4/7 भाग = 120 किमी, म्हणून एकूण = 120 × (7/4) = 210 किमी."
+        },
+        {
+            q: "4/5 चे टक्केवारीत रूपांतर (Percentage Value) किती होईल?",
+            options: ["40%", "60%", "80%", "85%"],
+            correct: 2,
+            exp: "4/5 × 100 = 80%."
+        },
+        {
+            q: "8/10 + 4/100 + 2/1000 चे दशांश रूप कोणते?",
+            options: ["0.842", "8.42", "0.0842", "0.8042"],
+            correct: 0,
+            exp: "8/10 = 0.8, 4/100 = 0.04, 2/1000 = 0.002. सर्वांची बेरीज = 0.842."
+        },
+        {
+            q: "दोन संख्यांचा गुणाकार 2.25 आहे. जर एक संख्या 1.5 असेल, तर दुसरी संख्या कोणती?",
+            options: ["15", "1.5", "0.15", "0.015"],
+            correct: 1,
+            exp: "दुसरी संख्या = 2.25 / 1.5 = 1.5."
+        },
+        {
+            q: "2.75 चे साध्या अपूर्णांकात अतिसंक्षिप्त रूप काय होईल?",
+            options: ["11/4", "27/10", "7/4", "275/100"],
+            correct: 0,
+            exp: "2.75 = 275/100. २५ ने भाग दिल्यास अतिसंक्षिप्त रूप 11/4 (किंवा 2 पूर्णांक 3/4) मिळते."
+        }
+    ];
+
+    let currentQ = 0;
+    let score = 0;
+    let studentName = "";
+    let userAnswers = [];
+
+    function startExam() {
+        const nameInput = document.getElementById('student-name').value.trim();
+        if(!nameInput) {
+            alert("कृपया परीक्षा सुरू करण्यापूर्वी नाव प्रविष्ट करा!");
+            return;
+        }
+        studentName = nameInput;
+        document.getElementById('start-screen').style.display = 'none';
+        document.getElementById('exam-screen').style.display = 'block';
+        loadQuestion();
+    }
+
+    function loadQuestion() {
+        const qData = questions[currentQ];
+        document.getElementById('q-progress').innerText = `प्रश्न ${currentQ + 1} / ${questions.length}`;
+        document.getElementById('q-text').innerText = qData.q;
+        
+        const optionsContainer = document.getElementById('options-container');
+        optionsContainer.innerHTML = '';
+        
+        const expBox = document.getElementById('explanation-box');
+        expBox.style.display = 'none';
+        expBox.innerHTML = '';
+
+        document.getElementById('next-btn').disabled = true;
+
+        qData.options.forEach((opt, index) => {
+            const btn = document.createElement('button');
+            btn.className = 'option-btn';
+            btn.innerText = `(${index + 1}) ${opt}`;
+            btn.onclick = () => selectOption(index);
+            optionsContainer.appendChild(btn);
+        });
+    }
+
+    function selectOption(selectedIndex) {
+        const qData = questions[currentQ];
+        const buttons = document.querySelectorAll('.option-btn');
+        
+        // Disable all buttons once selected
+        buttons.forEach(btn => btn.disabled = true);
+
+        userAnswers[currentQ] = selectedIndex;
+
+        if(selectedIndex === qData.correct) {
+            score++;
+            buttons[selectedIndex].classList.add('correct');
+        } else {
+            buttons[selectedIndex].classList.add('wrong');
+            buttons[qData.correct].classList.add('correct');
+            
+            // शो करणे चुकीच्या उत्तरानंतर स्पष्टीकरण
+            const expBox = document.getElementById('explanation-box');
+            expBox.innerHTML = `<strong>बरोबर उत्तर:</strong> (${qData.correct + 1}) ${qData.options[qData.correct]}<br><strong>स्पष्टीकरण:</strong> ${qData.exp}`;
+            expBox.style.display = 'block';
+        }
+
+        document.getElementById('next-btn').disabled = false;
+    }
+
+    function nextQuestion() {
+        currentQ++;
+        if(currentQ < questions.length) {
+            loadQuestion();
+        } else {
+            showResults();
+        }
+    }
+
+    function showResults() {
+        document.getElementById('exam-screen').style.display = 'none';
+        document.getElementById('result-screen').style.display = 'block';
+
+        const percentage = Math.round((score / questions.length) * 100);
+
+        document.getElementById('res-name').innerText = studentName;
+        document.getElementById('res-score').innerText = score;
+        document.getElementById('res-percentage').innerText = percentage;
+
+        let awardText = "";
+        if (percentage >= 80) {
+            awardText = "🥇 Gold Medal + Trophy";
+        } else if (percentage >= 60) {
+            awardText = "🥈 Silver Medal + Trophy";
+        } else if (percentage >= 50) {
+            awardText = "🥉 Bronze Medal + Trophy";
+        } else {
+            awardText = "💐 अभिनंदन! फुलांचा गुच्छ व पुढील परीक्षेसाठी शुभेच्छा";
+        }
+
+        document.getElementById('res-award').innerText = awardText;
+    }
+
+    function showWrongQuestions() {
+        const wrongList = document.getElementById('wrong-list');
+        wrongList.innerHTML = '';
+        let wrongCount = 0;
+
+        questions.forEach((qData, index) => {
+            if(userAnswers[index] !== qData.correct) {
+                wrongCount++;
+                const item = document.createElement('div');
+                item.className = 'wrong-item';
+                
+                const userAnsText = userAnswers[index] !== undefined ? qData.options[userAnswers[index]] : "सोडून दिला";
+
+                item.innerHTML = `
+                    <div class="wrong-q-text">प्र. ${index + 1}) ${qData.q}</div>
+                    <div class="ans-info" style="color: #e53e3e;"><strong>तुमचे उत्तर:</strong> ${userAnsText}</div>
+                    <div class="ans-info" style="color: #38a169;"><strong>बरोबर उत्तर:</strong> (${qData.correct + 1}) ${qData.options[qData.correct]}</div>
+                    <div class="ans-info" style="margin-top: 6px; color: #2b6cb0;"><strong>स्पष्टीकरण:</strong> ${qData.exp}</div>
+                `;
+                wrongList.appendChild(item);
+            }
+        });
+
+        if(wrongCount === 0) {
+            wrongList.innerHTML = "<p style='color: green; font-weight: bold;'>अभिनंदन! तुमचा एकही प्रश्न चुकलेला नाही.</p>";
+        }
+
+        document.getElementById('wrong-section').style.display = 'block';
+    }
+</script>
+
+</body>
+</html>
