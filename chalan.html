@@ -1,0 +1,561 @@
+<!DOCTYPE html>
+<html lang="mr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ऑनलाइन परीक्षा - चलन (इयत्ता ७ वी)</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        body {
+            background-color: #f0f4f8;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+        .container {
+            background-color: #ffffff;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+            max-width: 650px;
+            width: 100%;
+            padding: 25px;
+        }
+        h1, h2, h3 {
+            color: #1a2a3a;
+            text-align: center;
+            margin-top: 0;
+        }
+        .sub-header {
+            color: #0056b3;
+            text-align: center;
+            font-weight: bold;
+            margin-bottom: 20px;
+            font-size: 18px;
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+        }
+        input[type="text"] {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #ccc;
+            border-radius: 6px;
+            font-size: 16px;
+        }
+        .btn {
+            background-color: #28a745;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            font-size: 16px;
+            font-weight: bold;
+            border-radius: 6px;
+            cursor: pointer;
+            width: 100%;
+            transition: 0.3s;
+        }
+        .btn:hover {
+            background-color: #218838;
+        }
+        .btn-next {
+            background-color: #007bff;
+            margin-top: 15px;
+        }
+        .btn-next:hover {
+            background-color: #0056b3;
+        }
+        .btn-submit {
+            background-color: #dc3545;
+            margin-top: 20px;
+        }
+        .btn-submit:hover {
+            background-color: #bd2130;
+        }
+        .options-container {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-top: 15px;
+        }
+        .option-btn {
+            background-color: #f8f9fa;
+            border: 2px solid #dee2e6;
+            padding: 12px;
+            border-radius: 6px;
+            text-align: left;
+            cursor: pointer;
+            font-size: 16px;
+            transition: 0.2s;
+        }
+        .option-btn:hover:not([disabled]) {
+            background-color: #e2e6ea;
+        }
+        .correct {
+            background-color: #d4edda !important;
+            border-color: #28a745 !important;
+            color: #155724;
+            font-weight: bold;
+        }
+        .wrong {
+            background-color: #f8d7da !important;
+            border-color: #dc3545 !important;
+            color: #721c24;
+            font-weight: bold;
+        }
+        .explanation-box {
+            margin-top: 15px;
+            padding: 12px;
+            border-radius: 6px;
+            background-color: #e9ecef;
+            display: none;
+            line-height: 1.5;
+        }
+        /* Certificate Square Design */
+        .certificate {
+            border: 8px double #1a2a3a;
+            padding: 20px;
+            background-color: #fffdf5;
+            text-align: center;
+            aspect-ratio: 1 / 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            box-shadow: inset 0 0 10px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+        }
+        .cert-header {
+            font-size: 20px;
+            font-weight: bold;
+            color: #8b0000;
+        }
+        .cert-title {
+            font-size: 15px;
+            color: #333;
+            margin: 5px 0;
+        }
+        .cert-body {
+            font-size: 16px;
+            text-align: left;
+            margin: 10px 0;
+            line-height: 1.8;
+        }
+        .cert-teachers {
+            border-top: 1px dashed #ccc;
+            padding-top: 8px;
+            font-size: 13px;
+            text-align: left;
+            line-height: 1.5;
+        }
+        .honor-badge {
+            font-size: 16px;
+            font-weight: bold;
+            margin: 8px 0;
+            padding: 8px;
+            background-color: #fff3cd;
+            border-radius: 6px;
+            border: 1px solid #ffeeba;
+        }
+        .wrong-questions-section {
+            display: none;
+            margin-top: 20px;
+            border-top: 2px solid #ccc;
+            padding-top: 15px;
+        }
+        .wrong-item {
+            background-color: #fff0f0;
+            border-left: 4px solid #dc3545;
+            padding: 10px;
+            margin-bottom: 12px;
+            border-radius: 4px;
+            text-align: left;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <!-- १. नाव नोंदणी स्क्रीन -->
+    <div id="start-screen">
+        <h1>🏆 स्पर्धा परीक्षा मार्गदर्शन केंद्र, जेऊर</h1>
+        <div class="sub-header">पूर्व माध्यमिक शिष्यवृत्ती परीक्षा (इयत्ता ७ वी)<br>विषय: गणित | घटक: चलन (३० प्रश्न)</div>
+        
+        <div class="form-group">
+            <label for="student-name">विद्यार्थ्याचे नाव प्रविष्ट करा:</label>
+            <input type="text" id="student-name" placeholder="तुमचे पूर्ण नाव लिहा..." required>
+        </div>
+        
+        <button class="btn" onclick="startExam()">Start Exam</button>
+    </div>
+
+    <!-- २. प्रश्न स्क्रीन -->
+    <div id="quiz-screen" style="display: none;">
+        <div id="question-number" style="font-weight: bold; color: #555;"></div>
+        <h3 id="question-text" style="margin-top: 10px; text-align: left;"></h3>
+        
+        <div class="options-container" id="options-container"></div>
+        
+        <div id="explanation-box" class="explanation-box"></div>
+        
+        <button id="next-btn" class="btn btn-next" onclick="nextQuestion()" style="display: none;">पुढील प्रश्न ➔</button>
+        <button id="submit-btn" class="btn btn-submit" onclick="submitExam()" style="display: none;">Submit Exam 🏁</button>
+    </div>
+
+    <!-- ३. निकाल (Square Certificate Style) स्क्रीन -->
+    <div id="result-screen" style="display: none;">
+        <div class="certificate">
+            <div class="cert-header">🏆 स्पर्धा परीक्षा मार्गदर्शन केंद्र, जेऊर</div>
+            <div class="cert-title"><b>परीक्षेचे नाव :</b> पूर्व माध्यमिक शिष्यवृत्ती परीक्षा (इयत्ता ७ वी) चलन</div>
+            
+            <div class="cert-body">
+                <b>विद्यार्थ्याचे नाव :</b> <span id="res-name"></span><br>
+                <b>मिळालेले गुण :</b> <span id="res-score"></span> / <span id="res-total"></span><br>
+                <b>टक्केवारी :</b> <span id="res-percentage"></span>%
+            </div>
+
+            <div class="honor-badge" id="res-honor"></div>
+
+            <div class="cert-teachers">
+                <b>मार्गदर्शक शिक्षक :</b> सचिन शिंदे (संपर्क : 8329684470)<br>
+                <b>मार्गदर्शक शिक्षक :</b> सतीश चिंदे (संपर्क : 8208167846)
+            </div>
+        </div>
+
+        <button class="btn" style="background-color: #17a2b8;" onclick="toggleWrongQuestions()">चुकलेले प्रश्न व मार्गदर्शन 🔍</button>
+
+        <div id="wrong-questions-section" class="wrong-questions-section">
+            <h3>चुकलेले प्रश्न आणि स्पष्टीकरण:</h3>
+            <div id="wrong-questions-list"></div>
+        </div>
+    </div>
+</div>
+
+<script>
+    // 'चलन' घटकावरील पूर्ण ३० प्रश्न
+    const questions = [
+        {
+            q: "१. ८ किग्रॅ साखरेची किंमत ₹२८० आहे, तर १५ किग्रॅ साखरेची किंमत किती?",
+            options: ["₹ ५२५", "₹ ४५०", "₹ ५००", "₹ ५४०"],
+            correct: 0,
+            exp: "स्पष्टीकरण: साखरेचे वजन वाढल्यास किंमत वाढते (समचलन). १ किग्रॅ = २८० ÷ ८ = ₹३५. १५ किग्रॅ = ३५ × १५ = ₹५२५."
+        },
+        {
+            q: "२. ताशी ५० किमी वेगाने एका गावाला पोहोचण्यास ६ तास लागतात. ४ तासांत पोहोचण्यासाठी वेग ताशी किती असावा?",
+            options: ["ताशी २५ किमी", "ताशी ४० किमी", "ताशी ६० किमी", "ताशी ७५ किमी"],
+            correct: 3,
+            exp: "स्पष्टीकरण: वेळ कमी झाल्यास वेग वाढवावा लागतो (व्यस्तचलन). अंतर = ५० × ६ = ३०० किमी. नवीन वेग = ३०० ÷ ४ = ताशी ७५ किमी."
+        },
+        {
+            q: "३. एक काम १२ मजूर १५ दिवसांत पूर्ण करतात. मजुरांची संख्या २० केल्यास काम किती दिवसांत होईल?",
+            options: ["८ दिवस", "९ दिवस", "१० दिवस", "१२ दिवस"],
+            correct: 1,
+            exp: "स्पष्टीकरण: मजूर वाढल्यास दिवस कमी होतात (व्यस्तचलन). १२ × १५ = २० × दिवस ⇒ दिवस = १८० ÷ २० = ९ दिवस."
+        },
+        {
+            q: "४. x आणि y व्यस्तचलनात आहेत. x = २४ असताना y = ६ आहे, तर x = १२ असताना y ची किंमत किती?",
+            options: ["९", "१२", "१८", "१५"],
+            correct: 1,
+            exp: "स्पष्टीकरण: व्यस्तचलनात गुणाकार स्थिर असतो (x × y = k). २४ × ६ = १४४. म्हणून १२ × y = १४४ ⇒ y = १२."
+        },
+        {
+            q: "५. ९ किग्रॅ हापूस आंब्याची किंमत ₹१४४० आहे; तर २.५ किग्रॅ आंब्याची किंमत किती?",
+            options: ["₹ १६०", "₹ ४००", "₹ ७२०", "₹ २५०"],
+            correct: 1,
+            exp: "स्पष्टीकरण: समचलन. १ किग्रॅ = १४४० ÷ ९ = ₹१६०. २.५ किग्रॅ = १६० × २.५ = ₹४००."
+        },
+        {
+            q: "६. समचलनात दोन राशींचा काय स्थिर असतो?",
+            options: ["गुणाकार", "भागाकार (गुणोत्तर)", "बेरीज", "वजाबाकी"],
+            correct: 1,
+            exp: "स्पष्टीकरण: समचलनात दोन राशींचे गुणोत्तर (भागाकार) नेहमी स्थिर असते (x/y = k)."
+        },
+        {
+            q: "७. व्यस्तचलनात दोन राशींचा काय स्थिर असतो?",
+            options: ["गुणाकार", "भागाकार", "बेरीज", "वजाबाकी"],
+            correct: 0,
+            exp: "स्पष्टीकरण: व्यस्तचलनात दोन राशींचा गुणाकार नेहमी स्थिर असतो (x × y = k)."
+        },
+        {
+            q: "८. १५ पेनची किंमत ₹२२५ आहे, तर अशा २४ पेनची किंमत किती होईल?",
+            options: ["₹ ३००", "₹ ३६०", "₹ २४०", "₹ ३२०"],
+            correct: 1,
+            exp: "स्पष्टीकरण: समचलन. १ पेन = २२५ ÷ १५ = ₹१५. २४ पेन = २४ × १५ = ₹३६०."
+        },
+        {
+            q: "९. एका कारला २४० किमी अंतर कापण्यासाठी ६ लिटर पेट्रोल लागते. तर ४०० किमी अंतरासाठी किती पेट्रोल लागेल?",
+            options: ["८ लिटर", "९ लिटर", "१० लिटर", "१२ लिटर"],
+            correct: 2,
+            exp: "स्पष्टीकरण: समचलन. १ लिटरमध्ये अंतर = २४० ÷ ६ = ४० किमी. ४०० किमी साठी = ४०० ÷ ४० = १० लिटर."
+        },
+        {
+            q: "१०. ६ कामगार एक भिंत १० दिवसांत बांधतात. तीच भिंत ५ दिवसांत बांधायची असल्यास किती कामगार लागतील?",
+            options: ["३ कामगार", "८ कामगार", "१० कामगार", "१२ कामगार"],
+            correct: 3,
+            exp: "स्पष्टीकरण: व्यस्तचलन. कामगार × दिवस = स्थिरांक. ६ × १० = कामगार × ५ ⇒ कामगार = ६० ÷ ५ = १२."
+        },
+        {
+            q: "११. x ∝ y हे चिन्ह कोणते चलन दर्शवते?",
+            options: ["समचलन", "व्यस्तचलन", "वर्गचलन", "यांपैकी नाही"],
+            correct: 0,
+            exp: "स्पष्टीकरण: 'x ∝ y' हे विधान 'x हे y शी समचलनात आहे' असे दर्शवते."
+        },
+        {
+            q: "१२. x ∝ 1/y हे चिन्ह कोणते चलन दर्शवते?",
+            options: ["समचलन", "व्यस्तचलन", "वर्गमूल चलन", "यांपैकी नाही"],
+            correct: 1,
+            exp: "स्पष्टीकरण: 'x ∝ 1/y' हे विधान 'x हे y शी व्यस्तचलनात आहे' असे दर्शवते."
+        },
+        {
+            q: "१३. पुस्तकांची संख्या आणि त्यांची एकूण किंमत यांमध्ये कोणते चलन असते?",
+            options: ["समचलन", "व्यस्तचलन", "चलन नसते", "यांपैकी सर्व"],
+            correct: 0,
+            exp: "स्पष्टीकरण: पुस्तके वाढली की किंमत वाढते, म्हणून हे समचलन आहे."
+        },
+        {
+            q: "१४. वाहनाचा वेग आणि ठरावीक अंतरासाठी लागणारा वेळ यांमध्ये कोणते चलन असते?",
+            options: ["समचलन", "व्यस्तचलन", "चलन नसते", "यांपैकी नाही"],
+            correct: 1,
+            exp: "स्पष्टीकरण: वेग वाढवला की वेळ कमी लागतो, म्हणून हे व्यस्तचलन आहे."
+        },
+        {
+            q: "१५. एका मसुदालेखकाला २० पाने टाईप करण्यासाठी ५ तास लागतात. तर ३२ पाने टाईप करण्यासाठी किती वेळ लागेल?",
+            options: ["६ तास", "७ तास", "८ तास", "१० तास"],
+            correct: 2,
+            exp: "स्पष्टीकरण: समचलन. १ पानासाठी वेळ = ५/२० = १/४ तास (१५ मिनिटे). ३२ पानांसाठी = ३२ × (१/४) = ८ तास."
+        },
+        {
+            q: "१६. ३० मजूर एक काम २० दिवसांत पूर्ण करतात. जर १० मजूर कमी झाले, तर ते काम किती दिवसांत होईल?",
+            options: ["२५ दिवस", "३० दिवस", "१५ दिवस", "४० दिवस"],
+            correct: 1,
+            exp: "स्पष्टीकरण: मजूर कमी झाले की दिवस वाढतील (व्यस्तचलन). शिल्लक मजूर = २०. ३० × २० = २० × दिवस ⇒ दिवस = ६०० ÷ २० = ३० दिवस."
+        },
+        {
+            q: "१७. एक पाण्याची टाकी भरण्यासाठी ६ नळांना १ तास २० मिनिटे लागतात. जर ४ नळच चालू ठेवले तर किती वेळ लागेल?",
+            options: ["२ तास", "१ तास ४० मिनिटे", "२ तास ३० मिनिटे", "५० मिनिटे"],
+            correct: 0,
+            exp: "स्पष्टीकरण: १ तास २० मिनिटे = ८० मिनिटे. व्यस्तचलन: ६ × ८० = ४ × वेळ ⇒ वेळ = ४८० ÷ ४ = १२० मिनिटे = २ तास."
+        },
+        {
+            q: "१८. ४०० विद्यार्थ्यांच्या वसतिगृहात ३० दिवसांचा अन्नसाठा उपलब्ध आहे. जर १०० विद्यार्थी नवीन आले, तर तो अन्नसाठा किती दिवस पुरेल?",
+            options: ["२४ दिवस", "२० दिवस", "२५ दिवस", "१८ दिवस"],
+            correct: 0,
+            exp: "स्पष्टीकरण: एकूण विद्यार्थी = ५००. व्यस्तचलन: ४०० × ३० = ५०० × दिवस ⇒ दिवस = १२२०० ÷ ५०० = २४ दिवस."
+        },
+        {
+            q: "१९. x ∝ y आणि x = १५ असताना y = ४५ आहे, तर चलनाचा स्थिरांक (k) किती?",
+            options: ["३", "१/३", "६०", "३०"],
+            correct: 1,
+            exp: "स्पष्टीकरण: समचलनात k = x / y. k = १५ / ४५ = १/३."
+        },
+        {
+            q: "२०. m व n व्यस्तचलनात आहेत. m = ८ असताना n = १५, तर चलनाचा स्थिरांक (k) किती?",
+            options: ["२३", "१२०", "७", "१२००"],
+            correct: 1,
+            exp: "स्पष्टीकरण: व्यस्तचलनात चलनाचा स्थिरांक k = m × n. k = ८ × १५ = १२०."
+        },
+        {
+            q: "२१. एक बस ताशी ६० किमी वेगाने २ तास ४० मिनिटांत एक अंतर कापते. तर तेच अंतर कापण्यासाठी ताशी ८० किमी वेगाने किती वेळ लागेल?",
+            options: ["२ तास", "१ तास ३० मिनिटे", "२ तास १५ मिनिटे", "१ तास ४० मिनिटे"],
+            correct: 0,
+            exp: "स्पष्टीकरण: २ तास ४० मिनिटे = ८/३ तास. अंतर = ६० × (८/३) = १६० किमी. नवीन वेळ = १६० ÷ ८० = २ तास."
+        },
+        {
+            q: "२२. १२ वहीची किंमत ₹४२० आहे. तर ₹२१० मध्ये किती वह्या मिळतील?",
+            options: ["४", "५", "६", "८"],
+            correct: 2,
+            exp: "स्पष्टीकरण: समचलन. १ वही = ४२० ÷ १२ = ₹३५. ₹२१० मध्ये वह्या = २१० ÷ ३५ = ६ वह्या."
+        },
+        {
+            q: "२३. शेतातील तण काढण्यासाठी ४ मजुरांना ८ दिवस लागतात, तर ६ मजुरांना किती दिवस लागतील?",
+            options: ["५ दिवस", "५ १/३ दिवस", "६ दिवस", "४ दिवस"],
+            correct: 1,
+            exp: "स्पष्टीकरण: व्यस्तचलन. ४ × ८ = ६ × दिवस ⇒ दिवस = ३२ ÷ ६ = ५ १/३ दिवस (किंवा ५ दिवस ८ तास)."
+        },
+        {
+            q: "२४. वस्तूंची संख्या आणि त्यांची एकूण किंमत यांमधील आलेखाचे स्वरूप कसे असते?",
+            options: ["सरळ रेषा", "वक्र रेषा", "वर्तुळाकार", "यांपैकी नाही"],
+            correct: 0,
+            exp: "स्पष्टीकरण: समचलनाचा आलेख नेहमी उगमबिंदूतून जाणारी 'सरळ रेषा' असतो."
+        },
+        {
+            q: "२५. एका दुकानातून ५ डझन पेन्सिली ₹३०० ला मिळतात, तर २ डझन पेन्सिलींची किंमत किती?",
+            options: ["₹ १२०", "₹ १५०", "₹ १००", "₹ ६०"],
+            correct: 0,
+            exp: "स्पष्टीकरण: १ डझन = ३०० ÷ ५ = ₹६०. २ डझन = ६० × २ = ₹१२०."
+        },
+        {
+            q: "२६. ५ लीटर तेलाचे वजन ४.५ किग्रॅ आहे, तर ९ किग्रॅ तेलाचे क्युबिक प्रमाण किती लीटर भरेल?",
+            options: ["८ लीटर", "१० लीटर", "१२ लीटर", "१५ लीटर"],
+            correct: 1,
+            exp: "स्पष्टीकरण: समचलन. १ किग्रॅ साठी तेलाचे प्रमाण = ५ ÷ ४.५ = १०/९ लीटर. ९ किग्रॅ साठी = (१०/९) × ९ = १० लीटर."
+        },
+        {
+            q: "२७. २५ झाडे लावण्यासाठी ५ जणांना ३ तास लागतात, तर २५ झाडे लावण्यासाठी ३ जणांना किती तास लागतील?",
+            options: ["३ तास", "४ तास", "५ तास", "६ तास"],
+            correct: 2,
+            exp: "स्पष्टीकरण: माणसे कमी झाली की वेळ वाढेल (व्यस्तचलन). ५ × ३ = ३ × वेळ ⇒ वेळ = १५ ÷ ३ = ५ तास."
+        },
+        {
+            q: "२८. एका आयताचे क्षेत्रफळ स्थिर असताना त्याची लांबी वाढवली तर रुंदीवर काय परिणाम होईल?",
+            options: ["रुंदी वाढेल", "रुंदी कमी होईल", "रुंदी तीच राहील", "सांगता येत नाही"],
+            correct: 1,
+            exp: "स्पष्टीकरण: क्षेत्रफळ = लांबी × रुंदी (स्थिर). त्यामुळे लांबी आणि रुंदी व्यस्तचलनात असतात. लांबी वाढवल्यास रुंदी कमी होईल."
+        },
+        {
+            q: "२९. a ∝ b. जर a = ६ असताना b = ३०, तर b = ५० असताना a = ?",
+            options: ["१०", "१५", "२०", "१२"],
+            correct: 0,
+            exp: "स्पष्टीकरण: समचलन. a/b = ६/३० = १/५. म्हणून a/५० = १/५ ⇒ a = ५० ÷ ५ = १०."
+        },
+        {
+            q: "३०. एका छावणीत १५०० सैनिकांना ४५ दिवस पुरेल एवढा अन्नसाठा आहे. १५ दिवसांनंतर ५०० सैनिक निघून गेले, तर उर्वरित अन्नसाठा किती दिवस पुरेल?",
+            options: ["३० दिवस", "४५ दिवस", "३५ दिवस", "४० दिवस"],
+            correct: 1,
+            exp: "स्पष्टीकरण: १५ दिवसांनंतर १५०० सैनिकांना ३० दिवस पुरेल एवढा साठा शिल्लक होता. आता सैनिक = १०००. व्यस्तचलन: १५०० × ३० = १००० × दिवस ⇒ दिवस = ४५००० ÷ १००० = ४५ दिवस."
+        }
+    ];
+
+    let currentQuestionIndex = 0;
+    let score = 0;
+    let studentName = "";
+    let userAnswers = [];
+
+    function startExam() {
+        const nameInput = document.getElementById("student-name").value.trim();
+        if (nameInput === "") {
+            alert("कृपया तुमचे नाव प्रविष्ट करा!");
+            return;
+        }
+        studentName = nameInput;
+        document.getElementById("start-screen").style.display = "none";
+        document.getElementById("quiz-screen").style.display = "block";
+        loadQuestion();
+    }
+
+    function loadQuestion() {
+        const qData = questions[currentQuestionIndex];
+        document.getElementById("question-number").innerText = `प्रश्न ${currentQuestionIndex + 1} / ${questions.length}`;
+        document.getElementById("question-text").innerText = qData.q;
+        
+        const optionsContainer = document.getElementById("options-container");
+        optionsContainer.innerHTML = "";
+        
+        document.getElementById("explanation-box").style.display = "none";
+        document.getElementById("next-btn").style.display = "none";
+        document.getElementById("submit-btn").style.display = "none";
+
+        qData.options.forEach((opt, idx) => {
+            const btn = document.createElement("button");
+            btn.className = "option-btn";
+            btn.innerText = opt;
+            btn.onclick = () => selectOption(idx);
+            optionsContainer.appendChild(btn);
+        });
+    }
+
+    function selectOption(selectedIndex) {
+        const qData = questions[currentQuestionIndex];
+        const buttons = document.querySelectorAll(".option-btn");
+        
+        buttons.forEach(btn => btn.disabled = true);
+
+        const isCorrect = selectedIndex === qData.correct;
+        userAnswers.push({
+            question: qData.q,
+            selected: selectedIndex,
+            correct: qData.correct,
+            options: qData.options,
+            exp: qData.exp,
+            isCorrect: isCorrect
+        });
+
+        if (isCorrect) {
+            buttons[selectedIndex].classList.add("correct");
+            score++;
+        } else {
+            buttons[selectedIndex].classList.add("wrong");
+            buttons[qData.correct].classList.add("correct");
+        }
+
+        const expBox = document.getElementById("explanation-box");
+        expBox.style.display = "block";
+        expBox.innerHTML = `<b>${isCorrect ? '✅ बरोबर उत्तर!' : '❌ चुकीचे उत्तर!'}</b><br>${qData.exp}`;
+
+        if (currentQuestionIndex < questions.length - 1) {
+            document.getElementById("next-btn").style.display = "block";
+        } else {
+            document.getElementById("submit-btn").style.display = "block";
+        }
+    }
+
+    function nextQuestion() {
+        currentQuestionIndex++;
+        loadQuestion();
+    }
+
+    function submitExam() {
+        document.getElementById("quiz-screen").style.display = "none";
+        document.getElementById("result-screen").style.display = "block";
+
+        const total = questions.length;
+        const percentage = Math.round((score / total) * 100);
+
+        document.getElementById("res-name").innerText = studentName;
+        document.getElementById("res-score").innerText = score;
+        document.getElementById("res-total").innerText = total;
+        document.getElementById("res-percentage").innerText = percentage;
+
+        // कामगिरीनुसार सन्मान
+        let honorText = "";
+        if (percentage >= 80) {
+            honorText = "🥇 Gold Medal + Trophy";
+        } else if (percentage >= 60) {
+            honorText = "🥈 Silver Medal + Trophy";
+        } else if (percentage >= 50) {
+            honorText = "🥉 Bronze Medal + Trophy";
+        } else {
+            honorText = "💐 अभिनंदन! फुलांचा गुच्छ व \"पुढील परीक्षेसाठी शुभेच्छा\"";
+        }
+        document.getElementById("res-honor").innerText = honorText;
+
+        // चुकलेले प्रश्न यादी तयार करणे
+        const wrongList = document.getElementById("wrong-questions-list");
+        wrongList.innerHTML = "";
+        
+        const wrongAnswers = userAnswers.filter(ans => !ans.isCorrect);
+
+        if (wrongAnswers.length === 0) {
+            wrongList.innerHTML = "<p style='color: green; font-weight: bold;'>अभिनंदन! तुमचे सर्व ३० प्रश्न बरोबर आले आहेत.</p>";
+        } else {
+            wrongAnswers.forEach(item => {
+                const div = document.createElement("div");
+                div.className = "wrong-item";
+                div.innerHTML = `
+                    <b>प्रश्न:</b> ${item.question}<br>
+                    <span style="color:#dc3545;"><b>तुमचे उत्तर:</b> ${item.options[item.selected]}</span><br>
+                    <span style="color:#28a745;"><b>बरोबर उत्तर:</b> ${item.options[item.correct]}</span><br>
+                    <div style="margin-top:5px; font-size:14px; color:#333;"><b>मार्गदर्शन:</b> ${item.exp}</div>
+                `;
+                wrongList.appendChild(div);
+            });
+        }
+    }
+
+    function toggleWrongQuestions() {
+        const sec = document.getElementById("wrong-questions-section");
+        sec.style.display = sec.style.display === "block" ? "none" : "block";
+    }
+</script>
+
+</body>
+</html>
