@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="mr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>पंचायत समिती शिक्षण विभाग करमाळा - ऑनलाइन परीक्षा</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+    body { background-color: #f4f7f6; color: #333; display: flex; justify-content: center; align-items: center; min-height: 100vh; padding: 20px; }
+    .container { background: #fff; width: 100%; max-width: 800px; border-radius: 12px; box-shadow: 0 5px 20px rgba(0,0,0,0.15); padding: 25px; position: relative; min-height: 500px; display: flex; flex-direction: column; justify-content: space-between; }
+    
+    /* Header & Info Section */
+    .header { text-align: center; border-bottom: 2px solid #eee; padding-bottom: 15px; margin-bottom: 20px; }
+    .logo { max-width: 120px; height: auto; margin-bottom: 10px; }
+    .people-container { display: flex; justify-content: space-between; margin-bottom: 20px; text-align: center; }
+    .person-box { width: 45%; background: #f9f9f9; padding: 10px; border-radius: 8px; border: 1px solid #ddd; font-size: 14px; }
+    .person-img { width: 80px; height: 80px; border-radius: 50%; object-fit: cover; margin-bottom: 5px; }
+    
+    /* Form Styles */
+    .form-group { margin-bottom: 15px; text-align: left; }
+    .form-group label { display: block; font-weight: bold; margin-bottom: 5px; }
+    .form-group input { width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 6px; font-size: 16px; }
+    
+    /* Buttons */
+    .btn { background-color: #007bff; color: white; border: none; padding: 12px 25px; border-radius: 6px; font-size: 18px; cursor: pointer; transition: 0.3s; width: 100%; margin-top: 15px; font-weight: bold; }
+    .btn:hover { background-color: #0056b3; }
+    .btn:disabled { background-color: #cccccc; cursor: not-allowed; }
+    
+    /* Footer */
+    .footer-text { text-align: center; font-size: 14px; color: #555; margin-top: 20px; padding-top: 10px; border-top: 1px solid #eee; font-weight: 500; }
+    
+    /* Quiz Section */
+    .timer { font-size: 18px; font-weight: bold; color: #d9534f; text-align: right; margin-bottom: 15px; }
+    .question-title { font-size: 20px; font-weight: bold; margin-bottom: 15px; }
+    .options-container { display: flex; flex-direction: column; gap: 10px; }
+    .option-btn { background: #f8f9fa; border: 2px solid #e9ecef; padding: 12px; border-radius: 6px; font-size: 16px; text-align: left; cursor: pointer; transition: 0.2s; }
+    .option-btn:hover { background: #e2e6ea; }
+    .option-btn.selected { background-color: #28a745; color: white; border-color: #28a745; }
+    
+    /* Certificate / Result Section */
+    .certificate { border: 10px solid #d4af37; padding: 30px; border-radius: 8px; text-align: center; background: #fffdf5; position: relative; }
+    .cert-title { font-size: 22px; color: #b8860b; margin-bottom: 15px; font-weight: bold; }
+    .marks-display { font-size: 32px; color: #007bff; font-weight: bold; margin: 15px 0; }
+    .honor-badge { font-size: 24px; margin: 15px 0; font-weight: bold; }
+    .wrong-q-section { margin-top: 20px; text-align: left; background: #fff; padding: 15px; border-radius: 8px; border: 1px solid #ddd; max-height: 300px; overflow-y: auto; }
+    .wrong-q-item { border-bottom: 1px solid #eee; padding: 10px 0; }
+    .wrong-q-item:last-child { border-bottom: none; }
+    
+    .hidden { display: none; }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  
+  <!-- PAGE 1: Start Screen -->
+  <div id="start-page">
+    <div class="header">
+      <!-- Google Drive Direct Image View URLs -->
+      <img src="https://lh3.googleusercontent.com/d/1Es1MWAbjyCjxzU11JHmEV6VeIgNkV9bt" class="logo" alt="पंचायत समिती लोगो">
+      <h2>पंचायत समिती शिक्षण विभाग करमाळा</h2>
+    </div>
+
+    <div class="people-container">
+      <div class="person-box">
+        <img src="https://lh3.googleusercontent.com/d/1_XeUqnI-oMh8-Dbo4wJUkj7hVkjrov0Y" class="person-img" alt="मार्गदर्शक"><br>
+        <strong>मार्गदर्शक</strong><br>
+        श्री नितीन कदम साहेब<br>
+        <small>गटशिक्षणाधिकारी पं. स. करमाळा</small>
+      </div>
+      <div class="person-box">
+        <img src="https://lh3.googleusercontent.com/d/1pkldnaLRyqBtfgiQKwtbeSSfXhENzbOm" class="person-img" alt="संकल्पना"><br>
+        <strong>संकल्पना व निर्मिती</strong><br>
+        श्री सचिन शिंदे सर<br>
+        <small>जि प प्रा शाळा नरसोबावाडी<br>मो. 8329684470</small>
+      </div>
+    </div>
+
+    <form id="student-form" onsubmit="startExam(event)">
+      <div class="form-group">
+        <label>परीक्षेचे नाव:</label>
+        <input type="text" value="इयत्ता सातवी - मराठी व्याकरण (विशेषण व प्रकार)" readonly style="background:#eee;">
+      </div>
+      <div class="form-group">
+        <label>विद्यार्थ्याचे नाव:</label>
+        <input type="text" id="std-name" required placeholder="पूर्ण नाव टाका">
+      </div>
+      <div class="form-group">
+        <label>शाळेचे नाव:</label>
+        <input type="text" id="school-name" required placeholder="शाळेचे नाव टाका">
+      </div>
+      <div class="form-group">
+        <label>केंद्र:</label>
+        <input type="text" id="center-name" required placeholder="केद्राचे नाव टाका">
+      </div>
+      <button type="submit" class="btn">EXAM START</button>
+    </form>
+  </div>
+
+  <!-- PAGE 2: Quiz Screen -->
+  <div id="quiz-page" class="hidden">
+    <div class="timer">वेळ शिल्लक: <span id="time-display">00:00</span></div>
+    <div id="question-container">
+      <div class="question-title" id="q-title">प्रश्न...</div>
+      <div class="options-container" id="options-box"></div>
+    </div>
+    <button id="next-btn" class="btn" onclick="nextQuestion()" disabled>नेक्स्ट प्रश्न</button>
+  </div>
+
+  <!-- PAGE 3: Result / Certificate Screen -->
+  <div id="result-page" class="hidden">
+    <div class="certificate">
+      <div class="cert-title">🏆 पंचायत समिती शिक्षण विभाग करमाळा संचालित 🏆</div>
+      <h3 id="res-exam-name">इयत्ता सातवी - मराठी व्याकरण</h3>
+      <br>
+      <p><strong>विद्यार्थ्याचे नाव:</strong> <span id="res-name"></span></p>
+      <p><strong>शाळेचे नाव:</strong> <span id="res-school"></span> | <strong>केंद्र:</strong> <span id="res-center"></span></p>
+      
+      <div class="marks-display" id="res-marks">0 / 50</div>
+      <div class="honor-badge" id="res-honor"></div>
+
+      <div class="people-container" style="margin-top: 20px;">
+        <div class="person-box">
+          <img src="https://lh3.googleusercontent.com/d/1_XeUqnI-oMh8-Dbo4wJUkj7hVkjrov0Y" class="person-img"><br>
+          <strong>मार्गदर्शक</strong><br>
+          श्री नितीन कदम साहेब<br>
+          <small>गटशिक्षणाधिकारी पं. स. करमाळा</small>
+        </div>
+        <div class="person-box">
+          <img src="https://lh3.googleusercontent.com/d/1pkldnaLRyqBtfgiQKwtbeSSfXhENzbOm" class="person-img"><br>
+          <strong>संकल्पना व निर्मिती</strong><br>
+          श्री सचिन शिंदे सर<br>
+          <small>जि प प्रा शाळा नरसोबावाडी<br>मो. 8329684470</small>
+        </div>
+      </div>
+    </div>
+
+    <button class="btn" style="background-color: #17a2b8;" onclick="toggleWrongQuestions()">स्पष्टीकरणासह चुकलेले प्रश्न पहा</button>
+
+    <div id="wrong-questions-box" class="wrong-q-section hidden">
+      <h3 style="margin-bottom:10px; color:#d9534f;">चुकलेले प्रश्न व स्पष्टीकरण:</h3>
+      <div id="wrong-list"></div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <div class="footer-text">
+    टेस्ट निर्मिती व संकल्पना श्री सचिन शिंदे मोबाईल नंबर 83 29 68 44 70
+  </div>
+
+</div>
+
+<script>
+  // 25 Marathi Grammar Questions Data
+  const questions = [
+    { q: "१. पुढील शब्दांतील 'गुणविशेषण' असणारा पर्याय कोणता?", options: ["पाच पुस्तके", "कडवट कारले", "तो मुलगा", "दुप्पट आनंद"], ans: 1, exp: "'कडवट' हा शब्द कारल्याचा गुण/चव दाखवतो." },
+    { q: "२. 'आम्हाला परीक्षेत पुष्कळ गुण मिळाले.' या वाक्यातील अधोरेखित विशेषणाचा प्रकार ओळखा.", options: ["निश्चित संख्याविशेषण", "अनिश्चित संख्याविशेषण", "गुणविशेषण", "सार्वनामिक विशेषण"], ans: 1, exp: "'पुष्कळ' मधून निश्चित संख्या समजून येत नाही." },
+    { q: "३. पुढीलपैकी 'सार्वनामिक विशेषण' असणारा पर्याय कोणता?", options: ["पिकलेला आंबा", "आमचा पक्षी", "गोड शब्द", "दहा पायऱ्या"], ans: 1, exp: "'आमचा' हे सर्वनामापासून बनलेले विशेषण आहे." },
+    { q: "४. 'वाहती नदी सर्वांना आकर्षित करते.' या वाक्यातील 'वाहती' हे कोणत्या प्रकारचे विशेषण आहे?", options: ["नामसाधित विशेषण", "धातुसाधित विशेषण", "अव्ययसाधित विशेषण", "अव्यय"], ans: 1, exp: "'वाह' या धातूपासून 'वाहती' शब्द बनला आहे." },
+    { q: "५. 'पुणे' या नामापासून तयार झालेले 'पुणेरी पगडी' हे कोणत्या प्रकारचे विशेषण आहे?", options: ["नामसाधित विशेषण", "धातुसाधित विशेषण", "सार्वनामिक विशेषण", "गुणविशेषण"], ans: 0, exp: "'पुणे' या नामापासून 'पुणेरी' हे नामसाधित विशेषण तयार झाले." },
+    { q: "६. जे विशेषण नामाच्या (विशेष्याच्या) आधी येते, त्यास काय म्हणतात?", options: ["विधिविशेषण", "अधिविशेषण", "क्रियाविशेषण", "भाववाचक नाम"], ans: 1, exp: नामाच्या आधी येणाऱ्या विशेषणाला अधिविशेषण म्हणतात." },
+    { q: "७. 'तो रस्ता खूप वरचा आहे.' यातील 'वरचा' हे कोणत्या प्रकारचे विशेषण आहे?", options: ["धातुसाधित विशेषण", "अव्ययसाधित विशेषण", "गुणविशेषण", "नामसाधित विशेषण"], ans: 1, exp: 'वर' या अव्ययापासून 'वरचा' हे अव्ययसाधित विशेषण बनले आहे." },
+    { q: "८. 'चतुर कावळा पाण्यासाठी इकडे तिकडे फिरत होता.' या वाक्यातील 'विशेष्य' (नाम) कोणते?", options: ["चतुर", "कावळा", "पाणी", "फिरत"], ans: 1, exp: 'चतुर' हे विशेषण 'कावळा' या विशेष्यासाठी आले आहे." },
+    { q: "९. 'माझ्या भावाने बाजारातून पाच लिटर दूध आणले.' या वाक्यातील 'पाच लिटर' हे कोणते संख्याविशेषण आहे?", options: ["गणनावाचक संख्याविशेषण", "क्रमवाचक संख्याविशेषण", "आवृत्तीवाचक संख्याविशेषण", "पृथक्कत्ववाचक संख्याविशेषण"], ans: 0, exp: 'पाच लिटर' ही मोजणी किंवा गणना दाखवते." },
+    { q: "१०. पुढीलपैकी 'क्रमवाचक संख्याविशेषण' असणारी जोडी कोणती?", options: ["एक-एक मुलगा", "तिप्पट नफा", "पहिला क्रमांक", "थोडे पाणी"], ans: 2, exp: 'पहिला' हा वस्तूंचा किंवा वस्तूंचा क्रम दाखवतो." },
+    { q: "११. 'आईने हसरा बाळ पाळण्यात निजवला.' वाक्यातील विशेषणाचा प्रकार ओळखा.", options: ["धातुसाधित विशेषण", "नामसाधित विशेषण", "सार्वनामिक विशेषण", "अव्ययसाधित विशेषण"], ans: 0, exp: 'हस' या धातूपासून 'हसरा' शब्द बनला आहे." },
+    { q: "१२. पुढीलपैकी 'विशेषण - विशेष्य' यांची अयोग्य/चुकीची जोडी कोणती?", options: ["ताजी फळे", "सुंदर चित्र", "रागीट दगड", "उंच इमारत"], ans: 2, exp: दगड 'रागीट' असू शकत नाही." },
+    { q: "१३. 'अभिनव चौथ्या वर्गात शिकत आहे.' या वाक्यातील विशेषण ओळखा व प्रकार सांगा.", options: ["चौथ्या - क्रमवाचक संख्याविशेषण", "अभिनव - गुणविशेषण", "वर्गात - नामसाधित विशेषण", "शिकत - धातुसाधित विशेषण"], ans: 0, exp: 'चौथ्या' हे वर्ग दर्शवणारे क्रमवाचक संख्याविशेषण आहे." },
+    { q: "१४. 'शूर सरदारांनी शत्रूला पळवून लावले.' या वाक्यातील विशेषण कोणते?", options: ["सरदारांनी", "शत्रूला", "शूर", "लावले"], ans: 2, exp: 'शूर' हा सरदारांचा गुण दर्शवतो." },
+    { q: "१५. 'दुकानदाराने ग्राहकाला चौपट दराने माल विकला.' यातील 'चौपट' हे विशेषण काय दर्शवते?", options: ["क्रम", "आवृत्ती", "पृथक्कत्व", "अनिश्चितता"], ans: 1, exp: 'चौपट' ही संख्येची पट किंवा आवृत्ती दर्शवते." },
+    { q: "१६. पुढीलपैकी कोणत्या वाक्यात 'विधिविशेषण' आले आहे?", options: ["तो हुशार मुलगा आहे.", "ती मुलगी खूप नम्र आहे.", "पांढरा घोडा वेगाने धावतो.", "रंगीत पक्षी आकाशात उडाला."], ans: 1, exp: 'नम्र' हे विशेषण 'मुलगी' या नामाच्या नंतर आले आहे." },
+    { q: "१७. 'मुलांनी एक-एक करून वर्गात यावे.' या वाक्यातील 'एक-एक' हे कोणत्या प्रकारचे विशेषण आहे?", options: ["पृथक्कत्ववाचक संख्याविशेषण", "आवृत्तीवाचक संख्याविशेषण", "क्रमवाचक संख्याविशेषण", "अनिश्चित संख्याविशेषण"], ans: 0, exp: 'एक-एक' यातून वेगळेपणा (पृथक्कत्व) दाखवला जातो." },
+    { q: "१८. 'सातारची गांजराची जिलेबी खूप प्रसिद्ध आहे.' या वाक्यातील 'सातारची' हे कोणत्या प्रकारचे विशेषण आहे?", options: ["धातुसाधित विशेषण", "नामसाधित विशेषण", "गुणविशेषण", "सार्वनामिक विशेषण"], ans: 1, exp: 'सातारा' या नामापासून 'सातारची' हे नामसाधित विशेषण बनले आहे." },
+    { q: "१९. पुढील शब्दांतील 'धातुसाधित विशेषण' नसणारा शब्द कोणता?", options: ["वाहती (नदी)", "बोलकी (बाहुली)", "कोल्हापुरी (चप्पल)", "रांगणारे (बाळ)"], ans: 2, exp: 'कोल्हापुरी' हे नामसाधित विशेषण आहे (धातूंपासून बनलेले नाही)." },
+    { q: "२०. 'झाडावर काही पक्षी बसले होते.' या वाक्यातील 'काही' या विशेषणातून काय स्पष्ट होते?", options: ["पक्षांची अचूक संख्या", "पक्षांची अनिश्चित संख्या", "पक्षांचा गुण", "पक्षांचा क्रम"], ans: 1, exp: 'काही' वरून निश्चित संख्या समजत नाही." },
+    { q: "२१. 'त्याच्या घराची पुढची भिंत पडली.' या वाक्यातील 'पुढची' हे विशेषण कशापासून बनले आहे?", options: ["नामापासून", "धातूपासून", "अव्ययापासून", "सर्वनामापासून"], ans: 2, exp: 'पुढे' या अव्ययापासून 'पुढची' हे अव्ययसाधित विशेषण बनले आहे." },
+    { q: "२२. 'ती' या सर्वनामापासून बनलेले सार्वनामिक विशेषण कोणते?", options: ["तसा", "तसली", "तेवढा", "वरील सर्व"], ans: 3, exp: तसा, तसली, तेवढा हे सर्व 'ती/तो' सर्वनामाचे विशेषण रूप आहेत." },
+    { q: "२३. 'रस्त्यावरून वाळलेली पाने उडत होती.' वाक्यातील विशेषण ओळखा.", options: ["वाळलेली", "पाने", "रस्त्यावरून", "उडत"], ans: 0, exp: 'वाळलेली' हे पानांबद्दल माहिती देणारे धातुसाधित विशेषण आहे." },
+    { q: "२४. 'गोपीनाथने दहा गायी विकत घेतल्या.' वाक्यातील 'दहा' हे कोणते विशेषण आहे?", options: ["गणनावाचक संख्याविशेषण", "क्रमवाचक संख्याविशेषण", "आवृत्तीवाचक संख्याविशेषण", "गुणविशेषण"], ans: 0, exp: 'दहा' ही प्रत्यक्ष संख्या किंवा गणना आहे." },
+    { q: "२५. पुढीलपैकी कोणत्या वाक्यात 'गुणविशेषण' आले आहे?", options: ["त्याने पाच सफरचंद खाल्ले.", "मला ते पुस्तक हवे आहे.", "बागेत लाल गुलाब फुलले आहेत.", "वर्गात दुप्पट मुले आली."], ans: 2, exp: 'लाल' हा गुलाबाचा रंग/गुण दाखवतो." }
+  ];
+
+  let currentQIndex = 0;
+  let userAnswers = new Array(questions.length).fill(null);
+  let timerInterval;
+  // 25 questions * 1.2 min/q = 30 mins = 1800 seconds
+  let totalTimeSeconds = questions.length * 1.2 * 60; 
+
+  function startExam(e) {
+    e.preventDefault();
+    document.getElementById('start-page').classList.add('hidden');
+    document.getElementById('quiz-page').classList.remove('hidden');
+    
+    startTimer();
+    loadQuestion();
+  }
+
+  function startTimer() {
+    timerInterval = setInterval(() => {
+      totalTimeSeconds--;
+      let mins = Math.floor(totalTimeSeconds / 60);
+      let secs = totalTimeSeconds % 60;
+      document.getElementById('time-display').innerText = 
+        `${mins < 10 ? '0' : ''}${mins}:${secs < 10 ? '0' : ''}${secs}`;
+
+      if (totalTimeSeconds <= 0) {
+        clearInterval(timerInterval);
+        alert("वेळ संपली आहे! तुमची परीक्षा सबमिट केली जात आहे.");
+        submitExam();
+      }
+    }, 1000);
+  }
+
+  function loadQuestion() {
+    let q = questions[currentQIndex];
+    document.getElementById('q-title').innerText = q.q;
+    
+    let optionsBox = document.getElementById('options-box');
+    optionsBox.innerHTML = '';
+
+    q.options.forEach((opt, index) => {
+      let btn = document.createElement('button');
+      btn.className = 'option-btn';
+      btn.innerText = `(${index + 1}) ${opt}`;
+      if(userAnswers[currentQIndex] === index) {
+        btn.classList.add('selected');
+      }
+      btn.onclick = () => selectOption(index);
+      optionsBox.appendChild(btn);
+    });
+
+    let nextBtn = document.getElementById('next-btn');
+    nextBtn.disabled = (userAnswers[currentQIndex] === null);
+    
+    if (currentQIndex === questions.length - 1) {
+      nextBtn.innerText = "SUBMIT EXAM";
+      nextBtn.style.backgroundColor = "#28a745";
+    } else {
+      nextBtn.innerText = "नेक्स्ट प्रश्न";
+      nextBtn.style.backgroundColor = "#007bff";
+    }
+  }
+
+  function selectOption(index) {
+    userAnswers[currentQIndex] = index;
+    let btns = document.querySelectorAll('.option-btn');
+    btns.forEach((btn, i) => {
+      if(i === index) btn.classList.add('selected');
+      else btn.classList.remove('selected');
+    });
+    document.getElementById('next-btn').disabled = false;
+  }
+
+  function nextQuestion() {
+    if (currentQIndex < questions.length - 1) {
+      currentQIndex++;
+      loadQuestion();
+    } else {
+      submitExam();
+    }
+  }
+
+  function submitExam() {
+    clearInterval(timerInterval);
+    document.getElementById('quiz-page').classList.add('hidden');
+    document.getElementById('result-page').classList.remove('hidden');
+
+    // Calculate Marks (Each Q = 2 Marks)
+    let score = 0;
+    let wrongQHTML = "";
+
+    questions.forEach((q, idx) => {
+      let userAns = userAnswers[idx];
+      if (userAns === q.ans) {
+        score += 2;
+      } else {
+        let userAnsText = userAns !== null ? q.options[userAns] : "उत्तर दिले नाही";
+        wrongQHTML += `
+          <div class="wrong-q-item">
+            <strong>${q.q}</strong><br>
+            <span style="color:red;">तुमचे उत्तर: ${userAnsText}</span><br>
+            <span style="color:green;">अचूक उत्तर: (${q.ans + 1}) ${q.options[q.ans]}</span><br>
+            <small style="color:#555;">💡 <strong>स्पष्टीकरण:</strong> ${q.exp}</small>
+          </div>
+        `;
+      }
+    });
+
+    let totalMarks = questions.length * 2;
+    let percentage = (score / totalMarks) * 100;
+
+    // Fill Student Info in Result Page
+    document.getElementById('res-name').innerText = document.getElementById('std-name').value;
+    document.getElementById('res-school').innerText = document.getElementById('school-name').value;
+    document.getElementById('res-center').innerText = document.getElementById('center-name').value;
+    document.getElementById('res-marks').innerText = `प्राप्त गुण: ${score} / ${totalMarks} (${percentage.toFixed(1)}%)`;
+
+    // Honor Decision
+    let honorText = "";
+    if (percentage >= 80) {
+      honorText = "🥇 Gold Medal + Trophy 🏆";
+    } else if (percentage >= 60) {
+      honorText = "🥈 Silver Medal + Trophy 🏆";
+    } else if (percentage >= 50) {
+      honorText = "🥉 Bronze Medal + Trophy 🏆";
+    } else {
+      honorText = "💐 अभिनंदन! फुलांचा गुच्छ व पुढील परीक्षेसाठी शुभेच्छा! 💐";
+    }
+    document.getElementById('res-honor').innerText = honorText;
+
+    // Wrong Questions Output
+    if (wrongQHTML === "") {
+      document.getElementById('wrong-list').innerHTML = "<p style='color:green;'>अभिनंदन! तुमचे सर्व प्रश्न बरोबर आले आहेत.</p>";
+    } else {
+      document.getElementById('wrong-list').innerHTML = wrongQHTML;
+    }
+  }
+
+  function toggleWrongQuestions() {
+    let box = document.getElementById('wrong-questions-box');
+    box.classList.toggle('hidden');
+  }
+</script>
+
+</body>
+  </html>
+        
