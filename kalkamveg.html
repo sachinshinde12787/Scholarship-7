@@ -1,0 +1,480 @@
+<!DOCTYPE html>
+<html lang="mr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ऑनलाइन शिष्यवृत्ती सराव परीक्षा</title>
+    <style>
+        :root {
+            --primary-color: #1a5f7a;
+            --secondary-color: #086972;
+            --accent-color: #f8b500;
+            --bg-color: #f4f7f6;
+        }
+
+        body {
+            font-family: 'Segoe UI', Arial, sans-serif;
+            background-color: var(--bg-color);
+            margin: 0;
+            padding: 15px;
+            color: #333;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: #ffffff;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            position: relative;
+        }
+
+        /* Header Styling */
+        .logo-container {
+            text-align: center;
+            margin-bottom: 15px;
+        }
+        .logo-container img {
+            max-width: 180px;
+            height: auto;
+        }
+
+        .info-section {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding: 10px;
+            background: #eef5f8;
+            border-radius: 8px;
+        }
+
+        .person-card {
+            text-align: center;
+            width: 45%;
+            font-size: 13px;
+            font-weight: bold;
+        }
+
+        .person-card img {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid var(--primary-color);
+            margin-bottom: 5px;
+        }
+
+        .exam-title {
+            text-align: center;
+            color: var(--primary-color);
+            border-top: 2px solid var(--primary-color);
+            border-bottom: 2px solid var(--primary-color);
+            padding: 8px 0;
+            margin: 15px 0;
+            font-size: 20px;
+        }
+
+        /* Form Styling */
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            box-sizing: border-box;
+            font-size: 15px;
+        }
+
+        /* Buttons & Footer */
+        .btn {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            font-size: 16px;
+            font-weight: bold;
+            border-radius: 6px;
+            cursor: pointer;
+            width: 100%;
+            margin-top: 15px;
+            transition: 0.3s;
+        }
+
+        .btn:hover {
+            background-color: var(--secondary-color);
+        }
+
+        .btn:disabled {
+            background-color: #cccccc;
+            cursor: not-allowed;
+        }
+
+        .footer-text {
+            text-align: center;
+            font-size: 14px;
+            color: #555;
+            margin-top: 20px;
+            padding-top: 10px;
+            border-top: 1px solid #ddd;
+            font-weight: 500;
+        }
+
+        /* Timer Block */
+        .timer-box {
+            position: sticky;
+            top: 0;
+            background: #fff3cd;
+            border: 1px solid #ffeeba;
+            padding: 10px;
+            text-align: center;
+            font-size: 18px;
+            font-weight: bold;
+            color: #856404;
+            border-radius: 6px;
+            margin-bottom: 15px;
+            z-index: 100;
+        }
+
+        /* Question Box */
+        .question-box {
+            display: none;
+        }
+
+        .question-title {
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 15px;
+        }
+
+        .options-list {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        .option-item {
+            background: #f8f9fa;
+            border: 2px solid #e9ecef;
+            padding: 12px;
+            margin-bottom: 10px;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: 0.2s;
+            font-size: 16px;
+        }
+
+        .option-item:hover {
+            background: #e2e6ea;
+        }
+
+        .option-item.selected {
+            background-color: #d1ecf1;
+            border-color: #17a2b8;
+            color: #0c5460;
+            font-weight: bold;
+        }
+
+        /* Certificate Styling */
+        .certificate {
+            display: none;
+            border: 8px double var(--primary-color);
+            padding: 25px;
+            background: #fffdf5;
+            border-radius: 8px;
+            text-align: center;
+            position: relative;
+        }
+
+        .cert-header {
+            color: #8b0000;
+            font-size: 22px;
+            font-weight: bold;
+            margin-bottom: 15px;
+        }
+
+        .cert-details {
+            text-align: left;
+            margin: 20px auto;
+            max-width: 500px;
+            font-size: 16px;
+            line-height: 1.8;
+        }
+
+        .score-box {
+            font-size: 28px;
+            font-weight: bold;
+            color: var(--primary-color);
+            margin: 15px 0;
+        }
+
+        .honor-badge {
+            font-size: 22px;
+            font-weight: bold;
+            color: #d9534f;
+            margin: 15px 0;
+            padding: 10px;
+            background: #fff;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+
+    <!-- PAGE 1: REGISTRATION & START -->
+    <div id="start-page">
+        <div class="logo-container">
+            <img src="https://lh3.googleusercontent.com/d/1Es1MWAbjyCjxzU11JHmEV6VeIgNkV9bt" alt="पंचायत समिती करमाळा लोगो">
+        </div>
+
+        <div class="info-section">
+            <div class="person-card">
+                <img src="https://lh3.googleusercontent.com/d/1_XeUqnI-oMh8-Dbo4wJUkj7hVkjrov0Y" alt="मार्गदर्शक">
+                <div><b>मार्गदर्शक</b><br>श्री नितीन कदम साहेब<br>गटशिक्षणाधिकारी, पं. स. करमाळा</div>
+            </div>
+            <div class="person-card">
+                <img src="https://lh3.googleusercontent.com/d/1pkldnaLRyqBtfgiQKwtbeSSfXhENzbOm" alt="संकल्पना व निर्मिती">
+                <div><b>संकल्पना व निर्मिती</b><br>श्री सचिन शिंदे सर<br>जि. प. प्रा. शाळा नरसोबावाडी<br>मो. 8329684470</div>
+            </div>
+        </div>
+
+        <h2 class="exam-title">इयत्ता सातवी: शिष्यवृत्ती सराव परीक्षा<br>(काळ-काम, वेग-वेळ-अंतर)</h2>
+
+        <form id="student-form">
+            <div class="form-group">
+                <label>विद्यार्थ्याचे नाव:</label>
+                <input type="text" id="std-name" required placeholder="संपूर्ण नाव टाका">
+            </div>
+            <div class="form-group">
+                <label>शाळेचे नाव:</label>
+                <input type="text" id="std-school" required placeholder="शाळेचे नाव टाका">
+            </div>
+            <div class="form-group">
+                <label>केंद्र:</label>
+                <input type="text" id="std-center" required placeholder="केंद्राचे नाव टाका">
+            </div>
+            <button type="button" class="btn" onclick="startExam()">EXAM START</button>
+        </form>
+
+        <div class="footer-text">
+            टेस्ट निर्मिती व संकल्पना श्री सचिन शिंदे मोबाईल नंबर 8329684470
+        </div>
+    </div>
+
+    <!-- PAGE 2: EXAM INTERFACE -->
+    <div id="exam-page" class="question-box">
+        <div class="timer-box">
+            उरलेली वेळ: <span id="timer">30:00</span> मिनिटे
+        </div>
+
+        <div id="question-container">
+            <div class="question-title" id="q-text">प्रश्न येथे दिसेल...</div>
+            <ul class="options-list" id="options-container">
+                <!-- Options rendered dynamically -->
+            </ul>
+        </div>
+
+        <button id="next-btn" class="btn" onclick="nextQuestion()" disabled>नेक्स्ट (Next)</button>
+
+        <div class="footer-text">
+            टेस्ट निर्मिती व संकल्पना श्री सचिन शिंदे मोबाईल नंबर 8329684470
+        </div>
+    </div>
+
+    <!-- PAGE 3: RESULT / CERTIFICATE -->
+    <div id="result-page" class="certificate">
+        <div class="cert-header">
+            🏆 पंचायत समिती शिक्षण विभाग करमाळा संचालित
+        </div>
+        <hr>
+        <h3>गुणपत्रक व सन्मानपत्र</h3>
+
+        <div class="cert-details">
+            <b>परीक्षेचे नाव:</b> इयत्ता ७ वी - गणितातील काळ, काम व वेग सराव चाचणी<br>
+            <b>विद्यार्थ्याचे नाव:</b> <span id="res-name"></span><br>
+            <b>शाळेचे नाव:</b> <span id="res-school"></span><br>
+            <b>केंद्र:</b> <span id="res-center"></span>
+        </div>
+
+        <div class="score-box">
+            मिळालेले गुण: <span id="res-score">0</span> / 50
+        </div>
+
+        <div class="honor-badge" id="res-honor">
+            <!-- Dynamic Honor Badge -->
+        </div>
+
+        <div class="info-section" style="margin-top: 30px;">
+            <div class="person-card">
+                <img src="https://lh3.googleusercontent.com/d/1_XeUqnI-oMh8-Dbo4wJUkj7hVkjrov0Y" alt="मार्गदर्शक">
+                <div><b>मार्गदर्शक</b><br>श्री नितीन कदम साहेब<br>गटशिक्षणाधिकारी, पं. स. करमाळा</div>
+            </div>
+            <div class="person-card">
+                <img src="https://lh3.googleusercontent.com/d/1pkldnaLRyqBtfgiQKwtbeSSfXhENzbOm" alt="संकल्पना व निर्मिती">
+                <div><b>संकल्पना व निर्मिती</b><br>श्री सचिन शिंदे सर<br>जि. प. प्रा. शाळा नरसोबावाडी<br>मो. 8329684470</div>
+            </div>
+        </div>
+
+        <div class="footer-text">
+            टेस्ट निर्मिती व संकल्पना श्री सचिन शिंदे मोबाईल नंबर 8329684470
+        </div>
+    </div>
+
+</div>
+
+<script>
+    // 25 Questions Data
+    const questions = [
+        { q: "1. 12 मजूर एक काम 15 दिवसांत पूर्ण करतात. तर तेच काम 9 दिवसांत पूर्ण करण्यासाठी किती मजूर लागतील?", options: ["(1) 16", "(2) 20", "(3) 18", "(4) 25"], ans: 1 },
+        { q: "2. 'अ' एक काम 24 दिवसांत करतो आणि 'ब' तेच काम 12 दिवसांत करतो. तर ते दोघे मिळून ते काम किती दिवसांत पूर्ण करतील?", options: ["(1) 8 दिवस", "(2) 10 दिवस", "(3) 6 दिवस", "(4) 9 दिवस"], ans: 0 },
+        { q: "3. 20 कामगारांनी रोज 6 तास काम केले, तर एक इमारत 30 दिवसांत तयार होते. जर 25 कामगारांनी रोज 8 तास काम केले, तर ती इमारत किती दिवसांत तयार होईल?", options: ["(1) 15 दिवस", "(2) 18 दिवस", "(3) 20 दिवस", "(4) 12 दिवस"], ans: 0 },
+        { q: "4. पवन आणि समीर एक काम एकत्रितपणे 12 दिवसांत पूर्ण करतात. समीर एकटा ते काम 30 दिवसांत करतो, तर पवन एकटा ते काम किती दिवसांत पूर्ण करेल?", options: ["(1) 18 दिवस", "(2) 20 दिवस", "(3) 25 दिवस", "(4) 15 दिवस"], ans: 1 },
+        { q: "5. 16 मजूर एक काम 8 दिवसांत संपवतात. जर कामगारांची संख्या दुप्पट केली, तर तेच काम पूर्ण होण्यासाठी किती दिवस लागतील?", options: ["(1) 4 दिवस", "(2) 16 दिवस", "(3) 8 दिवस", "(4) 2 दिवस"], ans: 0 },
+        { q: "6. एका पाण्याच्या टाकीला 6 सारख्या तोट्या लावल्यास टाकी 5 तासांत भरते. जर 2 तोट्या खराब झाल्या आणि 4 तोट्याच चालू ठेवल्या, तर टाकी भरण्यास किती वेळ लागेल?", options: ["(1) 6 तास", "(2) 7.5 तास", "(3) 8 तास", "(4) 6.5 तास"], ans: 1 },
+        { q: "7. 15 कामगार दररोज 7 तास काम करून एक रस्ता 18 दिवसांत बनवतात. जर कामाचे दिवस 12 करायचे असतील आणि रोज 9 तास काम केले, तर किती कामगार लागतील?", options: ["(1) 15", "(2) 18", "(3) 20", "(4) 22"], ans: 0 },
+        { q: "8. 10 कामगार एक काम 20 दिवसांत पूर्ण करतात. 5 दिवस काम झाल्यानंतर 5 कामगार निघून गेले, तर उरलेले काम पूर्ण होण्यास किती दिवस लागतील?", options: ["(1) 25 दिवस", "(2) 30 दिवस", "(3) 15 दिवस", "(4) 20 दिवस"], ans: 1 },
+        { q: "9. 'X' ची काम करण्याची क्षमता 'Y' पेक्षा दुप्पट आहे. 'Y' एकटा ते काम 18 दिवसांत करतो, तर दोघे मिळून ते काम किती दिवसांत पूर्ण करतील?", options: ["(1) 9 दिवस", "(2) 6 दिवस", "(3) 12 दिवस", "(4) 4 दिवस"], ans: 1 },
+        { q: "10. 8 सुतार दररोज 6 तास काम करून 4 दिवसांत 24 कपाटे बनवतात, तर 6 सुतार दररोज 8 तास काम करून 2 दिवसांत किती कपाटे बनवतील?", options: ["(1) 12", "(2) 16", "(3) 18", "(4) 14"], ans: 0 },
+        { q: "11. राम, श्याम व गोपाल एक काम अनुक्रमे 10, 15 व 30 दिवसांत करू शकतात. तिघांनी एकत्र काम सुरू केल्यास ते काम किती दिवसांत संपेल?", options: ["(1) 5 दिवस", "(2) 6 दिवस", "(3) 8 दिवस", "(4) 10 दिवस"], ans: 0 },
+        { q: "12. एका पाण्याच्या टाकीचा 3/5 भाग भरण्यासाठी 9 मिनिटे लागतात, तर उरलेली टाकी भरण्यासाठी किती वेळ लागेल?", options: ["(1) 6 मिनिटे", "(2) 15 मिनिटे", "(3) 5 मिनिटे", "(4) 4 मिनिटे"], ans: 0 },
+        { q: "13. ताशी 72 किमी वेगाने जाणारी गाडी एका सेकंदात किती मीटर अंतर कापेल?", options: ["(1) 15 मी", "(2) 20 मी", "(3) 25 मी", "(4) 30 मी"], ans: 1 },
+        { q: "14. 600 मीटर लांबीची आगगाडी ताशी 54 किमी वेगाने धावत असल्यास, रुळाशेजारील विजेचा खांब ओलांडण्यासाठी तिला किती वेळ लागेल?", options: ["(1) 30 सेकंद", "(2) 40 सेकंद", "(3) 45 सेकंद", "(4) 50 सेकंद"], ans: 1 },
+        { q: "15. ताशी 90 किमी वेगाने जाणारी 250 मीटर लांबीची आगगाडी 350 मीटर लांबीचा पूल किती सेकंदात ओलांडेल?", options: ["(1) 24 सेकंद", "(2) 20 सेकंद", "(3) 30 सेकंद", "(4) 18 सेकंद"], ans: 0 },
+        { q: "16. एका आगगाडीची लांबी 150 मीटर असून ती एका बोगद्याला ताशी 60 किमी वेगाने 36 सेकंदात ओलांडते, तर बोगद्याची लांबी किती?", options: ["(1) 450 मी", "(2) 600 मी", "(3) 45 मी", "(4) 500 मी"], ans: 0 },
+        { q: "17. ताशी 50 किमी वेगाने एका ठिकाणाहून दुसऱ्या ठिकाणी जाण्यास (1/2 x - 3) तास लागतात, तर त्या दोन ठिकाणांतील अंतर किती किमी असेल?", options: ["(1) (25x - 150)", "(2) (50x - 150)", "(3) (25x - 3)", "(4) (50x - 3)"], ans: 0 },
+        { q: "18. ताशी 36 किमी वेगाने धावणारी 450 मीटर लांबीची मालगाडी 1.3 किमी लांबीचा बोगदा किती वेळात ओलांडेल?", options: ["(1) 2 मिनिटे", "(2) 2 मिनिटे 55 सेकंद", "(3) 3 मिनिटे 5 सेकंद", "(4) 240 सेकंद"], ans: 1 },
+        { q: "19. अजय सकाळी 8 वाजता ताशी 6 किमी वेगाने आणि विजय सकाळी 9 वाजता ताशी 8 किमी वेगाने एकाच दिशेने पायपीट करत निघाले, तर विजय अजयला किती वाजता गाठेल?", options: ["(1) दुपारी 12 वाजता", "(2) दुपारी 1 वाजता", "(3) सकाळी 11 वाजता", "(4) दुपारी 2 वाजता"], ans: 0 },
+        { q: "20. एका वाहनाचा ताशी वेग 54 किमी आहे. त्याने 5 तासांत कापलेले अंतर ताशी 45 किमी वेगाने कापल्यास किती वेळ लागेल?", options: ["(1) 6 तास", "(2) 6.5 तास", "(3) 7 तास", "(4) 5.5 तास"], ans: 0 },
+        { q: "21. एक कार ताशी 60 किमी वेगाने ठराविक अंतरावर वेळेत पोहोचते. जर कारचा वेग ताशी 50 किमी केला, तर ती 48 मिनिटे उशिरा पोहोचते. तर तिने कापावयाचे अंतर किती?", options: ["(1) 240 किमी", "(2) 300 किमी", "(3) 180 किमी", "(4) 200 किमी"], ans: 0 },
+        { q: "22. ताशी 48 किमी वेगाने जाणाऱ्या 300 मीटर लांबीच्या आगगाडीला 400 मीटर लांबीचा प्लॅटफॉर्म ओलांडण्यास किती वेळ लागेल?", options: ["(1) 52.5 सेकंद", "(2) 60 सेकंद", "(3) 45 सेकंद", "(4) 50 सेकंद"], ans: 0 },
+        { q: "23. तोफेमधून डागलेला गोळा 3 सेकंदात 900 मीटर अंतर कापतो, तर गोळ्याचा ताशी वेग किती किमी असेल?", options: ["(1) 900 किमी/तास", "(2) 1080 किमी/तास", "(3) 300 किमी/तास", "(4) 1200 किमी/तास"], ans: 1 },
+        { q: "24. स्थानक 'A' व 'B' मधील अंतर 360 किमी आहे. एक बस 'A' कडून 'B' कडे ताशी 40 किमी वेगाने निघाली आणि दुसरी बस त्याच वेळी 'B' कडून 'A' कडे ताशी 50 किमी वेगाने निघाली, तर त्या दोन्ही बसेस किती तासांनी एकमेकींना भेटतील?", options: ["(1) 4 तास", "(2) 5 तास", "(3) 4.5 तास", "(4) 6 तास"], ans: 0 },
+        { q: "25. जर p माणसे एक काम 15 दिवसांत करतात, तर p + 5 माणसे तेच काम किती दिवसांत पूर्ण करतील?", options: ["(1) 15p / (p+5)", "(2) (p+5) / 15p", "(3) 15 / (p+5)", "(4) 15p(p+5)"], ans: 0 }
+    ];
+
+    let currentQ = 0;
+    let score = 0;
+    let selectedOption = null;
+    let timerInterval = null;
+
+    function startExam() {
+        const name = document.getElementById('std-name').value;
+        const school = document.getElementById('std-school').value;
+        const center = document.getElementById('std-center').value;
+
+        if(!name || !school || !center) {
+            alert('कृपया सर्व माहिती भरा!');
+            return;
+        }
+
+        document.getElementById('start-page').style.display = 'none';
+        document.getElementById('exam-page').style.display = 'block';
+
+        // Timer Calculation: 25 questions * 1.2 minutes = 30 Minutes
+        let totalSeconds = 25 * 1.2 * 60;
+        
+        timerInterval = setInterval(() => {
+            let minutes = Math.floor(totalSeconds / 60);
+            let seconds = totalSeconds % 60;
+            
+            document.getElementById('timer').innerText = 
+                `${minutes < 10 ? '0':''}${minutes}:${seconds < 10 ? '0':''}${seconds}`;
+
+            if(totalSeconds <= 0) {
+                clearInterval(timerInterval);
+                alert('वेळ संपली आहे! तुमची परीक्षा सबमिट केली जात आहे.');
+                submitExam();
+            }
+            totalSeconds--;
+        }, 1000);
+
+        loadQuestion();
+    }
+
+    function loadQuestion() {
+        selectedOption = null;
+        document.getElementById('next-btn').disabled = true;
+
+        if (currentQ === questions.length - 1) {
+            document.getElementById('next-btn').innerText = "सबमिट एक्झाम (Submit Exam)";
+        } else {
+            document.getElementById('next-btn').innerText = "नेक्स्ट (Next)";
+        }
+
+        let qData = questions[currentQ];
+        document.getElementById('q-text').innerText = qData.q;
+
+        let optionsHtml = '';
+        qData.options.forEach((opt, index) => {
+            optionsHtml += `<li class="option-item" onclick="selectOption(this, ${index})">${opt}</li>`;
+        });
+        document.getElementById('options-container').innerHTML = optionsHtml;
+    }
+
+    function selectOption(element, index) {
+        let items = document.querySelectorAll('.option-item');
+        items.forEach(item => item.classList.remove('selected'));
+
+        element.classList.add('selected');
+        selectedOption = index;
+        document.getElementById('next-btn').disabled = false;
+    }
+
+    function nextQuestion() {
+        if (selectedOption === questions[currentQ].ans) {
+            score += 2; // 2 Marks for each question
+        }
+
+        currentQ++;
+
+        if (currentQ < questions.length) {
+            loadQuestion();
+        } else {
+            submitExam();
+        }
+    }
+
+    function submitExam() {
+        clearInterval(timerInterval);
+
+        document.getElementById('exam-page').style.display = 'none';
+        document.getElementById('result-page').style.display = 'block';
+
+        // Fill Details
+        document.getElementById('res-name').innerText = document.getElementById('std-name').value;
+        document.getElementById('res-school').innerText = document.getElementById('std-school').value;
+        document.getElementById('res-center').innerText = document.getElementById('std-center').value;
+        document.getElementById('res-score').innerText = score;
+
+        // Honor System Calculation
+        let percentage = (score / 50) * 100;
+        let honorText = "";
+
+        if (percentage >= 80) {
+            honorText = "🥇 Gold Medal + Trophy <br><small>अतिउत्कृष्ट कामगिरी!</small>";
+        } else if (percentage >= 60) {
+            honorText = "🥈 Silver Medal + Trophy <br><small>छान कामगिरी!</small>";
+        } else if (percentage >= 50) {
+            honorText = "🥉 Bronze Medal + Trophy <br><small>चांगली कामगिरी!</small>";
+        } else {
+            honorText = "💐 अभिनंदन! फुलांचा गुच्छ <br><small>पुढील परीक्षेसाठी हार्दिक शुभेच्छा!</small>";
+        }
+
+        document.getElementById('res-honor').innerHTML = honorText;
+    }
+</script>
+
+</body>
+</html>
