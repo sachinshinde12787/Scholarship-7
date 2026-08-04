@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html lang="mr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>शिष्यवृत्ती परीक्षा (इयत्ता ७ वी) - भूमितीय संकल्पना</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Arial, sans-serif;
+        }
+        body {
+            background-color: #f0f4f8;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+        }
+        .container {
+            background: #ffffff;
+            max-width: 700px;
+            width: 100%;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+        h1, h2, h3 {
+            text-align: center;
+            color: #1a365d;
+            margin-top: 5px;
+        }
+        .banner {
+            background: linear-gradient(135deg, #2b6cb0, #1a365d);
+            color: white;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+        .banner h1 { color: #fff; margin: 0; font-size: 22px; }
+        .banner h2 { color: #e2e8f0; margin: 5px 0 0 0; font-size: 16px; font-weight: normal; }
+        
+        /* Form & Inputs */
+        .input-group {
+            margin: 20px 0;
+        }
+        label {
+            font-weight: bold;
+            display: block;
+            margin-bottom: 8px;
+            color: #2d3748;
+        }
+        input[type="text"] {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #cbd5e0;
+            border-radius: 6px;
+            font-size: 16px;
+        }
+        .btn {
+            background-color: #3182ce;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            font-size: 16px;
+            font-weight: bold;
+            border-radius: 6px;
+            cursor: pointer;
+            width: 100%;
+            transition: background 0.2s;
+        }
+        .btn:hover { background-color: #2b6cb0; }
+        
+        /* Question Section */
+        .question-card {
+            display: none;
+        }
+        .option-btn {
+            display: block;
+            width: 100%;
+            padding: 12px;
+            margin: 8px 0;
+            background: #edf2f7;
+            border: 2px solid #e2e8f0;
+            border-radius: 6px;
+            text-align: left;
+            font-size: 16px;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+        .option-btn:hover { background: #e2e8f0; }
+        .option-btn.correct {
+            background-color: #c6f6d5 !important;
+            border-color: #38a169 !important;
+            color: #22543d;
+            font-weight: bold;
+        }
+        .option-btn.wrong {
+            background-color: #fed7d7 !important;
+            border-color: #e53e3e !important;
+            color: #742a2a;
+        }
+        .explanation {
+            margin-top: 15px;
+            padding: 12px;
+            background: #ebf8ff;
+            border-left: 4px solid #3182ce;
+            border-radius: 4px;
+            display: none;
+            color: #2b6cb0;
+        }
+        .next-btn {
+            margin-top: 15px;
+            display: none;
+            background-color: #38a169;
+        }
+        .next-btn:hover { background-color: #2f855a; }
+        
+        /* Certificate Design */
+        #result-screen { display: none; }
+        .certificate {
+            width: 100%;
+            aspect-ratio: 1 / 1;
+            border: 8px double #1a365d;
+            padding: 20px;
+            background: #fffdf9;
+            box-shadow: inset 0 0 10px rgba(0,0,0,0.05);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            text-align: center;
+            box-sizing: border-radius;
+            margin-bottom: 20px;
+        }
+        .cert-header { border-bottom: 2px solid #cbd5e0; padding-bottom: 10px; }
+        .cert-title { font-size: 20px; color: #1a365d; font-weight: bold; margin: 5px 0; }
+        .cert-sub { font-size: 14px; color: #4a5568; margin-bottom: 5px; }
+        .cert-body { margin: 15px 0; text-align: left; line-height: 1.6; }
+        .cert-body p { margin: 6px 0; font-size: 15px; }
+        .honor-tag {
+            font-size: 18px;
+            font-weight: bold;
+            color: #d69e2e;
+            text-align: center;
+            margin: 10px 0;
+            padding: 8px;
+            background: #fefcbf;
+            border-radius: 6px;
+        }
+        .guides {
+            display: flex;
+            justify-content: space-between;
+            border-top: 1px dashed #cbd5e0;
+            padding-top: 10px;
+            font-size: 12px;
+            text-align: left;
+        }
+        
+        /* Wrong Questions Section */
+        #wrong-questions-section {
+            display: none;
+            margin-top: 20px;
+            border-top: 2px solid #e2e8f0;
+            padding-top: 15px;
+        }
+        .review-card {
+            background: #fff5f5;
+            border: 1px solid #feb2b2;
+            padding: 12px;
+            border-radius: 6px;
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <!-- Banner -->
+    <div class="banner">
+        <h1>🏆 स्पर्धा परीक्षा मार्गदर्शन केंद्र, जेऊर</h1>
+        <h2>पूर्व माध्यमिक शिष्यवृत्ती परीक्षा (इयत्ता ७ वी) - भूमितीय संकल्पना</h2>
+    </div>
+
+    <!-- Start Screen -->
+    <div id="start-screen">
+        <div class="input-group">
+            <label for="student-name">विद्यार्थ्याचे नाव प्रविष्ट करा:</label>
+            <input type="text" id="student-name" placeholder="पूर्ण नाव टाका..." required>
+        </div>
+        <button class="btn" onclick="startExam()">Start Exam (परीक्षा सुरू करा)</button>
+    </div>
+
+    <!-- Exam Screen -->
+    <div id="exam-screen" class="question-card">
+        <div style="display: flex; justify-content: space-between; font-weight: bold; margin-bottom: 10px;">
+            <span id="q-count">प्रश्न १ / ४०</span>
+            <span id="score-tracker">गुण: ०</span>
+        </div>
+        <hr style="border: 0.5px solid #e2e8f0; margin-bottom: 15px;">
+        
+        <h3 id="question-text" style="text-align: left; color: #2d3748;"></h3>
+        
+        <div id="options-container"></div>
+
+        <div id="explanation" class="explanation"></div>
+
+        <button id="next-btn" class="btn next-btn" onclick="nextQuestion()">पुढील प्रश्न ➔</button>
+        <button id="submit-btn" class="btn" style="display: none; margin-top: 15px; background-color: #e53e3e;" onclick="finishExam()">Submit Exam (परीक्षा सबमिट करा)</button>
+    </div>
+
+    <!-- Result / Certificate Screen -->
+    <div id="result-screen">
+        <!-- Certificate (Square Style) -->
+        <div class="certificate">
+            <div class="cert-header">
+                <div class="cert-title">🏆 स्पर्धा परीक्षा मार्गदर्शन केंद्र, जेऊर</div>
+                <div class="cert-sub"><b>परीक्षेचे नाव:</b> पूर्व माध्यमिक शिष्यवृत्ती परीक्षा (इयत्ता ७ वी) - भूमितीय संकल्पना</div>
+            </div>
+            
+            <div class="cert-body">
+                <p><b>विद्यार्थ्याचे नाव :</b> <span id="cert-name" style="color: #2b6cb0; font-weight: bold;"></span></p>
+                <p><b>मिळालेले गुण :</b> <span id="cert-marks"></span></p>
+                <p><b>टक्केवारी :</b> <span id="cert-percentage"></span>%</p>
+                
+                <div id="honor-badge" class="honor-tag"></div>
+            </div>
+
+            <div class="guides">
+                <div>
+                    <b>मार्गदर्शक शिक्षक:</b> सचिन शिंदे<br>
+                    <b>संपर्क:</b> 8329684470
+                </div>
+                <div style="text-align: right;">
+                    <b>मार्गदर्शक शिक्षक:</b> सतीश चिंदे<br>
+                    <b>संपर्क:</b> 8208167846
+                </div>
+            </div>
+        </div>
+
+        <button class="btn" style="background-color: #dd6b20;" onclick="showWrongQuestions()">चुकलेले प्रश्न व मार्गदर्शन पहा 🔍</button>
+
+        <!-- Wrong Questions Section -->
+        <div id="wrong-questions-section">
+            <h3 style="color: #c53030;">चुकलेले प्रश्न आणि स्पष्टीकरण</h3>
+            <div id="wrong-list"></div>
+        </div>
+    </div>
+</div>
+<script>
+// 40 Questions Data Based on Geometry Concepts
+const questions = [
+    { q: "1) $52^\\circ$ मापाच्या कोनाच्या कोटिकोनाचे माप किती?", options: ["38°", "48°", "128°", "138°"], ans: 0, exp: "स्पष्टीकरण: कोटिकोनांच्या मापांची बेरीज 90° असते. म्हणून 90° - 52° = 38°." },
+    { q: "2) जर m∠X = 40°, तर ∠X च्या कोटिकोनाच्या पूरक कोनाचे माप किती?", options: ["50°", "130°", "140°", "150°"], ans: 2, exp: "स्पष्टीकरण: 40° चा कोटिकोन = 90° - 40° = 50°. त्याचा पूरक कोन = 180° - 50° = 140°." },
+    { q: "3) एका कोनाचे माप त्याच्या पूरक कोनाच्या मापाच्या 1/3 पट आहे, तर त्या कोनाचे माप किती?", options: ["30°", "45°", "60°", "135°"], ans: 1, exp: "स्पष्टीकरण: x = 1/3(180 - x) => 3x = 180 - x => 4x = 180 => x = 45°." },
+    { q: "4) (2x - 10)° आणि (x + 40)° हे परस्परांचे कोटिकोन आहेत, तर x ची किंमत किती?", options: ["20", "30", "40", "50"], ans: 0, exp: "स्पष्टीकरण: (2x - 10) + (x + 40) = 90 => 3x + 30 = 90 => 3x = 60 => x = 20." },
+    { q: "5) एका कोनाचा पूरक कोन व कोटिकोन यांच्या मापांचे गुणोत्तर 7 : 2 आहे, तर त्या कोनाचे माप किती?", options: ["36°", "54°", "40°", "64°"], ans: 1, exp: "स्पष्टीकरण: (180 - x)/(90 - x) = 7/2 => 360 - 2x = 630 - 7x => 5x = 270 => x = 54°." },
+    { q: "6) एका कोनाच्या कोटिकोनाचा पूरक कोन 125° आहे, तर मूळ कोनाचे माप काढा.", options: ["35°", "55°", "65°", "145°"], ans: 0, exp: "स्पष्टीकरण: कोटिकोन = 180° - 125° = 55°. मूळ कोन = 90° - 55° = 35°." },
+    { q: "7) 75° आणि 105° मापांचे एकच शिरोबिंदू नसलेले दोन कोन दिले आहेत, तर ते कोन कोणते आहेत?", options: ["कोटिकोन", "रेषीय जोडीतील कोन", "पूरक कोन", "संलग्न कोन"], ans: 2, exp: "स्पष्टीकरण: मापांची बेरीज 75° + 105° = 180° आहे आणि एकच शिरोबिंदू नाही, म्हणून ते पूरक कोन आहेत." },
+    { q: "8) एका कोनाला दुभागले असता मिळणारा प्रत्येक कोन 25° चा होतो, तर मूळ कोनाच्या कोटिकोनाचे माप किती?", options: ["50°", "40°", "130°", "60°"], ans: 1, exp: "स्पष्टीकरण: मूळ कोन = 25° × 2 = 50°. त्याचा कोटिकोन = 90° - 50° = 40°." },
+    { q: "9) दोन रेषा परस्परांना छेदतात तेव्हा तयार होणारे विरुद्ध कोन (3x + 15)° व (x + 55)° आहेत, तर कोनांचे माप किती?", options: ["75°", "20°", "60°", "35°"], ans: 0, exp: "स्पष्टीकरण: 3x + 15 = x + 55 => 2x = 40 => x = 20. कोन = 3(20) + 15 = 75°." },
+    { q: "10) दोन छेदणाऱ्या रेषांमुळे तयार होणाऱ्या विरुद्ध कोनांपैकी एक कोन 80° चा असेल, तर त्याच्या लगतच्या कोनाचे माप किती?", options: ["80°", "100°", "160°", "280°"], ans: 1, exp: "स्पष्टीकरण: लगतचे कोन रेषीय जोडी तयार करतात. 180° - 80° = 100°." },
+    { q: "11) पुढीलपैकी कोणते विधान सत्य आहे?", options: ["दोन विशालकोन परस्परांचे पूरक कोन असू शकतात.", "दोन लघुकोन परस्परांचे कोटिकोन असू शकतात.", "एक काटकोन व एक लघुकोन परस्परांचे कोटिकोन असू शकतात.", "दोन काटकोन परस्परांचे कोटिकोन असतात."], ans: 1, exp: "स्पष्टीकरण: दोन लघुकोनांची बेरीज 90° येऊ शकते, म्हणून ते कोटिकोन असू शकतात." },
+    { q: "12) जर दोन कोन रेषीय जोडीतील असतील आणि त्यांच्या मापांचे प्रमाण 4 : 5 असेल, तर लहान कोनाचे माप किती?", options: ["80°", "100°", "40°", "90°"], ans: 0, exp: "स्पष्टीकरण: 4x + 5x = 180 => 9x = 180 => x = 20. लहान कोन = 4 × 20 = 80°." },
+    { q: "13) एका कोनाचे माप त्याच्या कोटिकोनाच्या मापाच्या दुप्पट आहे, तर त्या कोनाचे माप किती?", options: ["30°", "45°", "60°", "120°"], ans: 2, exp: "स्पष्टीकरण: x = 2(90 - x) => 3x = 180 => x = 60°." },
+    { q: "14) एका कोनाचा पूरक कोन हा त्याच्या कोटिकोनाच्या 4 पट आहे, तर तो कोन कोणता?", options: ["30°", "60°", "45°", "15°"], ans: 1, exp: "स्पष्टीकरण: 180 - x = 4(90 - x) => 180 - x = 360 - 4x => 3x = 180 => x = 60°." },
+    { q: "15) (x + 10)° आणि (2x + 20)° हे रेषीय जोडीतील कोन असल्यास x ची किंमत किती?", options: ["30", "40", "50", "60"], ans: 2, exp: "स्पष्टीकरण: (x + 10) + (2x + 20) = 180 => 3x + 30 = 180 => 3x = 150 => x = 50." },
+    { q: "16) घड्याळात बरोबर 3:00 वाजता तासकाटा व मिनिटकाटा यांच्यात किती अंशांचा कोन असतो?", options: ["60°", "90°", "120°", "180°"], ans: 1, exp: "स्पष्टीकरण: ३ वाजता काट्यांमध्ये ३ घरांचे अंतर असते. ३ × ३०° = ९०° (काटकोन)." },
+    { q: "17) घड्याळात 4 वाजून 20 मिनिटे झाली असता दोन्ही काट्यांमध्ये किती अंशांचा कोन असेल?", options: ["0°", "10°", "20°", "15°"], ans: 1, exp: "स्पष्टीकरण: सूत्राने, |30(4) - 11/2(20)| = |120 - 110| = 10°." },
+    { q: "18) घड्याळात बरोबर कोणत्या वेळी तासकाटा व मिनिटकाटा यांच्यात 120° चा कोन होतो?", options: ["2 वाजता", "4 वाजता", "5 वाजता", "6 वाजता"], ans: 1, exp: "स्पष्टीकरण: ४ वाजता ४ घरांचे अंतर असते. ४ × ३०° = १२०°." },
+    { q: "19) घड्याळात 1 वाजून 30 मिनिटे झाली असता मिनिटकाटा व तासकाटा यांच्यात किती अंशांचा कोन होईल?", options: ["135°", "120°", "105°", "90°"], ans: 0, exp: "स्पष्टीकरण: |30(1) - 11/2(30)| = |30 - 165| = 135°." },
+    { q: "20) सव्वापाच (5:15) वाजता घड्याळातील तासकाटा व मिनिटकाटा यांच्यात किती अंशांचा कोन असेल?", options: ["60°", "67.5°", "72.5°", "90°"], ans: 1, exp: "स्पष्टीकरण: |30(5) - 11/2(15)| = |150 - 82.5| = 67.5°." },
+    { q: "21) मिनिटकाटा १५ मिनिटांत किती अंशांचा कोन पूर्ण करतो?", options: ["45°", "60°", "90°", "180°"], ans: 2, exp: "स्पष्टीकरण: मिनिटकाटा १ मिनिटात ६° फिरतो. १५ × ६° = ९०°." },
+    { q: "22) तासकाटा एका तासात (६० मिनिटांत) किती अंशांमधून फिरतो?", options: ["30°", "60°", "15°", "360°"], ans: 0, exp: "स्पष्टीकरण: तासकाटा एका तासात एका अंकावरून दुसऱ्या अंकावर जातो, म्हणजेच ३०°." },
+    { q: "23) घड्याळात ९:०० वाजता होणाऱ्या कोनाचा पूरक कोन किती मापाचा असतो?", options: ["0°", "90°", "180°", "45°"], ans: 1, exp: "स्पष्टीकरण: ९ वाजता ९०° चा कोन होतो. ९०° चा पूरक कोन = १८०° - ९०° = ९०°." },
+    { q: "24) एका अष्टकोनाच्या (8 बाजू असलेल्या) सर्व आंतरकोनांच्या मापांची बेरीज किती?", options: ["1080°", "900°", "1260°", "720°"], ans: 0, exp: "स्पष्टीकरण: सूत्र: (n - 2) × 180° => (8 - 2) × 180° = 6 × 180° = 1080°." },
+    { q: "25) एका षटकोनाच्या (6 बाजू) सर्व आंतरकोनांच्या मापांची बेरीज किती असते?", options: ["540°", "720°", "360°", "900°"], ans: 1, exp: "स्पष्टीकरण: (6 - 2) × 180° = 4 × 180° = 720°." },
+    { q: "26) एका बहुभुजाकृतीच्या सर्व आंतरकोनांच्या मापांची बेरीज 1800° आहे, तर बाजूंची संख्या किती?", options: ["10", "11", "12", "14"], ans: 2, exp: "स्पष्टीकरण: (n - 2) × 180 = 1800 => n - 2 = 10 => n = 12." },
+    { q: "27) △PQR मध्ये m∠P = 50° व m∠Q = 60° असेल, तर ∠R चा बाह्यकोन किती मापाचा असेल?", options: ["70°", "110°", "120°", "130°"], ans: 1, exp: "स्पष्टीकरण: बाह्यकोनाचे माप = दुरुस्त अंतराभिमुख कोनांच्या मापांची बेरीज = 50° + 60° = 110°." },
+    { q: "28) काटकोन त्रिकोणात काटकोन करणाऱ्या दोन कोनां व्यतिरिक्त उरलेल्या दोन कोनांचा परस्परसंबंध काय असतो?", options: ["ते परस्परांचे पूरक कोन असतात.", "ते परस्परांचे कोटिकोन असतात.", "ते रेषीय जोडीतील कोन असतात.", "ते नेहमी समान असतात."], ans: 1, exp: "स्पष्टीकरण: त्रिकोणाच्या तिन्ही कोनांची बेरीज १८०° असते. एक ९०° असल्याने उरलेल्या दोन कोनांची बेरीज ९०° (कोटिकोन) असते." },
+    { q: "29) समद्विभुज काटकोन त्रिकोणाच्या दोन समान कोनांपैकी एका कोनाचे माप किती असते?", options: ["30°", "45°", "60°", "90°"], ans: 1, exp: "स्पष्टीकरण: ९०° सोडून उरलेले दोन समान कोन = ९०° / २ = ४५°." },
+    { q: "30) त्रिकोणाच्या एका बाह्यकोनाचे माप 115° आहे आणि एका अंतराभिमुख कोनाचे माप 45° आहे, तर दुसऱ्या कोनाचे माप किती?", options: ["70°", "65°", "160°", "55°"], ans: 0, exp: "स्पष्टीकरण: दुसरा कोन = ११५° - ४५° = ७०°." },
+    { q: "31) एकाच रेषेवर नसलेल्या ४ बिंदूंमधून जास्तीत जास्त किती रेषा काढता येतील?", options: ["4", "5", "6", "8"], ans: 2, exp: "स्पष्टीकरण: सूत्र: [n(n-1)] / 2 => [4 × 3] / 2 = 6 रेषा." },
+    { q: "32) एका रेषेवर ५ बिंदू दिले असता तयार होणाऱ्या एकूण रेषाखंडांची संख्या किती?", options: ["5", "8", "10", "15"], ans: 2, exp: "स्पष्टीकरण: सूत्र: [5 × 4] / 2 = 10 रेषाखंड." },
+    { q: "33) एकाच प्रतलात असलेल्या परंतु परस्परांना न छेदणाऱ्या रेषांना काय म्हणतात?", options: ["छेदणाऱ्या रेषा", "लंब रेषा", "समांतर रेषा", "एकसंपाती रेषा"], ans: 2, exp: "स्पष्टीकरण: एकाच प्रतलातील न छेदणाऱ्या रेषांना समांतर रेषा म्हणतात." },
+    { q: "34) पुढीलपैकी कशावरून एकमेव प्रतलनिश्चिती होत नाही?", options: ["तीन नैकरेषीय बिंदू", "दोन समांतर रेषा", "एक रेषा आणि रेषेबाहेरील एक बिंदू", "तीन एकरेषीय बिंदू"], ans: 3, exp: "स्पष्टीकरण: तीन एकरेषीय बिंदूंमधून अनंत प्रतले जाऊ शकतात, त्यामुळे एकमेव प्रतल निश्चित होत नाही." },
+    { q: "35) परस्परविरुद्ध किरणांमध्ये किती सामायिक बिंदू असतात?", options: ["शून्य", "एक (आरंभबिंदू)", "दोन", "अनंत"], ans: 1, exp: "स्पष्टीकरण: विरुद्ध किरणांचा केवळ एकच सामायिक आरंभबिंदू असतो." },
+    { q: "36) एका बिंदूतून जाणाऱ्या असंख्य रेषांना काय म्हणतात?", options: ["समांतर रेषा", "एकसंपाती रेषा", "छेदणाऱ्या रेषा", "रेषीय रेषा"], ans: 1, exp: "स्पष्टीकरण: जेव्हा अनेक रेषा एकाच बिंदूतून जातात, तेव्हा त्यांना एकसंपाती रेषा म्हणतात." },
+    { q: "37) किरण OP आणि किरण OQ हे परस्परविरुद्ध किरण आहेत. तर ∠POQ चे माप किती?", options: ["90°", "180°", "360°", "0°"], ans: 1, exp: "स्पष्टीकरण: विरुद्ध किरणांमुळे सरळ रेषा (१८०° चा कोन) तयार होते." },
+    { q: "38) इष्टिकाचितीला (Cuboid) एकूण किती पृष्ठे (प्रतले) असतात?", options: ["4", "6", "8", "12"], ans: 1, exp: "स्पष्टीकरण: इष्टिकाचितीला एकूण ६ सपाट पृष्ठे असतात." },
+    { q: "39) एका रेषाखंडाला एकूण किती अंत्यबिंदू (End points) असतात?", options: ["1", "2", "3", "अनंत"], ans: 1, exp: "स्पष्टीकरण: रेषाखंड दोन्ही बाजूंनी मर्यादित असतो, म्हणून त्याला २ अंत्यबिंदू असतात." },
+    { q: "40) दोन प्रतले परस्परांना छेदतात तेव्हा त्यांच्या छेदाने काय तयार होते?", options: ["एक बिंदू", "एक रेषा", "एक त्रिकोण", "एक प्रतल"], ans: 1, exp: "स्पष्टीकरण: दोन प्रतलांच्या छेदाने नेहमी एक सरळ रेषा तयार होते." }
+];
+let currentQ = 0;
+let score = 0;
+let studentName = "";
+let userAnswers = [];
+
+function startExam() {
+    let nameInput = document.getElementById("student-name").value.trim();
+    if(nameInput === "") {
+        alert("कृपया प्रथम तुमचे नाव प्रविष्ट करा!");
+        return;
+    }
+    studentName = nameInput;
+    document.getElementById("start-screen").style.display = "none";
+    document.getElementById("exam-screen").style.display = "block";
+    loadQuestion();
+}
+
+function loadQuestion() {
+    let qData = questions[currentQ];
+    document.getElementById("q-count").innerText = `प्रश्न ${currentQ + 1} / ${questions.length}`;
+    document.getElementById("score-tracker").innerText = `गुण: ${score}`;
+    document.getElementById("question-text").innerText = qData.q;
+    
+    let optContainer = document.getElementById("options-container");
+    optContainer.innerHTML = "";
+    
+    document.getElementById("explanation").style.display = "none";
+    document.getElementById("next-btn").style.display = "none";
+
+    qData.options.forEach((opt, index) => {
+        let btn = document.createElement("button");
+        btn.className = "option-btn";
+        btn.innerText = opt;
+        btn.onclick = () => checkAnswer(index);
+        optContainer.appendChild(btn);
+    });
+}
+
+function checkAnswer(selectedIndex) {
+    let qData = questions[currentQ];
+    let buttons = document.querySelectorAll(".option-btn");
+    
+    // Disable all buttons after selection
+    buttons.forEach(btn => btn.disabled = true);
+    
+    // Save user choice
+    userAnswers.push({
+        question: qData.q,
+        selected: selectedIndex,
+        correct: qData.ans,
+        exp: qData.exp,
+        options: qData.options
+    });
+
+    if(selectedIndex === qData.ans) {
+        buttons[selectedIndex].classList.add("correct");
+        score++;
+    } else {
+        buttons[selectedIndex].classList.add("wrong");
+        buttons[qData.ans].classList.add("correct");
+        
+        // Show explanation for wrong answer
+        let expDiv = document.getElementById("explanation");
+        expDiv.innerText = qData.exp;
+        expDiv.style.display = "block";
+    }
+
+    document.getElementById("score-tracker").innerText = `गुण: ${score}`;
+
+    if(currentQ < questions.length - 1) {
+        document.getElementById("next-btn").style.display = "block";
+    } else {
+        document.getElementById("submit-btn").style.display = "block";
+    }
+}
+
+function nextQuestion() {
+    currentQ++;
+    loadQuestion();
+}
+
+function finishExam() {
+    document.getElementById("exam-screen").style.display = "none";
+    document.getElementById("result-screen").style.display = "block";
+
+    let percentage = ((score / questions.length) * 100).toFixed(1);
+
+    document.getElementById("cert-name").innerText = studentName;
+    document.getElementById("cert-marks").innerText = `${score} / ${questions.length}`;
+    document.getElementById("cert-percentage").innerText = percentage;
+
+    let honorBadge = document.getElementById("honor-badge");
+    if(percentage >= 80) {
+        honorBadge.innerHTML = "🥇 Gold Medal + Trophy";
+    } else if(percentage >= 60) {
+        honorBadge.innerHTML = "🥈 Silver Medal + Trophy";
+    } else if(percentage >= 50) {
+        honorBadge.innerHTML = "🥉 Bronze Medal + Trophy";
+    } else {
+        honorBadge.innerHTML = "💐 अभिनंदन! फुलांचा गुच्छ व पुढील परीक्षेसाठी शुभेच्छा";
+    }
+}
+
+function showWrongQuestions() {
+    let wrongSection = document.getElementById("wrong-questions-section");
+    let wrongList = document.getElementById("wrong-list");
+    wrongList.innerHTML = "";
+
+    let wrongCount = 0;
+    userAnswers.forEach((item) => {
+        if(item.selected !== item.correct) {
+            wrongCount++;
+            let div = document.createElement("div");
+            div.className = "review-card";
+            div.innerHTML = `
+                <p><b>प्रश्न:</b> ${item.question}</p>
+                <p style="color: #e53e3e;"><b>तुमचे उत्तर:</b> ${item.options[item.selected]}</p>
+                <p style="color: #38a169;"><b>बरोबर उत्तर:</b> ${item.options[item.correct]}</p>
+                <p style="color: #2b6cb0;"><b>मार्गदर्शन/स्पष्टीकरण:</b> ${item.exp}</p>
+            `;
+            wrongList.appendChild(div);
+        }
+    });
+
+    if(wrongCount === 0) {
+        wrongList.innerHTML = "<p style='color: #38a169; font-weight: bold;'>अभिनंदन! तुमचा एकही प्रश्न चुकला नाही.</p>";
+    }
+
+    wrongSection.style.display = "block";
+    wrongSection.scrollIntoView({ behavior: 'smooth' });
+}
+</script>
+
+</body>
+</html>
+
