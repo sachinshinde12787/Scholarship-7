@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="mr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>नवोदय परीक्षा सराव टेस्ट - सरळव्याज</title>
+    <style>
+        :root {
+            --primary: #1a365d;
+            --secondary: #2b6cb0;
+            --success: #38a169;
+            --danger: #e53e3e;
+            --bg: #f7fafc;
+        }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg);
+            margin: 0;
+            padding: 15px;
+            color: #2d3748;
+        }
+        .container {
+            max-width: 850px;
+            margin: 0 auto;
+            background: white;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+        .header {
+            text-align: center;
+            border-bottom: 3px solid var(--primary);
+            padding-bottom: 15px;
+            margin-bottom: 20px;
+        }
+        .header h2 { color: var(--primary); margin: 5px 0; }
+        .header h3 { color: var(--secondary); margin: 5px 0; }
+        
+        /* अपूर्णांक सुंदर दिसण्यासाठी CSS */
+        .fraction {
+            display: inline-flex;
+            flex-direction: column;
+            vertical-align: middle;
+            text-align: center;
+            padding: 0 4px;
+            font-size: 0.95em;
+        }
+        .num { border-bottom: 1.5px solid #000; padding-bottom: 1px; }
+        .den { padding-top: 1px; }
+
+        .btn {
+            background-color: var(--secondary);
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            font-size: 16px;
+            border-radius: 6px;
+            cursor: pointer;
+            width: 100%;
+            margin-top: 15px;
+            transition: 0.3s;
+        }
+        .btn:hover { background-color: var(--primary); }
+        .btn-success { background-color: var(--success); }
+        
+        .input-group { margin-bottom: 15px; }
+        .input-group label { display: block; margin-bottom: 5px; font-weight: bold; }
+        .input-group input { width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 5px; box-sizing: border-box; }
+
+        .option-btn {
+            display: block;
+            width: 100%;
+            padding: 12px;
+            margin: 8px 0;
+            text-align: left;
+            border: 2px solid #e2e8f0;
+            background: white;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        .option-btn:hover { background-color: #edf2f7; }
+        .option-btn.correct { background-color: #c6f6d5; border-color: var(--success); }
+        .option-btn.wrong { background-color: #fed7d7; border-color: var(--danger); }
+
+        .explanation {
+            background-color: #ebf8ff;
+            border-left: 4px solid var(--secondary);
+            padding: 12px;
+            margin-top: 15px;
+            border-radius: 4px;
+            display: none;
+        }
+
+        .guides {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 25px;
+            padding-top: 15px;
+            border-top: 1px solid #e2e8f0;
+            font-weight: bold;
+            font-size: 14px;
+        }
+
+        /* Certificate Styling */
+        .certificate-box {
+            border: 8px double var(--primary);
+            padding: 25px;
+            text-align: center;
+            background: #fffdfa;
+            border-radius: 8px;
+            margin-top: 20px;
+        }
+        .badge { font-size: 40px; margin: 10px 0; }
+        
+        .wrong-questions-section {
+            margin-top: 30px;
+            text-align: left;
+            border-top: 2px dashed #cbd5e0;
+            padding-top: 15px;
+        }
+        .wrong-item {
+            background: #fff5f5;
+            border: 1px solid #feb2b2;
+            padding: 12px;
+            margin-bottom: 12px;
+            border-radius: 6px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="header">
+        <h2>स्पर्धा परीक्षा मार्गदर्शन केंद्र, जेऊर</h2>
+        <h3>नवोदय परीक्षा सराव टेस्ट - सरळव्याज</h3>
+    </div>
+
+    <!-- Start Screen -->
+    <div id="start-screen">
+        <div class="input-group">
+            <label>विद्यार्थ्याचे नाव:</label>
+            <input type="text" id="student-name" placeholder="पूर्ण नाव टाका">
+        </div>
+        <div class="input-group">
+            <label>मोबाईल नंबर:</label>
+            <input type="tel" id="student-mobile" placeholder="१० अंकी मोबाईल नंबर">
+        </div>
+        <button class="btn" onclick="startExam()">Start Exam</button>
+    </div>
+
+    <!-- Exam Screen -->
+    <div id="exam-screen" style="display:none;">
+        <div id="question-box"></div>
+        <div id="explanation-box" class="explanation"></div>
+        <button id="next-btn" class="btn" style="display:none;" onclick="nextQuestion()">पुढील प्रश्न</button>
+        <button id="submit-btn" class="btn btn-success" style="display:none;" onclick="submitExam()">Submit Exam</button>
+    </div>
+
+    <!-- Result Screen -->
+    <div id="result-screen" style="display:none;">
+        <div class="certificate-box">
+            <h2>स्पर्धा परीक्षा मार्गदर्शन केंद्र, जेऊर</h2>
+            <hr>
+            <p><b>परीक्षेचे नाव:</b> नवोदय परीक्षा सराव टेस्ट (सरळव्याज)</p>
+            <p><b>विद्यार्थ्याचे नाव:</b> <span id="res-name"></span></p>
+            <p><b>मोबाईल नंबर:</b> <span id="res-mobile"></span></p>
+            <h3>मिळालेले गुण: <span id="res-score"></span> / 30</h3>
+            <h4>टक्केवारी: <span id="res-percent"></span>%</h4>
+            
+            <div id="res-badge" class="badge"></div>
+            <h3 id="res-honor"></h3>
+
+            <div class="guides">
+                <div>मार्गदर्शक शिक्षक : सचिन शिंदे<br>संपर्क : 8329684470</div>
+                <div>मार्गदर्शक शिक्षक : सतीश चिंदे<br>संपर्क : 8208167846</div>
+            </div>
+        </div>
+
+        <div id="wrong-questions-container" class="wrong-questions-section"></div>
+    </div>
+
+    <!-- Footer Guides -->
+    <div class="guides" id="footer-guides">
+        <div>मार्गदर्शक शिक्षक : सचिन शिंदे<br>संपर्क : 8329684470</div>
+        <div>मार्गदर्शक शिक्षक : सतीश चिंदे<br>संपर्क : 8208167846</div>
+    </div>
+</div>
+<script>
+const questions = [
+    { q: "द.सा.द.शे. 10 दराने ₹ 20,000 रकमेची किती वर्षांत दामदुप्पट होईल?", options: ["8 वर्षे", "10 वर्षे", "12 वर्षे", "5 वर्षे"], ans: 1, exp: "दामदुप्पट होण्यासाठी व्याज = मुद्दल (₹ 20,000). मुदत = (100 ÷ दर) = 100 ÷ 10 = 10 वर्षे." },
+    { q: "एका रकमेची सरळव्याजाने 2 वर्षांची रास ₹ 6,600 व 5 वर्षांची रास ₹ 7,500 होते, तर व्याजाचा दर द.सा.द.शे. किती?", options: ["5%", "6%", "8%", "10%"], ans: 0, exp: "3 वर्षांचे व्याज = 7500 - 6600 = ₹ 900. 1 वर्षाचे व्याज = ₹ 300. 2 वर्षांचे व्याज = ₹ 600. मुद्दल = 6600 - 600 = ₹ 6000. दर = (300 × 100) ÷ 6000 = 5%." },
+    { q: "रोहनने एका बँकेत ₹ 25,000, 4 वर्षांसाठी सरळव्याजाने ठेवले. मुदतीअंती त्याला ₹ 35,000 मिळाले, तर व्याजाचा दर किती होता?", options: ["द.सा.द.शे. 10", "द.सा.द.शे. 12", "द.सा.द.शे. 8", "द.सा.द.शे. 15"], ans: 0, exp: "एकूण व्याज = 35000 - 25000 = ₹ 10,000. दर = (10000 × 100) ÷ (25000 × 4) = 10%." },
+    { q: "रमेशने बँकेकडून ₹ 10,000 कर्ज घेतले. 2 वर्षे 6 महिन्यांनंतर त्याने ₹ 12,500 भरून कर्जाची परतफेड केली, तर व्याजाचा दर किती होता?", options: ["10%", "12%", "8%", "15%"], ans: 0, exp: "व्याज = ₹ 2500. मुदत = 2.5 वर्षे. दर = (2500 × 100) ÷ (10000 × 2.5) = 10%." },
+    { q: "एक रक्कम सरळव्याजाने 4 वर्षांत दुप्पट होते, तर तीच रक्कम त्याच दराने 6 पट होण्यासाठी किती वर्षे लागतील?", options: ["16 वर्षे", "20 वर्षे", "24 वर्षे", "12 वर्षे"], ans: 1, exp: "1 पट व्याजासाठी 4 वर्षे लागतात. 6 पट राशीसाठी 5 पट व्याज हवे, म्हणून 5 × 4 = 20 वर्षे." },
+    { q: "₹ 2,000 मुद्दलाची 6 वर्षांत दामदुप्पट होते, तर त्याच मुद्दलाची चारपट रास होण्यास किती वर्षे लागतील?", options: ["12 वर्षे", "18 वर्षे", "24 वर्षे", "15 वर्षे"], ans: 1, exp: "1 पट व्याजासाठी 6 वर्षे. 4 पट राशीसाठी 3 पट व्याज हवे, म्हणून 3 × 6 = 18 वर्षे." },
+    { q: "अमित आणि सुमित यांनी बँकेकडून समान कर्ज एकाच दराने घेतले. अमितने 3 वर्षांत ₹ 9,600 आणि सुमितने 6 वर्षांत ₹ 12,000 भरून कर्ज फेडले, तर त्यांनी प्रत्येकी किती कर्ज घेतले होते?", options: ["₹ 7,200", "₹ 8,000", "₹ 6,000", "₹ 7,500"], ans: 0, exp: "3 वर्षांचे व्याज = 12000 - 9600 = ₹ 2400. मुद्दल = 9600 - 2400 = ₹ 7200." },
+    { q: "₹ 5,000 मुद्दल 3 वर्षे गुंतवण्याऐवजी ₹ 6,000 मुद्दल 2 वर्षे गुंतवल्यास ₹ 150 व्याज कमी मिळते, तर व्याजाचा दर किती असेल?", options: ["5%", "6%", "8%", "10%"], ans: 0, exp: "(5000 × 3 × R)/100 - (6000 × 2 × R)/100 = 150 ⇒ 150R - 120R = 150 ⇒ 30R = 150 ⇒ R = 5%." },
+    { q: "द.सा.द.शे. किती दराने ₹ 2,500 मुद्दलाची 4 वर्षांत ₹ 3,300 रास होईल?", options: ["6%", "8%", "10%", "12%"], ans: 1, exp: "व्याज = 3300 - 2500 = ₹ 800. दर = (800 × 100) ÷ (2500 × 4) = 8%." },
+    { q: "एका माणसाने ₹ 8,000 चे कर्ज दोन वेगवेगळ्या व्याजाच्या दराने घेतले. काही रक्कम 5% दराने व उर्वरित रक्कम 8% दराने 2 वर्षांसाठी घेतली. एकूण व्याज ₹ 1,120 झाले असल्यास, 5% दराने घेतलेले कर्ज किती?", options: ["₹ 2,000", "₹ 3,000", "₹ 5,000", "₹ 4,000"], ans: 3, exp: "समीकरण सोडवल्यास 5% दराचे कर्ज ₹ 4,000 येते." },
+    { q: "द.सा.द.शे. 8 दराने ₹ 5,000 मुद्दलाचे 3 वर्षांचे सरळव्याज किती होईल?", options: ["₹ 1,200", "₹ 1,500", "₹ 1,000", "₹ 800"], ans: 0, exp: "व्याज = (5000 × 8 × 3) ÷ 100 = ₹ 1,200." },
+    { q: "कोणत्या मुद्दलाचे द.सा.द.शे. 6 दराने 5 वर्षांत सरळव्याज ₹ 1,800 होईल?", options: ["₹ 5,000", "₹ 6,000", "₹ 4,500", "₹ 7,000"], ans: 1, exp: "मुद्दल = (1800 × 100) ÷ (6 × 5) = ₹ 6,000." },
+    { q: "एका रकमेचे 4 वर्षांचे सरळव्याज मुद्दलाच्या <div class='fraction'><span class='num'>1</span><span class='den'>5</span></div> पट आहे, तर व्याजाचा दर किती?", options: ["4%", "5%", "6%", "8%"], ans: 1, exp: "व्याज/मुद्दल = 1/5. दर = (1 × 100) ÷ (5 × 4) = 5%." },
+    { q: "₹ 12,000 रकमेचे द.सा.द.शे. 9 दराने काही वर्षांत व्याज ₹ 3,240 होते, तर ती मुदत किती वर्षे होती?", options: ["2 वर्षे", "3 वर्षे", "4 वर्षे", "5 वर्षे"], ans: 1, exp: "मुदत = (3240 × 100) ÷ (12000 × 9) = 3 वर्षे." },
+    { q: "द.सा.द.शे. 15 दराने ठराविक रकमेची दामतिप्पट होण्यासाठी किती वर्षे लागतील?", options: ["10 वर्षे", "12<div class='fraction'><span class='num'>1</span><span class='den'>2</span></div> वर्षे", "13<div class='fraction'><span class='num'>1</span><span class='den'>3</span></div> वर्षे", "15 वर्षे"], ans: 2, exp: "दामतिप्पट म्हणजे व्याज 2 पट. मुदत = (200 ÷ 15) = 13 (1/3) वर्षे." },
+    { q: "द.सा.द.शे. 5 दराने ₹ 4,000 चे 2 वर्षे 6 महिन्यांचे सरळव्याज किती?", options: ["₹ 500", "₹ 400", "₹ 600", "₹ 450"], ans: 0, exp: "2 वर्षे 6 महिने = 2.5 वर्षे. व्याज = (4000 × 5 × 2.5) ÷ 100 = ₹ 500." },
+    { q: "एका सावकाराने एका व्यक्तीला ₹ 3,000 आणि दुसऱ्या व्यक्तीला ₹ 4,000 समान दराने 3 वर्षांसाठी दिले. त्याला एकूण ₹ 1,050 व्याज मिळाले, तर व्याजाचा दर काय होता?", options: ["4%", "5%", "6%", "7%"], ans: 1, exp: "एकूण मुद्दल = 7000. दर = (1050 × 100) ÷ (7000 × 3) = 5%." },
+    { q: "पुढीलपैकी कोणता पर्याय ग्राहकासाठी सर्वात जास्त फायदेशीर व्याजदर दर्शवतो?", options: ["₹ 100 चे 1 वर्षाचे व्याज ₹ 10", "₹ 200 चे 2 वर्षांचे व्याज ₹ 30", "₹ 500 चे 3 वर्षांचे व्याज ₹ 120", "₹ 1,000 चे 2 वर्षांचे व्याज ₹ 180"], ans: 0, exp: "पर्याय (1) मध्ये दर 10% आहे जो सर्वात कमी/ग्राहकासाठी योग्य ठरतो." },
+    { q: "जर सरळव्याज = ₹ 720, मुदत = 3 वर्षे आणि दर = 8% असेल, तर मुद्दल किती असेल?", options: ["₹ 3,000", "₹ 2,500", "₹ 4,000", "₹ 3,500"], ans: 0, exp: "मुद्दल = (720 × 100) ÷ (8 × 3) = ₹ 3,000." },
+    { q: "₹ 8,000 मुद्दलाची 5 वर्षांत रास ₹ 11,000 होते, तर व्याजाचा दर किती?", options: ["6%", "7.5%", "8%", "5%"], ans: 1, exp: "व्याज = 3000. दर = (3000 × 100) ÷ (8000 × 5) = 7.5%." },
+    { q: "एका रकमेचे द.सा.द.शे. 12 दराने 3 वर्षांचे सरळव्याज ₹ 1,080 आहे, तर ती रक्कम कोणती?", options: ["₹ 3,000", "₹ 3,600", "₹ 4,000", "₹ 2,800"], ans: 0, exp: "मुद्दल = (1080 × 100) ÷ (12 × 3) = ₹ 3,000." },
+    { q: "₹ 1,500 मुद्दलाचे 5 वर्षांत व्याज ₹ 375 होते, तर व्याजाचा दर किती?", options: ["4%", "5%", "6%", "3%"], ans: 1, exp: "दर = (375 × 100) ÷ (1500 × 5) = 5%." },
+    { q: "एक रक्कम सरळव्याजाने 8 वर्षांत दुप्पट होते, तर व्याजाचा दर किती?", options: ["10%", "12.5%", "15%", "8%"], ans: 1, exp: "दर = 100 ÷ 8 = 12.5%." },
+    { q: "जर दर 2 टक्क्यांनी वाढवला, तर ₹ 5,000 चे 3 वर्षांतील व्याज कितीने वाढेल?", options: ["₹ 150", "₹ 300", "₹ 200", "₹ 250"], ans: 1, exp: "वाढलेले व्याज = (5000 × 2 × 3) ÷ 100 = ₹ 300." },
+    { q: "एका रकमेची 3 वर्षांची रास ₹ 3,800 आणि 5 वर्षांची रास ₹ 4,200 होते, तर मुद्दल किती?", options: ["₹ 3,200", "₹ 3,000", "₹ 3,400", "₹ 2,800"], ans: 0, exp: "2 वर्षांचे व्याज = 400. 1 वर्षाचे व्याज = 200. 3 वर्षांचे व्याज = 600. मुद्दल = 3800 - 600 = ₹ 3,200." },
+    { q: "₹ 6,000 मुद्दलाचे 2.5 वर्षांत 8% दराने व्याज किती?", options: ["₹ 1,200", "₹ 1,000", "₹ 1,500", "₹ 800"], ans: 0, exp: "व्याज = (6000 × 8 × 2.5) ÷ 100 = ₹ 1,200." },
+    { q: "किती मुद्दलाची द.सा.द.शे. 10 दराने 4 वर्षांत रास ₹ 7,000 होईल?", options: ["₹ 5,000", "₹ 5,500", "₹ 6,000", "₹ 4,500"], ans: 0, exp: "रास = मुद्दल × (1 + RT/100) ⇒ 7000 = P × 1.4 ⇒ P = ₹ 5,000." },
+    { q: "₹ 2,400 चे द.सा.द.शे. 5 दराने 4 वर्षांचे सरळव्याज आणि ₹ 3,000 चे द.सा.द.शे. 4 दराने 2 वर्षांचे सरळव्याज यांतील फरक किती?", options: ["₹ 240", "₹ 180", "₹ 300", "₹ 200"], ans: 0, exp: "पहिले व्याज = 480, दुसरे व्याज = 240. फरक = 480 - 240 = ₹ 240." },
+    { q: "एका रकमेवर मिळणारे सरळव्याज हे मुद्दलाच्या <div class='fraction'><span class='num'>9</span><span class='den'>16</span></div> पट आहे. जर दर आणि वर्षांची संख्या समान असेल, तर व्याजाचा दर काय असेल?", options: ["6.5%", "7.5%", "8%", "9%"], ans: 1, exp: "R² = (9/16) × 100 = 900/16 = 56.25 ⇒ R = 7.5%." },
+    { q: "₹ 10,000 मुद्दलाची द.सा.द.शे. 6 दराने 1 वर्षांत एकूण रास किती होईल?", options: ["₹ 10,600", "₹ 11,200", "₹ 10,300", "₹ 10,800"], ans: 0, exp: "व्याज = 600. रास = 10000 + 600 = ₹ 10,600." }
+];
+let currentQ = 0;
+let score = 0;
+let userAnswers = [];
+
+function startExam() {
+    const name = document.getElementById('student-name').value;
+    const mobile = document.getElementById('student-mobile').value;
+    
+    if(!name || !mobile) {
+        alert('कृपया नाव आणि मोबाईल नंबर भरा!');
+        return;
+    }
+    
+    document.getElementById('start-screen').style.display = 'none';
+    document.getElementById('exam-screen').style.display = 'block';
+    loadQuestion();
+}
+
+function loadQuestion() {
+    const qData = questions[currentQ];
+    let html = `<h4>प्रश्न ${currentQ + 1} / 30</h4><p style="font-size: 18px;"><b>${qData.q}</b></p>`;
+    
+    qData.options.forEach((opt, idx) => {
+        html += `<button class="option-btn" onclick="checkAnswer(${idx})" id="opt-${idx}">(${idx+1}) ${opt}</button>`;
+    });
+    
+    document.getElementById('question-box').innerHTML = html;
+    document.getElementById('explanation-box').style.display = 'none';
+    document.getElementById('next-btn').style.display = 'none';
+    document.getElementById('submit-btn').style.display = 'none';
+}
+
+function checkAnswer(selectedIdx) {
+    const qData = questions[currentQ];
+    const buttons = document.querySelectorAll('.option-btn');
+    
+    buttons.forEach(btn => btn.disabled = true);
+    
+    userAnswers.push({
+        qIndex: currentQ,
+        selected: selectedIdx,
+        correct: qData.ans
+    });
+
+    if(selectedIdx === qData.ans) {
+        document.getElementById(`opt-${selectedIdx}`).classList.add('correct');
+        score++;
+    } else {
+        document.getElementById(`opt-${selectedIdx}`).classList.add('wrong');
+        document.getElementById(`opt-${qData.ans}`).classList.add('correct');
+        
+        // उत्तर चुकल्यास लगेच स्पष्टीकरण दाखवणे
+        const expBox = document.getElementById('explanation-box');
+        expBox.innerHTML = `<b>स्पष्टीकरण:</b> ${qData.exp}`;
+        expBox.style.display = 'block';
+    }
+
+    if(currentQ < questions.length - 1) {
+        document.getElementById('next-btn').style.display = 'block';
+    } else {
+        document.getElementById('submit-btn').style.display = 'block';
+    }
+}
+
+function nextQuestion() {
+    currentQ++;
+    loadQuestion();
+}
+
+function submitExam() {
+    document.getElementById('exam-screen').style.display = 'none';
+    document.getElementById('footer-guides').style.display = 'none';
+    document.getElementById('result-screen').style.display = 'block';
+    
+    const percentage = Math.round((score / 30) * 100);
+    
+    document.getElementById('res-name').innerText = document.getElementById('student-name').value;
+    document.getElementById('res-mobile').innerText = document.getElementById('student-mobile').value;
+    document.getElementById('res-score').innerText = score;
+    document.getElementById('res-percent').innerText = percentage;
+
+    let badge = "";
+    let honor = "";
+
+    if(percentage >= 80) {
+        badge = "🏆 🥇";
+        honor = "Gold Medal + Trophy (उत्कृष्ट कामगिरी!)";
+    } else if(percentage >= 60) {
+        badge = "🏆 🥈";
+        honor = "Silver Medal + Trophy (छान कामगिरी!)";
+    } else if(percentage >= 50) {
+        badge = "🏆 🥉";
+        honor = "Bronze Medal + Trophy (चांगली कामगिरी!)";
+    } else {
+        badge = "💐";
+        honor = "अभिनंदन! फुलांचा गुच्छ व 'पुढील परीक्षेसाठी शुभेच्छा'";
+    }
+
+    document.getElementById('res-badge').innerHTML = badge;
+    document.getElementById('res-honor').innerText = honor;
+
+    // निकालाखाली चुकलेले प्रश्न आणि त्यांचे स्पष्टीकरण दाखवणे
+    let wrongHtml = "<h3>चुकलेले प्रश्न व त्यांचे स्पष्टीकरण:</h3>";
+    let hasWrong = false;
+
+    userAnswers.forEach(ans => {
+        if(ans.selected !== ans.correct) {
+            hasWrong = true;
+            const q = questions[ans.qIndex];
+            wrongHtml += `
+                <div class="wrong-item">
+                    <p><b>प्रश्न:</b> ${q.q}</p>
+                    <p style="color:red;"><b>तुमचे उत्तर:</b> ${q.options[ans.selected]}</p>
+                    <p style="color:green;"><b>बरोबर उत्तर:</b> ${q.options[ans.correct]}</p>
+                    <p><b>स्पष्टीकरण:</b> ${q.exp}</p>
+                </div>
+            `;
+        }
+    });
+
+    if(!hasWrong) {
+        wrongHtml += "<p style='color:green;'>अभिनंदन! तुमचे सर्व ३० प्रश्न बरोबर आले आहेत.</p>";
+    }
+
+    document.getElementById('wrong-questions-container').innerHTML = wrongHtml;
+}
+</script>
+</body>
+</html>
