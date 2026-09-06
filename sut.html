@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="mr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>नवोदय परीक्षा सराव टेस्ट - सूट, कमिशन, दलाली व रिबेट</title>
+    <style>
+        :root {
+            --primary: #1a365d;
+            --secondary: #2b6cb0;
+            --success: #38a169;
+            --danger: #e53e3e;
+            --bg: #f7fafc;
+        }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg);
+            margin: 0;
+            padding: 15px;
+            color: #2d3748;
+        }
+        .container {
+            max-width: 850px;
+            margin: 0 auto;
+            background: white;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+        .header {
+            text-align: center;
+            border-bottom: 3px solid var(--primary);
+            padding-bottom: 15px;
+            margin-bottom: 20px;
+        }
+        .header h2 { color: var(--primary); margin: 5px 0; }
+        .header h3 { color: var(--secondary); margin: 5px 0; }
+        
+        .fraction {
+            display: inline-flex;
+            flex-direction: column;
+            vertical-align: middle;
+            text-align: center;
+            padding: 0 4px;
+            font-size: 0.95em;
+        }
+        .num { border-bottom: 1.5px solid #000; padding-bottom: 1px; }
+        .den { padding-top: 1px; }
+
+        .btn {
+            background-color: var(--secondary);
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            font-size: 16px;
+            border-radius: 6px;
+            cursor: pointer;
+            width: 100%;
+            margin-top: 15px;
+            transition: 0.3s;
+        }
+        .btn:hover { background-color: var(--primary); }
+        .btn-success { background-color: var(--success); }
+        
+        .input-group { margin-bottom: 15px; }
+        .input-group label { display: block; margin-bottom: 5px; font-weight: bold; }
+        .input-group input { width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 5px; box-sizing: border-box; }
+
+        .option-btn {
+            display: block;
+            width: 100%;
+            padding: 12px;
+            margin: 8px 0;
+            text-align: left;
+            border: 2px solid #e2e8f0;
+            background: white;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        .option-btn:hover { background-color: #edf2f7; }
+        .option-btn.correct { background-color: #c6f6d5; border-color: var(--success); }
+        .option-btn.wrong { background-color: #fed7d7; border-color: var(--danger); }
+
+        .explanation {
+            background-color: #ebf8ff;
+            border-left: 4px solid var(--secondary);
+            padding: 12px;
+            margin-top: 15px;
+            border-radius: 4px;
+            display: none;
+        }
+
+        .guides {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 25px;
+            padding-top: 15px;
+            border-top: 1px solid #e2e8f0;
+            font-weight: bold;
+            font-size: 14px;
+        }
+
+        /* Certificate Styling */
+        .certificate-box {
+            border: 8px double var(--primary);
+            padding: 25px;
+            text-align: center;
+            background: #fffdfa;
+            border-radius: 8px;
+            margin-top: 20px;
+        }
+        .badge { font-size: 40px; margin: 10px 0; }
+        
+        .wrong-questions-section {
+            margin-top: 30px;
+            text-align: left;
+            border-top: 2px dashed #cbd5e0;
+            padding-top: 15px;
+        }
+        .wrong-item {
+            background: #fff5f5;
+            border: 1px solid #feb2b2;
+            padding: 12px;
+            margin-bottom: 12px;
+            border-radius: 6px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="header">
+        <h2>स्पर्धा परीक्षा मार्गदर्शन केंद्र, जेऊर</h2>
+        <h3>नवोदय परीक्षा सराव टेस्ट सूट</h3>
+    </div>
+
+    <!-- Start Screen -->
+    <div id="start-screen">
+        <div class="input-group">
+            <label>विद्यार्थ्याचे नाव:</label>
+            <input type="text" id="student-name" placeholder="पूर्ण नाव टाका">
+        </div>
+        <div class="input-group">
+            <label>मोबाईल नंबर:</label>
+            <input type="tel" id="student-mobile" placeholder="१० अंकी मोबाईल नंबर">
+        </div>
+        <button class="btn" onclick="startExam()">Start Exam</button>
+    </div>
+
+    <!-- Exam Screen -->
+    <div id="exam-screen" style="display:none;">
+        <div id="question-box"></div>
+        <div id="explanation-box" class="explanation"></div>
+        <button id="next-btn" class="btn" style="display:none;" onclick="nextQuestion()">पुढील प्रश्न</button>
+        <button id="submit-btn" class="btn btn-success" style="display:none;" onclick="submitExam()">Submit Exam</button>
+    </div>
+
+    <!-- Result Screen -->
+    <div id="result-screen" style="display:none;">
+        <div class="certificate-box">
+            <h2>स्पर्धा परीक्षा मार्गदर्शन केंद्र, जेऊर</h2>
+            <hr>
+            <p><b>परीक्षेचे नाव:</b> नवोदय परीक्षा सराव टेस्ट (सूट, कमिशन, दलाली व रिबेट)</p>
+            <p><b>विद्यार्थ्याचे नाव:</b> <span id="res-name"></span></p>
+            <p><b>मोबाईल नंबर:</b> <span id="res-mobile"></span></p>
+            <h3>मिळालेले गुण: <span id="res-score"></span> / 30</h3>
+            <h4>टक्केवारी: <span id="res-percent"></span>%</h4>
+            
+            <div id="res-badge" class="badge"></div>
+            <h3 id="res-honor"></h3>
+
+            <div class="guides">
+                <div>मार्गदर्शक शिक्षक : सचिन शिंदे<br>संपर्क : 8329684470</div>
+                <div>मार्गदर्शक शिक्षक : सतीश चिंदे<br>संपर्क : 8208167846</div>
+            </div>
+        </div>
+
+        <div id="wrong-questions-container" class="wrong-questions-section"></div>
+    </div>
+
+    <!-- Footer Guides -->
+    <div class="guides" id="footer-guides">
+        <div>मार्गदर्शक शिक्षक : सचिन शिंदे<br>संपर्क : 8329684470</div>
+        <div>मार्गदर्शक शिक्षक : सतीश चिंदे<br>संपर्क : 8208167846</div>
+    </div>
+</div>
+<script>
+const questions = [
+    { q: "एका कपाटाची छापील किंमत ₹ १५,००० आहे. दुकानदाराने त्यावर १२% सूट दिली, तर ग्राहकाला ते कपाट किती रुपयांस मिळेल?", options: ["₹ १३,२००", "₹ १३,५००", "₹ १४,०००", "₹ १२,८००"], ans: 0, exp: "सूट = १५,००० चे १२% = ₹ १,८००. विक्री किंमत = १५,००० - १,८०० = ₹ १३,२००." },
+    { q: "एका वॉशिंग मशीनची छापील किंमत ₹ २४,००० आहे. दुकानदाराने ते ₹ २०,४०० ला विकले, तर त्याने शेकडा किती सूट दिली?", options: ["१५%", "१२%", "१०%", "१८%"], ans: 0, exp: "सूट = २४,००० - २०,४०० = ₹ ३,६००. शेकडा सूट = (३६०० ÷ २४०००) × १०० = १५%." },
+    { q: "एका व्यापाराने ₹ ५०,००० किमतीच्या मालावर १०% व्यापारी सूट दिली व उरलेल्या रकमेवर पुन्हा ५% रोख सूट दिली, तर ग्राहकाने एकूण किती रक्कम दिली?", options: ["₹ ४२,७५०", "₹ ४५,०००", "₹ ४२,०००", "₹ ४३,५००"], ans: 0, exp: "१०% सूट नंतर रक्कम = ४५,००० ₹. त्यावर ५% रोख सूट = २,२५० ₹. अंतिम रक्कम = ४५,००० - २,२५० = ₹ ४२,७५०." },
+    { q: "एका पुस्तकाची छापील किंमत ₹ ४०० आहे. विक्रेत्याने ते पुस्तक १५% सूट देऊन विकले, तरीही त्याला २०% नफा झाला; तर त्या पुस्तकाची खरेदी किंमत किती?", options: ["₹ २८३.३३", "₹ ३००", "₹ ३२०", "₹ ३४०"], ans: 0, exp: "विक्री किंमत = ४०० च्या ८५% = ३४० ₹. १२०% = ३४० ₹ ⇒ १००% (खरेदी) = (३४० × १००) ÷ १२० = ₹ २८३.३३." },
+    { q: "एका एजंटने ₹ ४,०००,००० ची जमीन विकून २% कमिशन मिळवले, तर त्याला किती रुपये कमिशन मिळाले?", options: ["₹ ८०,०००", "₹ ४०,०००", "₹ ६०,०००", "₹ १,००,०००"], ans: 0, exp: "कमिशन = ४०,००,००० चे २% = (४०,००,००० × २) ÷ १०० = ₹ ८०,०००." },
+    { q: "एका दुकानदाराने एका साडीच्या छापील किमतीवर १५% वाढवून किंमत छापली व नंतर त्यावर १०% सूट दिली, तर त्याला या व्यवहारात शेकडा किती नफा झाला?", options: ["३.५%", "५%", "४.५%", "३%"], ans: 0, exp: "मानू खरेदी १०० ₹. छापील ११५ ₹. १०% सूट = ११.५ ₹. विक्री = १०३.५ ₹. शेकडा नफा = ३.५%." },
+    { q: "एका दलालाने ₹ २५,००० च्या खरेदीवर १.५% दलाली घेतली, तर खरेदीदाराला एकूण किती रुपये द्यावे लागले?", options: ["₹ २५,३७५", "₹ २५,३५०", "₹ २४,६२५", "₹ २५,५००"], ans: 0, exp: "दलाली = २५,००० चे १.५% = ३७५ ₹. एकूण रक्कम = २५,००० + ३७५ = ₹ २५,३७५." },
+    { q: "खादी ग्रामोद्योग भांडारातून ₹ ६,००० च्या खरेदीवर ग्राहकाला २०% रिबेट मिळाले, तर ग्राहकाने प्रत्यक्षात किती रक्कम भरली?", options: ["₹ ४,८००", "₹ ५,०००", "₹ ४,५००", "₹ ५,२००"], ans: 0, exp: "रिबेट = ६,००० चे २०% = १,२०० ₹. द्यायची रक्कम = ६,००० - १,२०० = ₹ ४,८००." },
+    { q: "एका दुकानदाराने ५० वस्तूंच्या खरेदीवर १० वस्तू मोफत दिल्या, तर त्याने शेकडा किती सूट दिली?", options: ["<div class='fraction'><span class='num'>१६</span><span class='den'>२/३</span></div>%", "२०%", "२५%", "१५%"], ans: 0, exp: "एकूण वस्तू = ६०, सूट = १० वस्तू. शेकडा सूट = (१० ÷ ६०) × १०० = १६ (२/३)%." },
+    { q: "एका टीव्हीची छापील किंमत ₹ ३०,००० आहे. तो टीव्ही ₹ २५,५०० ला विकला गेला, तर सूटचा दर किती?", options: ["१५%", "१०%", "१२%", "२०%"], ans: 0, exp: "सूट = ३०,००० - २५,५०० = ४,५०० ₹. शेकडा सूट = (४५०० ÷ ३००००) × १०० = १५%." },
+    { q: "एका व्यापाराने एका दलालामार्फत ₹ १,५०,००० चा माल विकला. दलालाने २.५% दलाली कापून उर्वरित रक्कम व्यापाराला दिली, तर व्यापाराला किती रुपये मिळाले?", options: ["₹ १,४६,२५०", "₹ १,४७,०००", "₹ ३,७५०", "₹ १,४५,५००"], ans: 0, exp: "दलाली = १,५०,००० चे २.५% = ३,७५० ₹. व्यापाराला मिळालेली रक्कम = १,५०,००० - ३,७५० = ₹ १,४६,२५०." },
+    { q: "दोन समान छापील किंमत असलेल्या वस्तूंपैकी एकावर १५% आणि दुसऱ्यावर १८% सूट दिली. दोन्ही सुटींमधील फरक ₹ ४५ असल्यास, प्रत्येक वस्तूची छापील किंमत किती?", options: ["₹ १,५००", "₹ १,२००", "₹ १,८००", "₹ २,०००"], ans: 0, exp: "सुटींमधील फरक = १८% - १५% = ३%. ३% = ४५ ₹ ⇒ १००% = (४५ × १००) ÷ ३ = ₹ १,५००." },
+    { q: "एका कपाटाची छापील किंमत ₹ ८,००० आहे. त्यावर १०% आणि २०% अशा दोन टप्प्यांत सूट दिली, तर त्याची अंतिम विक्री किंमत काय असेल?", options: ["₹ ५,७६०", "₹ ५,६००", "₹ ६,०००", "₹ ६,२४०"], ans: 0, exp: "१०% सूट नंतर = ७,२०० ₹. त्यावर २०% सूट = १,४४० ₹. अंतिम विक्री = ७,२०० - १,४४० = ₹ ५,७६०." },
+    { q: "एका शेतकऱ्याने रु. ८०,००० चा माल दलालामार्फत विकला. दलालाने ३% दलाली घेतली, तर शेतकऱ्याच्या हातात किती रक्कम पडली?", options: ["₹ ७७,६००", "₹ ७८,०००", "₹ २,४००", "₹ ७६,५००"], ans: 0, exp: "दलाली = ८०,००० चे ३% = २,४०० ₹. मिळणारी रक्कम = ८०,००० - २,४०० = ₹ ७७,६००." },
+    { q: "एका मोबाईलवर १०% सूट दिल्यानंतरही दुकानदाराला २५% नफा होतो. मोबाईलची खरेदी किंमत ₹ १८,००० असल्यास छापील किंमत किती?", options: ["₹ २५,०००", "₹ २२,५००", "₹ २४,०००", "₹ २०,०००"], ans: 0, exp: "विक्री = १८,००० च्या १२५% = २२,५०० ₹. ९०% = २२,५०० ₹ ⇒ छापील (१००%) = (२२५०० × १००) ÷ ९० = ₹ २५,०००." },
+    { q: "हातमाग कापड खरेदीवर शासनाकडून १५% रिबेट मिळतो. एका व्यक्तीने ₹ ४,००० चे कापड खरेदी केले, तर त्याला किती रुपये रिबेट मिळेल?", options: ["₹ ६००", "₹ ५००", "₹ ४५०", "₹ ३,४००"], ans: 0, exp: "रिबेट = ४,००० चे १५% = (४००० × १५) ÷ १०० = ₹ ६००." },
+    { q: "एका कपाटावर २०% सूट दिल्यानंतर ते ₹ ६,४०० ला विकले गेले, तर त्या कपाटाची छापील किंमत किती होती?", options: ["₹ ८,०००", "₹ ७,५००", "₹ ८,५००", "₹ ७,२००"], ans: 0, exp: "८०% = ६,४०० ₹ ⇒ १००% (छापील) = (६४०० × १००) ÷ ८० = ₹ ८,०००." },
+    { q: "एका एजंटला एका महिन्याला एकूण विक्रीवर ५% कमिशन मिळते. जर त्याने एका महिन्यात ₹ २,४०,००० ची विक्री केली असेल, तर त्याचे कमिशन किती?", options: ["₹ १२,०००", "₹ १०,०००", "₹ १५,०००", "₹ ८,०००"], ans: 0, exp: "कमिशन = २,४०,००० चे ५% = (२,४०,००० × ५) ÷ १०० = ₹ १२,०००." },
+    { q: "एका व्यापाराने ₹ ५,००० च्या मालावर २५% सूट दिली, तर ग्राहकाला किती रुपयांची सूट मिळाली?", options: ["₹ १,२५०", "₹ १,०००", "₹ ३,७५०", "₹ १,५००"], ans: 0, exp: "सूट = ५,००० चे २५% = (५००० × २५) ÷ १०० = ₹ १,२५०." },
+    { q: "एका वस्तूची छापील किंमत खरेदी किमतीपेक्षा ३०% ने जास्त आहे. ती वस्तू १०% सूट देऊन विकल्यास शेकडा नफा किती होईल?", options: ["१७%", "२०%", "१५%", "१८%"], ans: 0, exp: "मानू खरेदी १०० ₹. छापील १३० ₹. १०% सूट = १३ ₹. विक्री = ११७ ₹. नफा = १७%." },
+    { q: "एका प्रकाशकाने पुस्तकांवर २०% सूट दिली. जर एका विद्यार्थ्याने ₹ ६०० ची पुस्तके घेतली, तर त्याला किती रुपये द्यावे लागतील?", options: ["₹ ४८०", "₹ ५००", "₹ ५२०", "₹ ४५०"], ans: 0, exp: "सूट = ६०० चे २०% = १२० ₹. द्यायची रक्कम = ६०० - १२० = ₹ ४८०." },
+    { q: "एका दलालाने जमीन खरेदीदार आणि विक्रेता दोघांकडूनही प्रत्येकी १% दलाली घेतली. जमिनीचा व्यवहार ₹ २०,००,००० चा झाला असल्यास दलालाला एकूण किती दलाली मिळाली?", options: ["₹ ४०,०००", "₹ २०,०००", "₹ ३०,०००", "₹ ५०,०००"], ans: 0, exp: "एकूण दलाली = १% + १% = २%. २०,००,००० चे २% = ₹ ४०,०००." },
+    { q: "एका सायकलची छापील किंमत ₹ ३,५०० आहे. ती ₹ ३,१५० मध्ये विकल्यास शेकडा सूट किती दिली?", options: ["१०%", "१२%", "८%", "१५%"], ans: 0, exp: "सूट = ३५० ₹. शेकडा सूट = (३५० ÷ ३५००) × १०० = १०%." },
+    { q: "एका रेडिओच्या छापील किमतीवर ८% सूट दिल्यानंतर त्याची विक्री किंमत ₹ ४,६०० होते, तर रेडिओची छापील किंमत किती?", options: ["₹ ५,०००", "₹ ४,८००", "₹ ५,२००", "₹ ४,९००"], ans: 0, exp: "९२% = ४,६०० ₹ ⇒ १००% = (४६०० × १००) ÷ ९२ = ₹ ५,०००." },
+    { q: "एका शोरूममध्ये दसर्यानिमित्त २०% सूट व कार्डवरून पेमेंट केल्यास अतिरिक्त ५% सूट दिली जाते. ₹ १०,००० च्या खरेदीवर एकूण किती रुपये द्यावे लागतील?", options: ["₹ ७,६००", "₹ ७,५००", "₹ ८,०००", "₹ ७,४००"], ans: 0, exp: "२०% सूट नंतर = ८,००० ₹. त्यावर ५% सूट = ४०० ₹. अंतिम रक्कम = ८,००० - ४०० = ₹ ७,६००." },
+    { q: "एका विक्रेत्याला ₹ ५०,००० पर्यंतच्या विक्रीवर ४% आणि त्यावरील विक्रीवर ६% कमिशन मिळते. जर त्याने ₹ ८०,००० ची विक्री केली, तर त्याचे एकूण कमिशन किती?", options: ["₹ ३,८००", "₹ ४,८००", "₹ ३,२००", "₹ ४,०००"], ans: 0, exp: "५०,००० वर ४% = २,००० ₹. उर्वरित ३०,००० वर ६% = १,८०० ₹. एकूण कमिशन = २,००० + १,८०० = ₹ ३,८००." },
+    { q: "वस्तूची किंमत २०% वाढवून त्यावर २०% सूट दिल्यास या व्यवहारात काय होईल?", options: ["४% तोटा", "४% नफा", "न नफा न तोटा", "२% तोटा"], ans: 0, exp: "नेहमी तोटा होतो = (२० × २०) ÷ १०० = ४% तोटा." },
+    { q: "एका खादी भांडारातून खरेदी करताना ग्राहकाला ₹ ९०० च्या बिलावर ₹ १३५ रिबेट मिळाले, तर रिबेटचा दर किती?", options: ["१५%", "१२%", "१०%", "१८%"], ans: 0, exp: "शेकडा रिबेट = (१३५ ÷ ९००) × १०० = १५%." },
+    { q: "एका कपाटाची छापील किंमत ₹ १२,००० आहे. दुकानदाराने त्यावर शेकडा १० सूट दिली, तर कपाटाची विक्री किंमत किती?", options: ["₹ १०,८००", "₹ ११,०००", "₹ १०,५००", "₹ १०,०००"], ans: 0, exp: "सूट = १,२०० ₹. विक्री किंमत = १२,००० - १,२०० = ₹ १०,८००." },
+    { q: "एका दलालाने रु. ५०,००० चे शेअर्स खरेदी करताना ०.२% दलाली आकारली, तर खरेदीदाराला दलालीसह एकूण किती रक्कम द्यावी लागली?", options: ["₹ ५०,१००", "₹ ५०,०५०", "₹ ५०,२००", "₹ ५०,१५०"], ans: 0, exp: "दलाली = ५०,००० चे ०.२% = १०० ₹. एकूण रक्कम = ५०,००० + १०० = ₹ ५०,१००." }
+];
+let currentQ = 0;
+let score = 0;
+let userAnswers = [];
+
+function startExam() {
+    const name = document.getElementById('student-name').value;
+    const mobile = document.getElementById('student-mobile').value;
+    
+    if(!name || !mobile) {
+        alert('कृपया नाव आणि मोबाईल नंबर भरा!');
+        return;
+    }
+    
+    document.getElementById('start-screen').style.display = 'none';
+    document.getElementById('exam-screen').style.display = 'block';
+    loadQuestion();
+}
+
+function loadQuestion() {
+    const qData = questions[currentQ];
+    let html = `<h4>प्रश्न ${currentQ + 1} / 30</h4><p style="font-size: 18px;"><b>${qData.q}</b></p>`;
+    
+    qData.options.forEach((opt, idx) => {
+        html += `<button class="option-btn" onclick="checkAnswer(${idx})" id="opt-${idx}">(${idx+1}) ${opt}</button>`;
+    });
+    
+    document.getElementById('question-box').innerHTML = html;
+    document.getElementById('explanation-box').style.display = 'none';
+    document.getElementById('next-btn').style.display = 'none';
+    document.getElementById('submit-btn').style.display = 'none';
+}
+
+function checkAnswer(selectedIdx) {
+    const qData = questions[currentQ];
+    const buttons = document.querySelectorAll('.option-btn');
+    
+    buttons.forEach(btn => btn.disabled = true);
+    
+    userAnswers.push({
+        qIndex: currentQ,
+        selected: selectedIdx,
+        correct: qData.ans
+    });
+
+    if(selectedIdx === qData.ans) {
+        document.getElementById(`opt-${selectedIdx}`).classList.add('correct');
+        score++;
+    } else {
+        document.getElementById(`opt-${selectedIdx}`).classList.add('wrong');
+        document.getElementById(`opt-${qData.ans}`).classList.add('correct');
+        
+        const expBox = document.getElementById('explanation-box');
+        expBox.innerHTML = `<b>स्पष्टीकरण:</b> ${qData.exp}`;
+        expBox.style.display = 'block';
+    }
+
+    if(currentQ < questions.length - 1) {
+        document.getElementById('next-btn').style.display = 'block';
+    } else {
+        document.getElementById('submit-btn').style.display = 'block';
+    }
+}
+
+function nextQuestion() {
+    currentQ++;
+    loadQuestion();
+}
+
+function submitExam() {
+    document.getElementById('exam-screen').style.display = 'none';
+    document.getElementById('footer-guides').style.display = 'none';
+    document.getElementById('result-screen').style.display = 'block';
+    
+    const percentage = Math.round((score / 30) * 100);
+    
+    document.getElementById('res-name').innerText = document.getElementById('student-name').value;
+    document.getElementById('res-mobile').innerText = document.getElementById('student-mobile').value;
+    document.getElementById('res-score').innerText = score;
+    document.getElementById('res-percent').innerText = percentage;
+
+    let badge = "";
+    let honor = "";
+
+    if(percentage >= 80) {
+        badge = "🏆 🥇";
+        honor = "Gold Medal + Trophy (उत्कृष्ट कामगिरी!)";
+    } else if(percentage >= 60) {
+        badge = "🏆 🥈";
+        honor = "Silver Medal + Trophy (छान कामगिरी!)";
+    } else if(percentage >= 50) {
+        badge = "🏆 🥉";
+        honor = "Bronze Medal + Trophy (चांगली कामगिरी!)";
+    } else {
+        badge = "💐";
+        honor = "अभिनंदन! फुलांचा गुच्छ व 'पुढील परीक्षेसाठी शुभेच्छा'";
+    }
+
+    document.getElementById('res-badge').innerHTML = badge;
+    document.getElementById('res-honor').innerText = honor;
+
+    let wrongHtml = "<h3>चुकलेले प्रश्न व त्यांचे स्पष्टीकरण:</h3>";
+    let hasWrong = false;
+
+    userAnswers.forEach(ans => {
+        if(ans.selected !== ans.correct) {
+            hasWrong = true;
+            const q = questions[ans.qIndex];
+            wrongHtml += `
+                <div class="wrong-item">
+                    <p><b>प्रश्न:</b> ${q.q}</p>
+                    <p style="color:red;"><b>तुमचे उत्तर:</b> ${q.options[ans.selected]}</p>
+                    <p style="color:green;"><b>बरोबर उत्तर:</b> ${q.options[ans.correct]}</p>
+                    <p><b>स्पष्टीकरण:</b> ${q.exp}</p>
+                </div>
+            `;
+        }
+    });
+
+    if(!hasWrong) {
+        wrongHtml += "<p style='color:green;'>अभिनंदन! तुमचे सर्व ३० प्रश्न बरोबर आले आहेत.</p>";
+    }
+
+    document.getElementById('wrong-questions-container').innerHTML = wrongHtml;
+}
+</script>
+</body>
+</html>
