@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html lang="mr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>परिसर अभ्यास संकीर्ण प्रश्नसंग्रह</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            margin: 0;
+            padding: 10px;
+            color: #333;
+        }
+        .container {
+            max-width: 750px;
+            margin: 20px auto;
+            background: #ffffff;
+            border-radius: 15px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+            padding: 25px;
+            position: relative;
+        }
+        .header-top {
+            font-weight: bold;
+            color: #1a5276;
+            font-size: 1.1em;
+            margin-bottom: 15px;
+            text-align: center;
+        }
+        .creator-bottom-right {
+            text-align: right;
+            font-size: 0.9em;
+            color: #555;
+            margin-top: 25px;
+            border-top: 1px solid #eee;
+            padding-top: 10px;
+        }
+        .creator-bottom-right img {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            object-fit: cover;
+            vertical-align: middle;
+            margin-left: 10px;
+            border: 2px solid #1a5276;
+        }
+        .footer-note {
+            text-align: center;
+            font-size: 0.95em;
+            color: #e74c3c;
+            font-weight: bold;
+            margin: 15px 0;
+        }
+        h2 {
+            text-align: center;
+            color: #2c3e50;
+            font-size: 1.3em;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        .form-group input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            box-sizing: border-box;
+        }
+        .btn {
+            background-color: #27ae60;
+            color: white;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            width: 100%;
+            font-size: 1.1em;
+            font-weight: bold;
+            transition: background 0.3s;
+        }
+        .btn:hover {
+            background-color: #219653;
+        }
+        .screen {
+            display: none;
+        }
+        .active-screen {
+            display: block;
+        }
+        .question-box {
+            font-size: 1.1em;
+            font-weight: bold;
+            margin-bottom: 15px;
+            color: #2c3e50;
+        }
+        .option-btn {
+            display: block;
+            width: 100%;
+            padding: 12px;
+            margin: 8px 0;
+            background: #f8f9fa;
+            border: 2px solid #cbd5e1;
+            border-radius: 8px;
+            text-align: left;
+            cursor: pointer;
+            font-size: 1em;
+            transition: all 0.2s;
+        }
+        .option-btn:hover {
+            background: #e2e8f0;
+        }
+        .option-btn.correct {
+            background: #d4edda !important;
+            border-color: #28a745 !important;
+            color: #155724;
+        }
+        .option-btn.wrong {
+            background: #f8d7da !important;
+            border-color: #dc3545 !important;
+            color: #721c24;
+        }
+        .explanation {
+            margin-top: 15px;
+            padding: 10px;
+            background: #eef2f7;
+            border-left: 4px solid #3498db;
+            border-radius: 4px;
+            display: none;
+        }
+        .nav-btns {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 20px;
+        }
+        .certificate {
+            border: 5px solid #d4af37;
+            padding: 20px;
+            border-radius: 10px;
+            background: #fffdf0;
+            text-align: center;
+        }
+        .score-display {
+            font-size: 2em;
+            color: #c0392b;
+            font-weight: bold;
+            margin: 15px 0;
+        }
+        .review-box {
+            text-align: left;
+            max-height: 300px;
+            overflow-y: auto;
+            margin-top: 15px;
+            padding: 10px;
+            background: #fff;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <!-- Welcome Screen -->
+    <div id="welcome-screen" class="screen active-screen">
+        <div class="header-top">जिल्हा परिषद प्राथमिक शाळा नरसोबावाडी संचलित</div>
+        <h2>परीक्षेचे नाव: परिसर अभ्यास संकीर्ण प्रश्नसंग्रह</h2>
+        <hr>
+        <div class="form-group" style="margin-top: 20px;">
+            <label>विद्यार्थ्याचे नाव:</label>
+            <input type="text" id="student-name" placeholder="पूर्ण नाव टाका">
+        </div>
+        <div class="form-group">
+            <label>मोबाईल नंबर:</label>
+            <input type="tel" id="student-mobile" placeholder="मोबाईल नंबर टाका">
+        </div>
+        
+        <div class="footer-note">टेस्ट निर्मिती व संकल्पना श्री सचिन शिंदे मोबाईल नंबर 8329684470</div>
+        
+        <button class="btn" onclick="startExam()">EXAM START</button>
+
+        <div class="creator-bottom-right">
+            संकल्पना व निर्मिती<br>
+            <strong>श्री सचिन शिंदे सर</strong><br>
+            जि प प्रा शाळा नरसोबावाडी<br>
+            मोबाईल नंबर: 8329684470
+            <img src="https://lh3.googleusercontent.com/d/1pkldnaLRyqBtfgiQKwtbeSSfXhENzbOm=w500" alt="Teacher Photo">
+        </div>
+    </div>
+
+    <!-- Quiz Screen -->
+    <div id="quiz-screen" class="screen">
+        <div class="header-top" id="progress-indicator">प्रश्न १ / ५०</div>
+        <div class="question-box" id="question-text">प्रश्नाचा मजकूर येथे येईल</div>
+        <div id="options-container"></div>
+        <div class="explanation" id="explanation-box"></div>
+
+        <div class="nav-btns">
+            <button class="btn" id="next-btn" style="display:none; width: 100%;" onclick="nextQuestion()">पुढील प्रश्न (Next)</button>
+        </div>
+
+        <div class="footer-note" style="margin-top: 30px;">टेस्ट निर्मिती व संकल्पना श्री सचिन शिंदे मोबाईल नंबर 8329684470</div>
+    </div>
+
+    <!-- Result / Certificate Screen -->
+    <div id="result-screen" class="screen">
+        <div class="certificate">
+            <div style="font-weight: bold; color: #1a5276;">🏆 जिल्हा परिषद प्राथमिक शाळा नरसोबावाडी संचालित</div>
+            <h3>परीक्षेचे नाव: परिसर अभ्यास संकीर्ण प्रश्नसंग्रह</h3>
+            <p><strong>विद्यार्थ्याचे नाव:</strong> <span id="res-name"></span></p>
+            <p><strong>मोबाईल नंबर:</strong> <span id="res-mobile"></span></p>
+            
+            <div class="score-display" id="res-score">गुण: ० / १००</div>
+            <div id="medal-achievement" style="font-size: 1.2em; font-weight: bold; margin: 10px 0; color: #d35400;"></div>
+            
+            <div id="review-section" style="display: none;">
+                <h4>चुकीच्या प्रश्नांचे मार्गदर्शन:</h4>
+                <div class="review-box" id="review-content"></div>
+            </div>
+
+            <button class="btn" style="margin-top: 15px; background-color: #e67e22;" onclick="toggleReview()" id="review-toggle-btn">चुकीचे प्रश्न तपासा (Review Mistakes)</button>
+        </div>
+
+        <div class="creator-bottom-right" style="margin-top: 20px;">
+            संकल्पना व निर्मिती<br>
+            <strong>श्री सचिन शिंदे सर</strong><br>
+            जि प प्रा शाळा नरसोबावाडी<br>
+            मोबाईल नंबर: 8329684470
+            <img src="https://lh3.googleusercontent.com/d/1pkldnaLRyqBtfgiQKwtbeSSfXhENzbOm=w500" alt="Teacher Photo">
+        </div>
+    </div>
+</div>
+
+<script>
+    const questions = [
+        { q: "खरीप पिकांची पेरणी कोणत्या ऋतूत केली जाते?", options: ["वसंत", "ग्रीष्म", "वर्षा", "शिशिर"], correct: 2, exp: "खरीप पिकांची पेरणी प्रामुख्याने पावसाळ्यात (वर्षा ऋतूत) केली जाते." },
+        { q: "भारत सर्वाधिक पाऊस कोणत्या ऋतूत पडतो?", options: ["शिशिर", "ग्रीष्म", "वर्षा", "शरद"], correct: 2, exp: "भारत देशात नैऋत्य मान्सूनमुळे वर्षा ऋतूत सर्वाधिक पाऊस पडतो." },
+        { q: "खालीलपैकी योग्य क्रम कोणता?", options: ["वर्षा ग्रीष्म वसंत शिशिर", "वसंत ग्रीष्म वर्षा शरद हेमंत शिशिर", "शिशिर वर्षा ग्रीष्म वसंत", "ग्रीष्म शरद वर्षा हेमंत"], correct: 1, exp: "परंपरागत मराठी ऋतू चक्रानुसार वसंत, ग्रीष्म, वर्षा, शरद, हेमंत, शिशिर हा योग्य क्रम आहे." },
+        { q: "खालीलपैकी कोणती जोडी योग्य आहे?", options: ["चैत्र वैशाख - वसंत", "श्रावण भाद्रपद - ग्रीष्म", "मार्गशीर्ष पौष - वर्षा", "माघ फाल्गुन - शरद"], correct: 0, exp: "चैत्र आणि वैशाख महिन्यात 'वसंत' ऋतू असतो." },
+        { q: "भारतीय पारंपरिक पंचांगानुसार एका ऋतूचा कालावधी किती असतो?", options: ["1 महिना", "2 महिने", "3 महिने", "4 महिने"], correct: 1, exp: "पारंपरिक पंचांगानुसार प्रत्येक ऋतू हा दोन महिन्यांचा असतो (वर्षभरात ६ ऋतू)." },
+        { q: "सकाळी दव पडण्यास सुरुवात कोणत्या ऋतूत होते?", options: ["वसंत", "शिशिर", "हेमंत", "वर्षा"], correct: 2, exp: "हेमंत ऋतूत थंडीची चाहूल लागून सकाळी दव पडू लागते." },
+        { q: "पाण्याची टंचाई प्रामुख्याने कोणत्या ऋतूत जाणवते?", options: ["वर्षा", "शरद", "ग्रीष्म", "शिशिर"], correct: 2, exp: "उन्हाळ्याच्या (ग्रीष्म ऋतू) काळात पाण्याची तीव्र टंचाई जाणवते." },
+        { q: "खालीलपैकी कोणता सण वर्षा ऋतूत साजरा केला जातो?", options: ["गुढीपाडवा", "रक्षाबंधन", "दशहरा", "मकर संक्रांत"], correct: 1, exp: "रक्षाबंधन हा सण श्रावण महिन्यात म्हणजेच वर्षा ऋतूत येतो." },
+        { q: "दिवाळी (बहुतेक वेळा) कोणत्या ऋतूमधे येते?", options: ["शिशिर", "वर्षा", "हेमंत", "वसंत"], correct: 2, exp: "कार्तिक महिन्यात म्हणजेच हेमंत ऋतूत दिवाळी साजरी केली जाते." },
+        { q: "खालीलपैकी कोणत्या ऋतूत आंबा, कलिंगड आणि खरबूज यांचा हंगाम असतो?", options: ["वसंत", "ग्रीष्म", "वर्षा", "शिशिर"], correct: 1, exp: "ग्रीष्म ऋतूत (उन्हाळ्यात) आंबा, कलिंगड व खरबूज ही फळे येतात." },
+        { q: "खालीलपैकी कोणते विधान अयोग्य आहे?", options: ["वर्षा ऋतूत नद्या भरतात.", "शिशिर ऋतूत हिमवर्षांव होतो.", "वसंत ऋतूत झाडांची पाने गळतात.", "हेमंत ऋतूत रब्बी पिकांची पेरणी होते."], correct: 2, exp: "झाडांची पाने गळणे ही मुख्यत्वे शिशिर किंवा पानगळ ऋतूत होते, वसंत ऋतूत नवीन पालवी फुटते." },
+        { q: "खालीलपैकी कोणत्या ऋतूत आकाश सर्वाधिक स्वच्छ दिसते?", options: ["वर्षा", "शरद", "ग्रीष्म", "शिशिर"], correct: 1, exp: "पावसानंतर येणाऱ्या शरद ऋतूत आकाश अत्यंत निरभ्र व स्वच्छ असते." },
+        { q: "भारताचा राष्ट्रीय वारसा प्राणी कोणता आहे?", options: ["गेंडा", "हत्ती", "सिंह", "अस्वल"], correct: 1, exp: "भारतीय हत्ती हा भारताचा राष्ट्रीय वारसा प्राणी घोषित केला आहे." },
+        { q: "राष्ट्रीय ध्वजातील अशोकचक्रात किती आरे आहेत?", options: ["20", "22", "24", "26"], correct: 2, exp: "अशोकचक्रात २४ आरे असतात जे २४ तासांचे प्रतीक आहेत." },
+        { q: "भारताचे राष्ट्रगीत 'जन गण मन' प्रथम कोणत्या अधिवेशनात गायले गेले?", options: ["लाहोर अधिवेशन", "कोलकाता अधिवेशन (1911)", "मुंबई अधिवेशन", "कराची अधिवेशन"], correct: 1, exp: "इ.स. १९११ च्या कोलकाता अधिवेशनात राष्ट्रगीत प्रथम गायले गेले." },
+        { q: "भारताच्या राष्ट्रीय दिनदर्शिकेचा आधार कोणता आहे?", options: ["विक्रम संवत", "शक संवत", "हिजरी संवत", "ग्रेगोरियन संवत"], correct: 1, exp: "भारत सरकारची राष्ट्रीय दिनदर्शिका 'शक संवत'वर आधारित आहे." },
+        { q: "राष्ट्रगीत 'जन गण मन'चे रचनाकार कोण आहेत?", options: ["बकिमचंद्र चट्टोपाध्याय", "रवींद्रनाथ टागोर", "महात्मा गांधी", "सरोजिनी नायडू"], correct: 1, exp: "राष्ट्रगीताची रचना रवींद्रनाथ टागोर यांनी केली आहे." },
+        { q: "राष्ट्रगीताचे संक्षिप्त रूप किती वेळेत गायले जाते?", options: ["10 सेकंद", "20 सेकंद", "30 सेकंद", "45 सेकंद"], correct: 1, exp: "राष्ट्रगीताचे पहिले व शेवटचे कडवे (संक्षिप्त रूप) २० सेकंदात गायले जाते." },
+        { q: "राष्ट्रीय ध्वजातील हिरवा रंग कशाचे प्रतीक आहे?", options: ["बलिदान", "विकास व समृद्धी", "सत्य", "न्याय"], correct: 1, exp: "हिरवा रंग देशाची समृद्धी व कृषी विकासाचे प्रतीक दर्शवतो." },
+        { q: "भारताचा राष्ट्रीय ध्वज अधिकृतपणे कधी स्वीकारण्यात आला?", options: ["15 ऑगस्ट 1947", "22 जुलै 1947", "26 जानेवारी 1950", "26 नोव्हेंबर 1949"], correct: 1, exp: "२२ जुलै १९४७ रोजी संविधान सभेने तिरंगा ध्वज अधिकृतपणे स्वीकारला." },
+        { q: "राष्ट्रगीताचा अधिकृत कालावधी किती आहे?", options: ["40 सेकंद", "52 सेकंद", "60 सेकंद", "75 सेकंद"], correct: 1, exp: "पूर्ण राष्ट्रगीत गाण्याची ठरवून दिलेली वेळ ५२ सेकंद आहे." },
+        { q: "भारताचे राष्ट्रीय फूल कोणते आहे?", options: ["गुलाब", "कमळ", "सूर्यफूल", "जाई"], correct: 1, exp: "कमळ हे भारताचे राष्ट्रीय फूल आहे." },
+        { q: "भारताच्या राष्ट्रीय चिन्हात प्रत्यक्ष दिसणारे सिंह किती आहेत?", options: ["2", "3", "4", "1"], correct: 1, exp: "सम्राट अशोकाच्या सारनाथ स्तंभावरील राष्ट्रीय चिन्हात समोरून ३ सिंह दिसतात (चौथा मागे असतो)." },
+        { q: "राष्ट्रीय ध्वजाची लांबी व रुंदी यांचे प्रमाण किती आहे?", options: ["3:2", "2:3", "1:2", "4:3"], correct: 0, exp: "तिरंगा ध्वजाची लांबी व रुंदीचे प्रमाण ३:२ असते." },
+        { q: "भारताच्या राष्ट्रीय ध्वजाची रचना कोणी केली?", options: ["महात्मा गांधी", "पिंगली वेंकैया", "डॉ. बाबासाहेब आंबेडकर", "जवाहरलाल नेहरू"], correct: 1, exp: "पिंगली वेंकैया यांनी भारतीय राष्ट्रध्वजाची रचना केली होती." },
+        { q: "भारताचे राष्ट्रीय फळ कोणते आहे?", options: ["केळी", "आंबा", "सफरचंद", "द्राक्षे"], correct: 1, exp: "आंब्याला भारताचे राष्ट्रीय फळ मानले जाते." },
+        { q: "भारतरत्न पुरस्कार प्रथम कोणत्या वर्षी प्रदान करण्यात आला?", options: ["1950", "1952", "1954", "1956"], correct: 2, exp: "भारतरत्न पुरस्काराची सुरुवात २ जानेवारी १९५४ रोजी झाली." },
+        { q: "वुलर सरोवर कोणत्या प्रकारचे सरोवर आहे?", options: ["खाऱ्या पाण्याचे", "कृत्रिम", "गोड्या पाण्याचे", "ज्वालामुखीजन्य"], correct: 2, exp: "जम्मू-काश्मीरमधील वुलर सरोवर हे भारतातील सर्वात मोठे गोड्या पाण्याचे सरोवर आहे." },
+        { q: "क्षेत्रफळानुसार भारतातील सर्वात मोठे राज्य कोणते?", options: ["मध्य प्रदेश", "महाराष्ट्र", "राजस्थान", "उत्तर प्रदेश"], correct: 2, exp: "राजस्थान हे क्षेत्रफळाच्या दृष्टीने भारतातील सर्वात मोठे राज्य आहे." },
+        { q: "भारतीय संग्रहालय कुठे आहे?", options: ["मुंबई", "चेन्नई", "कोलकाता", "दिल्ली"], correct: 2, exp: "देशातील सर्वात मोठे भारतीय संग्रहालय (Indian Museum) कोलकाता येथे आहे." },
+        { q: "घूम रेल्वे स्थानक कोणत्या राज्यात आहे?", options: ["सिक्कीम", "पश्चिम बंगाल", "आसाम", "हिमाचल प्रदेश"], correct: 1, exp: "घूम रेल्वे स्थानक हे पश्चिम बंगाल राज्यातील दार्जिलिंग भागात आहे." },
+        { q: "भारतातील सर्वात लांब समुद्रकिनारा कोणता?", options: ["जुहू", "मरीना बीच", "कोवलम", "पुरी"], correct: 1, exp: "चेन्नई येथील 'मरीना बीच' हा भारतातील सर्वात लांब समुद्रकिनारा आहे." },
+        { q: "'ओव्हरटेक करण्यास मनाई' या चिन्हाचा उद्देश काय आहे?", options: ["वेग वाढविणे", "वाहन पुढे नेणे", "पुढील वाहनाला ओलांडण्यास बंदी", "पार्किंग करणे"], correct: 2, exp: "या चिन्हाचा उद्देश पुढील वाहनाला ओलांडण्यास (ओव्हरटेक) बंदी करणे हा असतो." },
+        { q: "'एकमार्गी रस्ता' हे चिन्ह कोणत्या प्रकारात मोडते?", options: ["माहितीपर", "सावधानता", "प्रतिबंधत्मक", "चेतावनी"], correct: 2, exp: "एकमार्गी रस्ता हे रस्ते सुरक्षेच्या दृष्टीने प्रतिबंधत्मक चिन्हामध्ये येते." },
+        { q: "'मुले रस्ता ओलांडत आहेत' हे चिन्ह कुठे प्रामुख्याने लावले जाते?", options: ["कारखान्याजवळ", "शाळेजवळ", "रेल्वे स्थानкаजवळ", "विमानतळाजवळ"], correct: 1, exp: "शाळेजवळ मुलांच्या सुरक्षेसाठी हे चिन्ह लावले जाते." },
+        { q: "'रस्ता पसरत आहे' हे चिन्ह कोणत्या प्रकारचे आहे?", options: ["माहितीपर", "सावधानतेचे", "प्रतिबंधत्मक", "सक्तीचे"], correct: 1, exp: "हे वाहनचालकांना सावध करणारे चिन्ह आहे." },
+        { q: "'पार्किंग' दर्शविणाऱ्या चिन्हावर सामान्यतः कोणते इंग्रजी अक्षर असते?", options: ["R", "P", "S", "H"], correct: 1, exp: "पार्किंगसाठी इंग्रजी 'P' हे अक्षर वापरले जाते." },
+        { q: "'रुग्णवाहिकेला मार्ग द्या' हा नियम कोणत्या उद्देशाने आहे?", options: ["वाहतूक वाढविण्यासाठी", "आपत्कालीन सेवांना प्राधान्य देण्यासाठी", "वाहनांची तपासणी करण्यासाठी", "पार्किंगसाठी"], correct: 1, exp: "रुग्णाचे प्राण वाचवण्यासाठी आपत्कालीन सेवांना प्राधान्य देणे हा उद्देश असतो." },
+        { q: "'उंच चढण' दर्शविणारे चिन्ह कोणत्या प्रकारात येते?", options: ["सावधानता", "माहितीपर", "प्रतिबंधत्मक", "सक्तीचे"], correct: 0, exp: "उंच चढण व तीव्र उतार हे सावधानता दर्शक चिन्ह आहे." },
+        { q: "'वाहन उभे करण्यास मनाई' हे चिन्ह कोणत्या प्रकारचे आहे?", options: ["माहितीपर", "प्रतिबंधत्मक", "सावधानता", "मार्गदर्शक"], correct: 1, exp: "नो पार्किंग हे प्रतिबंधत्मक चिन्हात येते." },
+        { q: "'पादचारी मार्ग' हे चिन्ह कोणत्या प्रकारात मोडते?", options: ["सक्तीचे/माहितीपर", "सावधानता", "प्रतिबंधत्मक", "चेतावनी"], correct: 0, exp: "पादचारी मार्ग हा माहितीपर व सक्तीच्या प्रकारात येतो." },
+        { q: "वाहतुकीची चिन्हे पाळण्याचा मुख्य उद्देश कोणता आहे?", options: ["दंड टाळणे", "वाहनाचा वेग वाढविणे", "रस्ते सुरक्षित ठेवणे व अपघात टाळणे", "इंधनाची बचत करणे"], correct: 2, exp: "रस्ते सुरक्षित ठेवणे व अपघात टाळणे हा मुख्य उद्देश आहे." },
+        { q: "'डावीकडे तीव्र वळण' दर्शविणारे चिन्ह कोणत्या गटात येते?", options: ["सावधानता", "प्रतिबंधत्मक", "माहितीपर", "सक्तीचे"], correct: 0, exp: "वळणे दर्शवणारे चिन्ह हे सावधानता गटात येते." },
+        { q: "'रस्ता अरुंद होत आहे' हे चिन्ह कोणत्या उद्देशाने लावले जाते?", options: ["वाहनांना वेग वाढविण्यासाठी", "वाहनचालकांना पुढील धोक्याची पूर्वसूचना देण्यासाठी", "पार्किंगसाठी जागा दाखविण्यासाठी", "एकमार्गी रस्ता दर्शविण्यासाठी"], correct: 1, exp: "पुढील धोक्याची पूर्वसूचना देणे हा उद्देश असतो." },
+        { q: "'सायकल मार्ग' हे चिन्ह कशासाठी असते?", options: ["बस", "ट्रक", "सायकलस्वार", "पादचारी"], correct: 2, exp: "हे चिन्ह फक्त सायकलस्वारांसाठी असते." },
+        { q: "वाहतुकीच्या चिन्हांचे प्रमाणित स्वरूप कोणत्या कारणामुळे महत्त्वाचे आहे?", options: ["रंगीत दिसण्यासाठी", "सर्व वाहनचालकांना सहज ओळखता यावे म्हणून", "जाहिरातींसाठी", "रस्ता सजावटीसाठी"], correct: 1, exp: "सर्व वाहनचालकांना ते सहज ओळखता यावे म्हणून प्रमाण ठरवले जाते." },
+        { q: "'वाहतुकीची चिन्हे' पाळली नाहीत तर सर्वात मोठा धोका कोणता निर्माण होतो?", options: ["वाहनाचा रंग खराब होतो", "इंधन जास्त खर्च होते", "अपघात व जीवितहानी होऊ शकते", "वाहनाचा वेग कमी होतो"], correct: 2, exp: "अपघात व जीवितहानी होण्याचा मोठा धोका असतो." },
+        { q: "खाली दिलेल्या विधानांतून योग्य विधान ओळख.", options: ["हिमाचल प्रदेशात कॉफीचे मळे आहेत.", "केरळ व कर्नाटक राज्यात कॉफीचे मळे आहेत.", "त्रिपुरा राज्यात कॉफीचे मळे आहेत.", "गुजरात, मध्य प्रदेश व छत्तीसगड मध्ये कॉफीचे मळे आहेत."], correct: 1, exp: "दक्षिण भारतात विशेषतः केरळ व कर्नाटक राज्यात कॉफीचे मळे प्रामुख्याने आढळतात." },
+        { q: "CNG चे विस्तारित रूप खालीलपैकी वाहतुकीच्या संदर्भात असणारे कोणते?", options: ["Compressed Natural Gas", "Certified Nursing Graduate", "Center for New Generation", "Coal Network Group"], correct: 0, exp: "CNG म्हणजेच Compressed Natural Gas होय." },
+        { q: "वाहतुकीच्या संदर्भात असणारे LPG चे विस्तारित रूप खालीलपैकी कोणते?", options: ["Licensed Petroleum Gas", "Local Petroleum Group", "Liquified Petroleum Gas", "Low Pressure Gas"], correct: 2, exp: "LPG म्हणजेच Liquified Petroleum Gas होय." }
+    ];
+
+    let currentQuestion = 0;
+    let score = 0;
+    let userAnswers = [];
+    let studentName = "";
+    let studentMobile = "";
+
+    function startExam() {
+        studentName = document.getElementById('student-name').value.trim();
+        studentMobile = document.getElementById('student-mobile').value.trim();
+
+        if(!studentName || !studentMobile) {
+            alert("कृपया विद्यार्थी नाव आणि मोबाईल नंबर प्रविष्ट करा!");
+            return;
+        }
+
+        document.getElementById('welcome-screen').classList.remove('active-screen');
+        document.getElementById('quiz-screen').classList.add('active-screen');
+        loadQuestion();
+    }
+
+    function loadQuestion() {
+        if(currentQuestion >= questions.length) {
+            showResult();
+            return;
+        }
+
+        let q = questions[currentQuestion];
+        document.getElementById('progress-indicator').innerText = `प्रश्न ${currentQuestion + 1} / ${questions.length}`;
+        document.getElementById('question-text').innerText = `${currentQuestion + 1}. ${q.q}`;
+        
+        let optContainer = document.getElementById('options-container');
+        optContainer.innerHTML = "";
+        document.getElementById('explanation-box').style.display = "none";
+        document.getElementById('next-btn').style.display = "none";
+
+        q.options.forEach((opt, idx) => {
+            let btn = document.createElement('button');
+            btn.className = 'option-btn';
+            btn.innerText = `${String.fromCharCode(65 + idx)}. ${opt}`;
+            btn.onclick = () => selectOption(idx, btn);
+            optContainer.appendChild(btn);
+        });
+    }
+
+    function selectOption(selectedIdx, btnElement) {
+        let q = questions[currentQuestion];
+        let buttons = document.querySelectorAll('.option-btn');
+        
+        buttons.forEach(b => b.disabled = true);
+
+        let isCorrect = (selectedIdx === q.correct);
+        if(isCorrect) {
+            btnElement.classList.add('correct');
+            score += 2; // प्रत्येक प्रश्नाला दोन गुण
+        } else {
+            btnElement.classList.add('wrong');
+            buttons[q.correct].classList.add('correct');
+        }
+
+        userAnswers.push({
+            question: q.q,
+            selected: q.options[selectedIdx],
+            correct: q.options[q.correct],
+            isCorrect: isCorrect,
+            exp: q.exp
+        });
+
+        let expBox = document.getElementById('explanation-box');
+        expBox.innerHTML = `<strong>स्पष्टीकरण:</strong> ${q.exp}`;
+        expBox.style.display = "block";
+
+        document.getElementById('next-btn').style.display = "block";
+    }
+
+    function nextQuestion() {
+        currentQuestion++;
+        loadQuestion();
+    }
+
+    function showResult() {
+        document.getElementById('quiz-screen').classList.remove('active-screen');
+        document.getElementById('result-screen').classList.add('active-screen');
+
+        document.getElementById('res-name').innerText = studentName;
+        document.getElementById('res-mobile').innerText = studentMobile;
+        
+        let totalMaxMarks = questions.length * 2;
+        document.getElementById('res-score').innerText = `गुण: ${score} / ${totalMaxMarks}`;
+
+        let percentage = (score / totalMaxMarks) * 100;
+        let achievementText = "";
+
+        if(percentage >= 90) {
+            achievementText = "🥇 Gold Medal + Trophy (उत्कृष्ट कामगिरी!)";
+        } else if(percentage >= 80) {
+            achievementText = "🥈 Silver Medal + Trophy (अतिउत्कृष्ट कामगिरी!)";
+        } else if(percentage >= 70) {
+            achievementText = "🥉 Bronze Medal + Trophy (छान कामगिरी!)";
+        } else {
+            achievementText = '💐 अभिनंदन! फुलांचा गुच्छ व "पुढील परीक्षेसाठी शुभेच्छा"';
+        }
+
+        document.getElementById('medal-achievement').innerText = achievementText;
+
+        let reviewHtml = "";
+        let wrongCount = 0;
+        userAnswers.forEach((ans, idx) => {
+            if(!ans.isCorrect) {
+                wrongCount++;
+                reviewHtml += `<div style="margin-bottom: 10px; border-bottom: 1px dashed #ccc; padding-bottom: 5px;">
+                    <strong>प्र.${idx+1}: ${ans.question}</strong><br>
+                    <span style="color:red;">तुमचे उत्तर: ${ans.selected}</span><br>
+                    <span style="color:green;">खरी उत्तर: ${ans.correct}</span><br>
+                    <small>मार्गदर्शन: ${ans.exp}</small>
+                </div>`;
+            }
+        });
+
+        if(wrongCount === 0) {
+            reviewHtml = "<p style='color:green; text-align:center;'>अभिनंदन! तुमचे सर्व प्रश्न अचूक आले आहेत!</p>";
+        }
+        document.getElementById('review-content').innerHTML = reviewHtml;
+    }
+
+    function toggleReview() {
+        let reviewSec = document.getElementById('review-section');
+        let btn = document.getElementById('review-toggle-btn');
+        if(reviewSec.style.display === "none") {
+            reviewSec.style.display = "block";
+            btn.innerText = "चुकीचे प्रश्न लपवा";
+        } else {
+            reviewSec.style.display = "none";
+            btn.innerText = "चुकीचे प्रश्न तपासा (Review Mistakes)";
+        }
+    }
+</script>
+
+</body>
+</html>
